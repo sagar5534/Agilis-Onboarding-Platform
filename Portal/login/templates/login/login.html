@@ -1,0 +1,120 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-140421895-1"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-140421895-1');
+	</script>
+	
+
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="shortcut icon" type="image/png" href="{% static 'login/loginPage/favicon.png' %}">
+    
+	<link rel="stylesheet" type="text/css" href="{% static 'login/loginPage/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/loginPage/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/loginPage/css/font-awesome.min.css' %}">
+	
+    <title>Agilis Portal - Login</title>
+
+    
+</head>
+<body>
+<!-- Main container -->
+<div class="page-container">
+    
+<!-- bloc-0 -->
+<div class="bloc l-bloc" id="bloc-0">
+	<div class="container bloc-sm">
+		<div class="row">
+			<div class="col">
+				<nav class="navbar row navbar-expand-md navbar-light" role="navigation">
+					<a class="navbar-brand" href="{% url 'index' %}">Agilis - Portal</a>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- bloc-0 END -->
+
+<!-- login -->
+<div class="bloc l-bloc" id="login">
+	<div class="container bloc-lg">
+		<div class="row">
+			<div class="col-lg-6 offset-lg-3 offset-md-2 col-md-8">
+				<form id="form_14817" data-form-type="blocs-form" novalidate data-success-msg="Your message has been sent." action="{% url 'loginProtocol' %}?next={{ next }}" method="POST">
+					
+					{% csrf_token %}
+
+					{% if form.errors %}
+					
+					<div class="alert alert-danger " role="alert">
+						<a href="#" class="btn btn-d btn-lg btn-style-none float-right" data-dismiss="alert" aria-label="Close"><span class="fa fa-close close"></span></a>
+						<p class="mb-0">
+							Incorrect Order Number / Password
+						</p>
+					</div>
+
+					{% endif %}
+					
+					<div class="form-group">
+						<label>
+							Order Number<br>
+						</label>
+						<input id="name_14817" class="form-control" required name="username" />
+					</div>
+					<div class="form-group">
+						<label>
+							Password
+						</label>
+						<input id="email_14817" class="form-control field-style" type="password" name="password" required />
+					</div> 
+                    <a href="{% url 'password_reset' %}" class="a-btn link-style ltc-dodger-blue text-md-right text-sm-right float-sm-right text-lg-right text-right a-block">Forgot Password?</a>
+					<div class="divider-h">
+						<span class="divider"></span>
+					</div>
+					<button class="bloc-button btn btn-d btn-style btn-rd d-inline-block btn-block" type="submit">
+						Login
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- login END -->
+
+<!-- ScrollToTop Button -->
+<a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1',this)"><span class="fa fa-chevron-up"></span></a>
+<!-- ScrollToTop Button END-->
+
+
+</div>
+<!-- Main container END -->
+    
+
+<script src="{% static 'login/loginPage/js/jquery-3.3.1.js' %}"></script>
+<script src="{% static 'login/loginPage/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'login/loginPage/js/blocs.js' %}"></script>
+<script src="{% static 'login/loginPage/js/jqBootstrapValidation.js' %}"></script>
+<script src="{% static 'login/loginPage/js/formHandler.js' %}"></script>
+<script src="{% static 'login/loginPage/js/lazysizes.min.js' %}" defer></script>
+<!-- Additional JS END -->
+
+
+
+<!-- Preloader -->
+<div id="page-loading-blocs-notifaction" class="page-preloader"></div>
+<!-- Preloader END -->
+
+</body>
+</html>
