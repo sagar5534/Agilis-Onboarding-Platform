@@ -11,7 +11,7 @@ services:
   - postgres:latest
 
 variables:
-  POSTGRES_DB: database_name
+  POSTGRES_DB: ci
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
@@ -47,4 +47,4 @@ test:
   variables:
     DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/$POSTGRES_DB"
   script:
-  - python3 Portal/manage.py test
+  - python3 Portal/manage.py test --settings settings.ci
