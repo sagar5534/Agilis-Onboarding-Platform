@@ -4,40 +4,64 @@ from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.http import HttpRequest
+from django.contrib.auth.forms import PasswordResetForm
+from django.urls import reverse_lazy
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.sites.shortcuts import get_current_site
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 admin.site.site_header = "Agilis Admin"
 admin.site.site_title = "Agilis"
 admin.site.index_title = "Administration"
+
+
+@receiver(post_save, sender=MyUser, )
+def send_email_handler(sender, **kwargs):
+    instance = kwargs.get('instance')
+    created = kwargs.get('created')
+    if created == True:
+        send_email(instance)
+
+def send_email(user):
+
+    form = PasswordResetForm({'email': user.email})
+
+    if form.is_valid():
+        request = HttpRequest()
+        request.META['SERVER_NAME'] = 'localhost'
+        request.META['SERVER_PORT'] = '8000'
+        form.save(
+            request= request,
+            use_https=False,
+            from_email="username@gmail.com", 
+            email_template_name='registration/password_reset_email.html',
+            subject_template_name='registration/password_reset_subject.txt',
+        )
 
 class UserCreationForm(forms.ModelForm):
     """
     A form for creating new users. Includes all the required
     fields, plus a repeated password.
     """
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = MyUser
-        # TODO Check if it works
         fields = ('email', 'orderId',)
 
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
-        return password2
 
     def save(self, commit=True):
-        # Save the provided password in hashed format
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        password = MyUser.objects.make_random_password()
+        user.set_password(password)
         if commit:
             user.save()
         return user
-
+    
 
 class UserChangeForm(forms.ModelForm):
     """
@@ -75,18 +99,13 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('orderId', 'email', 'password1', 'password2')}
+            'fields': ('orderId', 'email',)}
         ),
     )
     search_fields = ('orderId', 'email', 'first_name', 'last_name')
     ordering = ('orderId',)
     filter_horizontal = ()
 
-# Now register the new UserAdmin...
-admin.site.register(MyUser, UserAdmin)
-# ... and, since we're not using Django's built-in permissions,
-# unregister the Group model from admin.
-admin.site.unregister(Group)
 
-# Register your models here.
-#admin.site.register(MyUser, UserAdmin)
+admin.site.register(MyUser, UserAdmin)
+admin.site.unregister(Group)

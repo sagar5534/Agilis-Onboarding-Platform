@@ -34,15 +34,15 @@ class MyUserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-    
-        
 
 class MyUser(AbstractBaseUser):
 
     class Meta:
-         verbose_name = "User"
+        verbose_name = "User"
 
-    orderId = models.CharField(
+    id = models.AutoField(primary_key=True)
+
+    orderId = models.CharField(        
         verbose_name='Order ID',
         max_length=40, 
         unique=True, 
@@ -58,7 +58,7 @@ class MyUser(AbstractBaseUser):
     email = models.EmailField(
         verbose_name='Email Address',
         max_length=255,
-        unique=False,
+        unique=True,
         blank=False,
         help_text=(
             'Used to reach user regarding Password Changes/Resets or Form Issues'
@@ -98,7 +98,7 @@ class MyUser(AbstractBaseUser):
 
     #To print user 
     def __str__(self):
-        return "User: " + self.orderId
+        return self.orderId
 
     #Overide
     def clean(self):
@@ -127,4 +127,3 @@ class MyUser(AbstractBaseUser):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-    

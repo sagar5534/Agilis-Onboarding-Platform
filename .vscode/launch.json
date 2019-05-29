@@ -9,5 +9,5 @@
         "--noreload",
         "--nothreading"
     ],
-    "django": true
+    "Django": true
 }
