@@ -47,5 +47,5 @@ test:
   variables:
     DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/$POSTGRES_DB"
   script:
-  - docker login -u sagar55 -p 72427Patel
+  - docker login
   - python3 Portal/manage.py test --settings settings.ci
