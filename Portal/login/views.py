@@ -32,9 +32,16 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
+from django.core.mail import send_mail
+
+
 #Ensure user is logged in before they can access this view otherwise send to login form
 @login_required
 def index(request):
+
+    #Test
+    #send_mail('subject', 'body of the message', 'no-reply@agilismail.com', ['sagar_patel5@hotmail.com',])
+
     return render(request, 'login/index.html')
 
 #Login Protocol to handle user logins at the website front. NOT ADMIN
