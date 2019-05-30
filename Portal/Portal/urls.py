@@ -18,6 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #Temp - Might keep and just create a /profile for the next app
-    path('', include('login.urls'))
+    path('', include('login.urls')),
+    path('forms/', include('forms.urls'))
 ]
