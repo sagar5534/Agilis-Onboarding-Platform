@@ -39,8 +39,8 @@ def send_email(user):
             request= request,
             use_https=False,
             from_email="no-reply@agilismail.com", 
-            email_template_name='registration/password_reset_email.html',
-            subject_template_name='registration/password_reset_subject.txt',
+            email_template_name='registration/set_password.html',
+            subject_template_name='registration/set_password_subject.txt',
         )
 
 class UserCreationForm(forms.ModelForm):
