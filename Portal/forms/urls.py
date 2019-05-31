@@ -4,10 +4,10 @@ from django.contrib import admin
 
 from . import views
 
-# URL patterns for Login
-
 urlpatterns = [
+
     path('', views.index, name='index'),
+    
 ]
 
 
