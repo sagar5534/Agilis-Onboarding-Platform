@@ -7,26 +7,24 @@ from django.contrib.auth.models import (
 
 class MyUserManager(BaseUserManager):
 
-    def create_user(self, orderId, email, password):
+    def create_user(self, email, password):
         """
         Create and save a user with the given orderID, email, and password.
         """
-        if not orderId:
-            raise ValueError('Please enter an Order ID')
+        if not email:
+            raise ValueError('Please enter an Email')
         email = self.normalize_email(email)
-        orderId = self.model.normalize_username(orderId)
-        user = self.model(orderId=orderId, email=email)
+        user = self.model(email=email)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, orderId , email, password):
+    def create_superuser(self, email, password):
         """
         Creates and saves a superuser with the given Ord, date of
         birth and password.
         """
         user = self.create_user(
-            orderId,
             password=password,
             email=email,
         )
@@ -42,33 +40,23 @@ class MyUser(AbstractBaseUser):
 
     id = models.AutoField(primary_key=True)
 
-    orderId = models.CharField(        
-        verbose_name='Order ID',
-        max_length=40, 
-        unique=True, 
-        blank=False,
-        help_text=(
-            'Please use correct Order Number'
-        )
-    )
-
-    first_name = models.CharField(('First Name'), max_length=30, blank=True)
-    last_name = models.CharField(('Last Name'), max_length=150, blank=True)
-
     email = models.EmailField(
         verbose_name='Email Address',
         max_length=255,
         unique=True,
         blank=False,
         help_text=(
-            'Used to reach user regarding Password Changes/Resets or Form Issues'
+            'Users Login Email'
         )
     )
 
+    first_name = models.CharField(('First Name'), max_length=30, blank=True)
+    last_name = models.CharField(('Last Name'), max_length=150, blank=True)
+
     objects = MyUserManager()
 
-    USERNAME_FIELD = 'orderId'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     #Required
     is_active = models.BooleanField(
@@ -98,7 +86,7 @@ class MyUser(AbstractBaseUser):
 
     #To print user 
     def __str__(self):
-        return self.orderId
+        return self.email
 
     #Overide
     def clean(self):
@@ -127,3 +115,4 @@ class MyUser(AbstractBaseUser):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+    

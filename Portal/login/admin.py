@@ -51,7 +51,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ('email', 'orderId',)
+        fields = ('email',)
 
 
     def save(self, commit=True):
@@ -73,7 +73,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ('email', 'orderId', 'password', 'first_name', 'last_name', 'is_active', 'is_superuser')
+        fields = ('email', 'password', 'first_name', 'last_name', 'is_active', 'is_superuser')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -90,20 +90,20 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('orderId', 'first_name', 'last_name', 'email')
+    list_display = ('email', 'first_name', 'last_name')
     list_filter = ('is_active' , 'is_superuser',)
-    fieldsets = ( ('User' , {'fields': ('orderId', 'email', 'password')}) , ('Personal info', {'fields': ('first_name','last_name')}), ('Permissions', {'fields': ('is_active','is_superuser',)}),
+    fieldsets = ( ('User' , {'fields': ('email', 'password')}) , ('Personal info', {'fields': ('first_name','last_name')}), ('Permissions', {'fields': ('is_active','is_superuser',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('orderId', 'email',)}
+            'fields': ('email',)}
         ),
     )
-    search_fields = ('orderId', 'email', 'first_name', 'last_name')
-    ordering = ('orderId',)
+    search_fields = ('email', 'first_name', 'last_name')
+    ordering = ('email',)
     filter_horizontal = ()
 
 
