@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
 
     path('', views.index, name='index'),
+    path('<int:company>/', views.detail, name='detail'),
     
 ]
 

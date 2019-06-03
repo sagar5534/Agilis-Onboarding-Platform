@@ -1,10 +1,7 @@
 from django.db import models
-from ..login.models import *
+from login.models import MyUser
+from phonenumber_field.modelfields import PhoneNumberField
 
-class UserCompLink(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=False, null=False)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE,  blank=False, null=False)
 
 class Address(models.Model):
     id = models.AutoField(primary_key=True)
@@ -28,7 +25,7 @@ class Address(models.Model):
     ]
 
     Province = models.CharField(
-        max_lenght=2,
+        max_length=2,
         choices=provTypes,
         default='Ontario',
     )
@@ -37,8 +34,9 @@ class Address(models.Model):
 
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
+    completed = models.BooleanField((""), blank=False, default=False)
     company_name = models.CharField(("Company Name"), max_length=50, blank=False, null=False)
-    site_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, null=False)
+    site_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, related_name='site_address')
     main_phone = models.CharField(("Main Phone"), max_length=50, blank=True, null=True)
     main_fax = models.CharField(("Main Fax"), max_length=50, blank=True, null=True)
 
@@ -46,18 +44,22 @@ class Company(models.Model):
     directory_listing = models.CharField(("Directory Listing"), max_length=50, blank=False, null=True)
     listing_name = models.CharField(("Listing Name"), max_length=50, blank=False, null=True)
     category_listing = models.CharField(("Category Listing"), max_length=50, blank=False, null=True)
-    listing_phone = models.PhoneNumberField(("Listing Phone Number"), blank=False, null=True)
-    listing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, null=True)
+    listing_phone = PhoneNumberField(("Listing Phone Number"), blank=False, null=True)
+    listing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, related_name='listing_address')
 
     #Inserting null into blanks for phones
     #def ...
 
+class UserCompLink(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=False, null=False)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE,  blank=False, null=False)
 
 class Numbers(models.Model):
     id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
-    number = models.PhoneNumberField((""), blank=False, null=False)
-    Address_911 = models.ManyToManyField(Address, blank=False, null=False)
+    number = PhoneNumberField((""), blank=False, null=False)
+    Address_911 = models.ManyToManyField(Address, blank=False)
 
 class Extention(models.Model):
     id = models.AutoField(primary_key=True)
@@ -65,7 +67,7 @@ class Extention(models.Model):
     ext = models.IntegerField((""), blank=False, null=False)
     name = models.CharField((""), max_length=50, blank=False, null=False)
     caller_id_name = models.CharField((""), max_length=50, blank=False, null=False)
-    called_id_number = models.PhoneNumberField((""), blank=False, null=False)
-    voicemail = models.BooleanField((""), blank=False, null=True)
+    called_id_number = PhoneNumberField((""), blank=False, null=False)
+    voicemail = models.BooleanField((""), blank=False)
     voicemail_toEmail = models.BooleanField((""), blank=False, null=True)
     voicemail_email = models.EmailField((""), max_length=254, blank=False, null=True)

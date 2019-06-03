@@ -1,13 +1,22 @@
 {
-    "name": "Python: Django",
-    "type": "python",
-    "request": "launch",
-    "program": "${workspaceFolder}/Portal/manage.py",
-    "console": "integratedTerminal",
-    "args": [
-        "runserver",
-        "--noreload",
-        "--nothreading"
-    ],
-    "Django": true
+"version": "0.1.0",
+"configurations": [
+    {
+        "name": "Python: Django",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/Portal/manage.py",
+        "console": "integratedTerminal",
+        "args": [
+            "runserver",
+            "--noreload",
+            "--nothreading"
+        ],
+        "django": true
+    },
+
+]
+    
 }
+
+

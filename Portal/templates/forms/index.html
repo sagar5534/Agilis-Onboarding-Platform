@@ -1,0 +1,14 @@
+<p></p>
+{% if companies %}
+    <ul>
+    {% for company in companies %}
+        {% if company.completed %}
+            <li><a>{{ company.company_name }} - Completed</a></li>
+        {% else %}
+            <li><a href="/forms/{{ company.id }}/">{{ company.company_name }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No companies are available.</p>
+{% endif %}
