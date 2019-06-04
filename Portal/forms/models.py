@@ -59,7 +59,7 @@ class Numbers(models.Model):
     id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
     number = PhoneNumberField((""), blank=False, null=False)
-    Address_911 = models.ManyToManyField(Address, blank=False)
+    Address_911 = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, null=True)
 
 class Extention(models.Model):
     id = models.AutoField(primary_key=True)

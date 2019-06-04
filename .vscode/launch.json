@@ -1,6 +1,7 @@
 {
 "version": "0.1.0",
 "configurations": [
+
     {
         "name": "Python: Django",
         "type": "python",
@@ -9,7 +10,6 @@
         "console": "integratedTerminal",
         "args": [
             "runserver",
-            "--noreload",
             "--nothreading"
         ],
         "django": true
