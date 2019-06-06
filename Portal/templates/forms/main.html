@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script> var company = {{ company }}; </script>
     <script src="{% static 'forms/main.js' %}"></script>
     <script src="{% static 'forms/google.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'forms/css/main.css' %}">
@@ -38,14 +39,14 @@
     <form class="step1">
 
         <div id="locationField">
-            
+            <label class="label" style="font-size: 10pt;" for="CompanyName">Company Name:</label> 
             <input class="field" id="CompanyName" type="text" name="CompanyName" maxlength="100" placeholder="Company Name" required>
 
         </div>
         
         <div id="locationField">
             
-            <label class="field" style="font-size: 10pt;" for="Bus_Res">Type of Site:</label> 
+            <label class="label" style="font-size: 10pt;" for="Bus_Res">Type of Site:</label> 
             <select name="Bus_Res" id="id_Bus_Res">
                 <option value="1">Business</option>
                 <option value="2">Residential</option>
@@ -54,10 +55,12 @@
         </div>
     
         <div id="locationField">
-
-            <input id="CurProvider" type="text" name="CurProvider" maxlength="100" placeholder="Current Provider" required>
+            <label class="label" style="font-size: 10pt;" for="CurProvider">Current Provider:</label> 
+            <input class="field" id="CurProvider" type="text" name="CurProvider" maxlength="100" placeholder="Current Provider" required>
 
         </div>
+
+        <br>
 
         <div id="locationField">
             <input id="autocomplete"
@@ -70,26 +73,28 @@
         <table id="address">
         <tr>
             <td class="label">Suite/Apt #</td>
-            <td class="wideField" colspan="3"><input class="field" id="Suite" placeholder="Enter if Applicable"/></td>
+            <td class="wideField" colspan="3">
+                <input name="Suite" class="field" id="Suite" placeholder="Enter if Applicable"/>
+            </td>
         </tr>
         <tr>
             <td class="label">Street address</td>
-            <td class="slimField"><input class="field" id="street_number" disabled="true"/></td>
-            <td class="wideField" colspan="2"><input class="field" id="route" disabled="true"/></td>
+            <td class="slimField"><input name="StreetNum" class="field" id="street_number" disabled="true"/></td>
+            <td class="wideField" colspan="2"><input name="Street" class="field" id="route" disabled="true"/></td>
         </tr>
         <tr>
             <td class="label">City</td>
-            <td class="wideField" colspan="3"><input class="field" id="locality" disabled="true"/></td>
+            <td class="wideField" colspan="3"><input name="City" class="field" id="locality" disabled="true"/></td>
         </tr>
         <tr>
             <td class="label">Prov.</td>
-            <td class="slimField"><input class="field" id="administrative_area_level_1" disabled="true"/></td>
+            <td class="slimField"><input name="Prov" class="field" id="administrative_area_level_1" disabled="true"/></td>
             <td class="label">Postal Code</td>
-            <td class="wideField"><input class="field" id="postal_code" disabled="true"/></td>
+            <td class="wideField"><input name="Postal" class="field" id="postal_code" disabled="true"/></td>
         </tr>
         <tr>
             <td class="label">Country</td>
-            <td class="wideField" colspan="3"><input class="field" id="country" disabled="true"/></td>
+            <td class="wideField" colspan="3"><input name="Country" class="field" id="country" disabled="true"/></td>
         </tr>
         </table>
 

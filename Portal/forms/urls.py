@@ -8,8 +8,8 @@ urlpatterns = [
 
     path('', views.index, name='index'),
     path('<int:company>/', views.detail, name='detail'),
-    path('<int:company>/submit', views.MainForm, name='submit'),
-    path('<int:company>/catch', views.catch, name='catch'),
+    path('submit', views.MainForm, name='submit'),
+    path('catch', views.catch, name='catch'),
 
 ]
    

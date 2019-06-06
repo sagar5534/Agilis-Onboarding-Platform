@@ -15,7 +15,6 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 $.ajaxSetup({
@@ -29,24 +28,50 @@ $.ajaxSetup({
 
 $(document).ready(function()
 {   
-    $(".step1").hide();
-    $(".step2").show();
+    $(".step1").show();
+    $(".step2").hide();
     $(".step3").hide();
     
     $(".step1").submit(function(e)
-    {
+    {   
         e.preventDefault();
-        
         $.ajax({
-           url : '/echo/html/',
-           data : { name : $(".step1").children("input[name='username']").val(), html : 'test' },
-           method : 'POST'
-       })
+            url : '/forms/catch',
+            data : 
+            {
+                companyName : $(".step1").children().children("input[name='CompanyName']").val(),
+                type : document.getElementById("id_Bus_Res").options[document.getElementById("id_Bus_Res").selectedIndex].text,
+                CurProvider : $(".step1").children().children("input[name='CurProvider']").val(),
+                Suite : document.getElementById("Suite").value,
+                StreetNum : document.getElementById("street_number").value,
+                Street : document.getElementById("route").value,
+                City : document.getElementById("locality").value,
+                Prov : document.getElementById("administrative_area_level_1").value,
+                Postal : document.getElementById("postal_code").value,
+                Country : document.getElementById("country").value,
+            },
+            method : 'POST',
+            success: function(data) {
+               
+
+            },
+            error: function(data) {
+                
+            }
+        })
        .done(function(data)
-       {
-           $(".step2").show();
-           $(".step1").hide();
-       });
+        {   
+            if (data.status=="form-invalid") {
+                alert(data.formerrors['Postal'])
+                console.log(data)
+                //$('.class-name').html(data.form-errors)
+            }
+            else{
+                console.log(data)
+            }
+            //$(".step2").show();
+            //$(".step1").hide();
+        });
     });
 
     $(".step2").submit(function(e)
