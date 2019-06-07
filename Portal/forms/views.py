@@ -35,10 +35,13 @@ def detail(request, company):
 
     #Getting Company Object
     comp = Company.objects.get(id=company)
-    
     request.session['company'] = comp.pk
 
-    return HttpResponse(comp.company_name)
+    context = {
+        'company': comp
+    }
+
+    return render(request, 'forms/detail.html', context )
 
 @login_required
 def MainForm(request):
@@ -48,7 +51,7 @@ def MainForm(request):
         'company': comps
     }
 
-    return render(request, 'forms/main.html', context )
+    return render(request, 'forms/mainForm.html', context )
 
 
 def form_response(form):
@@ -87,14 +90,14 @@ def catch(request):
                     Prov = form.cleaned_data['Prov']
                     Postal = form.cleaned_data['Postal']
                     Country = form.cleaned_data['Country']
-                    
+
                     try:
                         tempAddress = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
                     except Address.DoesNotExist:
                         tempAddress = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
                         tempAddress.save()
 
-                    #Company
+                    #Company  
                     temp = Company.objects.get(id=company)
                     temp.company_name = companyName
                     temp.type = Type

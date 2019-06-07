@@ -36,7 +36,6 @@ class Address(models.Model):
     )
     '''
 
-
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
     completed = models.BooleanField((""), default=False, null=True)

@@ -62,15 +62,16 @@ $(document).ready(function()
        .done(function(data)
         {   
             if (data.status=="form-invalid") {
+                //Fix errors
                 alert(data.formerrors['Postal'])
                 console.log(data)
                 //$('.class-name').html(data.form-errors)
             }
             else{
-                console.log(data)
+                //If valid form
+                $(".step2").show();
+                $(".step1").hide();
             }
-            //$(".step2").show();
-            //$(".step1").hide();
         });
     });
 
