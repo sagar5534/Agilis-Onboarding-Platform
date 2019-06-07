@@ -2,7 +2,6 @@ from django import forms
 import re
 from django.core import validators
 
-
 def postalValidateCA(S):
     S = S.upper().replace(" ", "")
     if len(S) == 6:
@@ -22,8 +21,8 @@ def postalValidateCA(S):
     return True
 
 def postalValidateUS(S):
-    regex= re.compile(r"(\b\d{5}-\d{4}\b|\b\d{5}\b\s)")
-    matches= re.findall(regex, S)
+    regex = re.compile(r"(\b\d{5}-\d{4}\b|\b\d{5}\b\s)")
+    matches = re.findall(regex, S)
 
     if matches:
         return True;
@@ -49,4 +48,4 @@ class CompanyData(forms.Form):
             return postalValidateCA(self.cleaned_data['Postal'])
         if (self.cleaned_data['Country'] == 'United States'):
             return postalValidateUS(self.cleaned_data['Postal'])
-
+    
