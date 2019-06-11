@@ -52,11 +52,8 @@ $(document).ready(function()
             },
             method : 'POST',
             success: function(data) {
-               
-
             },
             error: function(data) {
-                
             }
         })
        .done(function(data)
