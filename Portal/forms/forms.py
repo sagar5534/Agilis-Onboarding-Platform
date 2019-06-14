@@ -48,4 +48,16 @@ class CompanyData(forms.Form):
             return postalValidateCA(self.cleaned_data['Postal'])
         if (self.cleaned_data['Country'] == 'United States'):
             return postalValidateUS(self.cleaned_data['Postal'])
-    
+
+class Data411(forms.Form):
+    CompanyName411 = forms.CharField(label='Company Name 411', required=True)
+    Category = forms.CharField(label="Category", required=True)
+    Phone411 = forms.CharField(label="Phone411", required=True)
+    Suite = forms.CharField(label="Suite", max_length=100, required=False)
+    StreetNum = forms.IntegerField(label="StreetNum", required=False)
+    Street = forms.CharField(label="Street", max_length=350, required=False)
+    City = forms.CharField(label="City", max_length=200, required=False)
+    Prov = forms.CharField(label="Prov", max_length=200, required=False)
+    Postal = forms.CharField(label="Postal", max_length=200, required=False)
+    Country = forms.CharField(label="Country", max_length=200, required=False)
+    address = forms.IntegerField()

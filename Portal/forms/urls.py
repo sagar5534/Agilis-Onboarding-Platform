@@ -10,6 +10,9 @@ urlpatterns = [
     path('<int:company>/', views.detail, name='detail'),
     path('submit', views.MainForm, name='submit'),
     path('catch', views.catch, name='catch'),
+    path('catch2', views.catch2, name='catch2'),
+    path('getAddress', views.getAddress, name='getAddress'),
+
 
 ]
    

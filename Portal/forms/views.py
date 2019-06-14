@@ -65,51 +65,155 @@ def form_response(form):
         error_dict= {
             'status':'form-valid',
         }
-    print(error_dict)
     return HttpResponse(json.dumps(error_dict),content_type="application/json")
+
+
+@login_required
+def getAddress(request):
+
+    if request.session.get('company'):
+        company = request.session.get('company')
+    else:
+        return Http404
+
+    temp = CompanyAddressLink.objects.filter(Company_id=company)
+
+    y = '{ "address": ['
+
+    for idx,item in enumerate(temp):
+        temp2 = Address.objects.get(id=item.Address_id)
+        
+        if temp2.Suite == "":
+            suiteHandler = ""
+        else:
+            suiteHandler =  str(temp2.Suite) + ' - '
+
+        x = {
+            'address': suiteHandler + str(temp2.StreetNum) + " " + temp2.Street + ', ' +temp2.City + ', ' + temp2.Prov,
+            'id': temp2.id
+        }
+
+        if idx==0:
+            y = y + json.dumps(x)
+        else:
+            y = y + ',' + json.dumps(x)
+
+    y = y + ']}'
+
+    print(y)
+    return HttpResponse(y,content_type="application/json")
+    
 
 @login_required
 def catch(request):
 
     if request.session.get('company'):
         company = request.session.get('company')
+    else:
+        return Http404
 
-        if request.method == 'POST':
+    if request.method == 'POST':
+        form = CompanyData(request.POST)
+    else:
+        return Http404
 
-            form = CompanyData(request.POST)
-
-            if form.is_valid():
-                if form.checkPostal():
-                    companyName = form.cleaned_data['companyName']
-                    Type = form.cleaned_data['type']
-                    CurProvider = form.cleaned_data['CurProvider']
-                    Suite = form.cleaned_data['Suite']
-                    StreetNum = form.cleaned_data['StreetNum']
-                    Street = form.cleaned_data['Street']
-                    City = form.cleaned_data['City']
-                    Prov = form.cleaned_data['Prov']
-                    Postal = form.cleaned_data['Postal']
-                    Country = form.cleaned_data['Country']
-
-                    try:
-                        tempAddress = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
-                    except Address.DoesNotExist:
-                        tempAddress = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
-                        tempAddress.save()
-
-                    #Company  
-                    temp = Company.objects.get(id=company)
-                    temp.company_name = companyName
-                    temp.type = Type
-                    temp.site_address = tempAddress
-                    temp.currentProvider = CurProvider
-                    temp.save()
-
-                else:
-                    form.add_error('Postal', "Please Enter a Valid Zip")
-
+    if form.is_valid():
+        if form.checkPostal():
+            companyName = form.cleaned_data['companyName']
+            Type = form.cleaned_data['type']
+            CurProvider = form.cleaned_data['CurProvider']
+            Suite = form.cleaned_data['Suite']
+            StreetNum = form.cleaned_data['StreetNum']
+            Street = form.cleaned_data['Street']
+            City = form.cleaned_data['City']
+            Prov = form.cleaned_data['Prov']
+            Postal = form.cleaned_data['Postal']
+            Country = form.cleaned_data['Country']
+        else:
+            form.add_error('Postal Code Error', "Please Enter a Valid Postal Code/Zip")
+    else:
         return form_response(form)
-
-    return HttpResponse('Error')
     
+
+    try:
+        tempAddress = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+    except Address.DoesNotExist:
+        tempAddress = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+        tempAddress.save()
+        tempLink = CompanyAddressLink.objects.create(Address_id=tempAddress.pk, Company_id=company)
+        tempLink.save()
+
+    #Company  
+    temp = Company.objects.get(id=company)
+    temp.company_name = companyName
+    temp.type = Type
+    temp.site_address = tempAddress
+    temp.currentProvider = CurProvider
+    temp.save()
+
+    return form_response(form)
+
+
+@login_required
+def catch2(request):
+
+    if request.session.get('company'):
+        company = request.session.get('company')
+    else:
+        return Http404
+
+    if request.method == 'POST':
+        form = Data411(request.POST)
+        print('POST')
+    else:
+        return Http404
+
+    if form.is_valid():
+        print(form)
+        
+        CompanyName411 = form.cleaned_data['CompanyName411']
+        Category = form.cleaned_data['Category']
+        Phone411 = form.cleaned_data['Phone411']
+
+        if request.POST.get('Suite2'):
+            Suite = form.cleaned_data['Suite2']
+            StreetNum = form.cleaned_data['StreetNum2']
+            Street = form.cleaned_data['Street2']
+            City = form.cleaned_data['City2']
+            Prov = form.cleaned_data['Prov2']
+            Postal = form.cleaned_data['Postal2']
+            Country = form.cleaned_data['Country2']
+        else:
+            address = get_object_or_404(Address, pk=form.cleaned_data['address'])
+    else:
+        return form_response(form)
+    
+    if request.POST.get('Suite2'):
+        try:
+            address = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+        except Address.DoesNotExist:
+            address = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+            address.save()
+            address = CompanyAddressLink.objects.create(Address_id=tempAddress.pk, Company_id=company)
+            address.save()
+    
+    comp = Company.objects.get(pk=company)
+    comp.listing_name = CompanyName411
+    comp.category_listing = Category
+    comp.listing_phone = Phone411
+    comp.listing_address_id = address
+    comp.save()
+
+    return form_response(form)
+    '''
+    try:
+        tempAddress = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+    except Address.DoesNotExist:
+        tempAddress = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+        tempAddress.save()
+        tempLink = CompanyAddressLink.objects.create(Address_id=tempAddress.pk, Company_id=company)
+        tempLink.save()
+    
+    return form_response(form)
+''' 
     
