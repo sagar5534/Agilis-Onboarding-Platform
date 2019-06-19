@@ -10,13 +10,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script> var company = {{ company }};</script>
-    <script src="{% static 'forms/main.js' %}"></script>
     <script src="{% static 'forms/google.js' %}"></script>
+    <script src="{% static 'forms/main.js' %}"></script>
     <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete"
             async defer>
     </script>
-
 
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" type="text/css" href="{% static 'forms/css/main.css' %}">
@@ -108,18 +107,19 @@
             <div id="locationField">
                 <label class="label"  for="CompanyName411">Company Name:</label>
                 <input class="field" id="CompanyName411" type="text" name="CompanyName411" maxlength="100" placeholder="Company Name to be Listed" required>
+            </div>
 
-             <div id="locationField">
+            <div id="locationField">
                 <label class="label" for="Category">Category:</label>
                 <input class="field" id="Category" type="text" name="Category" maxlength="100" placeholder="Category" required>
-            </div>
+            </div>xw
 
             <div id="locationField">
                 <label class="label"  for="phone">Phone Number:</label>
                 <input class="field" id="phone" type="text" name="phone" maxlength="100" placeholder="Phone" required>
             </div>
 
-             <div id="locationField">
+            <div id="locationField">
                 <label class="label">Address To Be Listed:</label>
                 <br>
                 <select id='SelectAddress' onchange="PromptNewAddress(this.value)">
@@ -172,15 +172,28 @@
             </div>
 
         </form>
-
+ ,.
         <form class="step3">
 
-            <h1>What is your phone?</h1>
+            <h1>Port Phone Numbers</h1>
 
-            <input name="phone" type="text">
+            <p>Numbers to be Ported</p> 
+            <div class='numbers' id='portnumberForm'>
+                <input name="phone" type="text">
+            </div>
+            <br>
 
+            <button id='addPNumber' type=button onclick="addPortNumber()">+</button>
+
+
+            <p>Numbers to be discontinued</p> 
+            <div class='numbers' id='discnumberForm'>
+                <input name="phone" type="text">
+            </div>
+            <br>
+
+            <button id='addDNumber' type=button onclick="addDiscNumber()">+</button>
             <button type="submit">Submit</button>
-
         </form> 
 
 </body>

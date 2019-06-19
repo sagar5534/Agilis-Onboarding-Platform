@@ -11,6 +11,7 @@ urlpatterns = [
     path('submit', views.MainForm, name='submit'),
     path('catch', views.catch, name='catch'),
     path('catch2', views.catch2, name='catch2'),
+    path('catch3', views.catch3, name='catch3'),
     path('getAddress', views.getAddress, name='getAddress'),
 
 

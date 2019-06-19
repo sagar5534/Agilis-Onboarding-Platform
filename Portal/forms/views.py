@@ -163,13 +163,24 @@ def catch2(request):
         return Http404
 
     if request.method == 'POST':
+        if request.POST.get('ignore'):
+            comp = Company.objects.get(pk=company)
+            comp.listing_name = ""
+            comp.category_listing = ""
+            comp.listing_phone = ""
+            comp.listing_address_id = ""
+            comp.save()
+
+            error_dict= {
+                'status':'form-valid',
+            }
+            return HttpResponse(json.dumps(error_dict),content_type="application/json")
+
         form = Data411(request.POST)
-        print('POST')
     else:
         return Http404
 
     if form.is_valid():
-        print(form)
         
         CompanyName411 = form.cleaned_data['CompanyName411']
         Category = form.cleaned_data['Category']
@@ -205,15 +216,71 @@ def catch2(request):
     comp.save()
 
     return form_response(form)
-    '''
-    try:
-        tempAddress = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
-    except Address.DoesNotExist:
-        tempAddress = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
-        tempAddress.save()
-        tempLink = CompanyAddressLink.objects.create(Address_id=tempAddress.pk, Company_id=company)
-        tempLink.save()
     
+
+
+@login_required
+def catch3(request):
+
+    if request.session.get('company'):
+        company = request.session.get('company')
+    else:
+        return Http404
+
+    if request.method == 'POST':
+        if request.POST.get('ignore'):
+            comp = Company.objects.get(pk=company)
+            comp.listing_name = ""
+            comp.category_listing = ""
+            comp.listing_phone = ""
+            comp.listing_address_id = ""
+            comp.save()
+
+            error_dict= {
+                'status':'form-valid',
+            }
+            return HttpResponse(json.dumps(error_dict),content_type="application/json")
+
+        form = Data411(request.POST)
+    else:
+        return Http404
+
+    if form.is_valid():
+        
+        CompanyName411 = form.cleaned_data['CompanyName411']
+        Category = form.cleaned_data['Category']
+        Phone411 = form.cleaned_data['Phone411']
+
+        if request.POST.get('Suite2'):
+            Suite = form.cleaned_data['Suite2']
+            StreetNum = form.cleaned_data['StreetNum2']
+            Street = form.cleaned_data['Street2']
+            City = form.cleaned_data['City2']
+            Prov = form.cleaned_data['Prov2']
+            Postal = form.cleaned_data['Postal2']
+            Country = form.cleaned_data['Country2']
+        else:
+            address = get_object_or_404(Address, pk=form.cleaned_data['address'])
+    else:
+        return form_response(form)
+    
+
+    #Test This
+    if request.POST.get('Suite2'):
+        try:
+            address = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+        except Address.DoesNotExist:
+            address = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+            address.save()
+            listaddress = CompanyAddressLink.objects.create(Address_id=address.pk, Company_id=company)
+            listaddress.save()
+    
+    comp = Company.objects.get(pk=company)
+    comp.listing_name = CompanyName411
+    comp.category_listing = Category
+    comp.listing_phone = Phone411
+    comp.listing_address_id = address
+    comp.save()
+
     return form_response(form)
-''' 
     
