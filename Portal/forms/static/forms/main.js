@@ -56,7 +56,6 @@ function getAddress() {
 }
 
 
-
 let portId = 1;
 let discId = 1;
 
@@ -195,9 +194,18 @@ $(document).ready(function () {
             });
     });
 
+    function validatePhone(val){
+        var x = val
+        x = x.replace('+1', '');
+        x = x.replace(/[-+()\s]/g, '');
+        return x;
+    }
+
     //Step 3
     $(".step3").submit(function (e) {
         e.preventDefault();
+
+        var formCorrect = true;
 
         var div = document.getElementById('portnumberForm')
         var children = div.childNodes;
@@ -205,7 +213,13 @@ $(document).ready(function () {
         for (var i=0; i<div.childNodes.length; i++) {
             var child = div.childNodes[i];
             if (child.name == 'phone'){
-                elements.push(child.value)
+                child.value = validatePhone(child.value)
+                if (child.value.length == 10){
+                    elements.push(child.value)
+                }else{
+                    formCorrect = false;
+                    break;
+                }
             }
         }
 
@@ -215,24 +229,35 @@ $(document).ready(function () {
         for (var i=0; i<div.childNodes.length; i++) {
             var child = div.childNodes[i];
             if (child.name == 'phone'){
-                discelements.push(child.value)
+                child.value = validatePhone(child.value)
+                if (child.value.length == 10){
+                    discelements.push(child.value)
+                }else{
+                    formCorrect = false;
+                    break;
+                }
             }
         }
         
-        //Data
-        let Data = {
-            port: elements,
-            disc: discelements
-        }  
+        if (formCorrect == true){
+             //Data
+            let Data = {
+                port: elements,
+                disc: discelements
+            }  
 
-        $.ajax({
-                url: '/forms/catch3',
-                data: JSON.stringify(Data),
-                contentType: "application/json",
-                method: 'POST'
-            })
-            .done(function (data) {
-                $(".step3").hide();
-            });
+            $.ajax({
+                    url: '/forms/catch3',
+                    data: JSON.stringify(Data),
+                    contentType: "application/json",
+                    method: 'POST'
+                })
+                .done(function (data) {
+                    $(".step3").hide();
+                });
+        }else{
+           alert("Please enter a Valid Phone Number") 
+        }
+       
     });
 });

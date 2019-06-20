@@ -202,11 +202,12 @@ def catch2(request):
     if request.POST.get('Suite2'):
         try:
             address = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
+            #Is it adding to CompanyAddressLink
         except Address.DoesNotExist:
             address = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
             address.save()
-            address = CompanyAddressLink.objects.create(Address_id=tempAddress.pk, Company_id=company)
-            address.save()
+            linkAddress = CompanyAddressLink.objects.create(Address_id=address.pk, Company_id=company)
+            linkAddress.save()
     
     comp = Company.objects.get(pk=company)
     comp.listing_name = CompanyName411
@@ -217,8 +218,7 @@ def catch2(request):
 
     return form_response(form)
     
-
-
+    
 @login_required
 def catch3(request):
 
@@ -228,59 +228,24 @@ def catch3(request):
         return Http404
 
     if request.method == 'POST':
-        if request.POST.get('ignore'):
-            comp = Company.objects.get(pk=company)
-            comp.listing_name = ""
-            comp.category_listing = ""
-            comp.listing_phone = ""
-            comp.listing_address_id = ""
-            comp.save()
-
-            error_dict= {
-                'status':'form-valid',
-            }
-            return HttpResponse(json.dumps(error_dict),content_type="application/json")
-
-        form = Data411(request.POST)
-    else:
-        return Http404
-
-    if form.is_valid():
-        
-        CompanyName411 = form.cleaned_data['CompanyName411']
-        Category = form.cleaned_data['Category']
-        Phone411 = form.cleaned_data['Phone411']
-
-        if request.POST.get('Suite2'):
-            Suite = form.cleaned_data['Suite2']
-            StreetNum = form.cleaned_data['StreetNum2']
-            Street = form.cleaned_data['Street2']
-            City = form.cleaned_data['City2']
-            Prov = form.cleaned_data['Prov2']
-            Postal = form.cleaned_data['Postal2']
-            Country = form.cleaned_data['Country2']
-        else:
-            address = get_object_or_404(Address, pk=form.cleaned_data['address'])
-    else:
-        return form_response(form)
-    
-
-    #Test This
-    if request.POST.get('Suite2'):
+        json_data = json.loads(request.body) # request.raw_post_data w/ Django < 1.4
         try:
-            address = Address.objects.get(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
-        except Address.DoesNotExist:
-            address = Address.objects.create(Suite=Suite, StreetNum=StreetNum, Street=Street, City=City, Prov=Prov, Postal=Postal, Country=Country)
-            address.save()
-            listaddress = CompanyAddressLink.objects.create(Address_id=address.pk, Company_id=company)
-            listaddress.save()
-    
-    comp = Company.objects.get(pk=company)
-    comp.listing_name = CompanyName411
-    comp.category_listing = Category
-    comp.listing_phone = Phone411
-    comp.listing_address_id = address
-    comp.save()
+            disc = json_data['disc']
+            port = json_data['port']
 
-    return form_response(form)
-    
+            for x in disc:
+                Numbers.objects.create(number=x, company_id=company, Type=0)
+            
+            for x in port:
+                Numbers.objects.create(number=x, company_id=company, Type=1)
+
+        except KeyError:
+            Http404("Malformed data!")
+    else:
+        return Http404;
+
+    error_dict = {
+        'status':'form-valid',
+    }
+
+    return HttpResponse(json.dumps(error_dict),content_type="application/json")
