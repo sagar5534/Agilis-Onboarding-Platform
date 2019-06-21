@@ -198,6 +198,17 @@ def catch2(request):
             address = get_object_or_404(Address, pk=form.cleaned_data['address'])
     else:
         return form_response(form)
+
+    Phone411 = Phone411.replace('+1', '')
+    Phone411 = Phone411.replace('(', '')
+    Phone411 = Phone411.replace(')', '')
+    Phone411 = Phone411.replace('+', '')
+    Phone411 = Phone411.replace('-', '')
+
+    if (len(Phone411) != 10 or Phone411.isdigit() == False):
+        form.add_error('Phone411', "Please Enter a Valid Phone Number")
+        return form_response(form)
+   
     
     if request.POST.get('Suite2'):
         try:
@@ -218,7 +229,7 @@ def catch2(request):
 
     return form_response(form)
     
-    
+
 @login_required
 def catch3(request):
 
@@ -234,10 +245,19 @@ def catch3(request):
             port = json_data['port']
 
             for x in disc:
-                Numbers.objects.create(number=x, company_id=company, Type=0)
+                try:
+                    Numbers.objects.get(number=x, company_id=company, Type=0)
+                
+                except Numbers.DoesNotExist:
+                    Numbers.objects.create(number=x, company_id=company, Type=0)
             
+
             for x in port:
-                Numbers.objects.create(number=x, company_id=company, Type=1)
+                try:
+                    Numbers.objects.get(number=x, company_id=company, Type=1)
+                
+                except Numbers.DoesNotExist:
+                    Numbers.objects.create(number=x, company_id=company, Type=1)
 
         except KeyError:
             Http404("Malformed data!")

@@ -1,7 +1,5 @@
 from django.db import models
 from login.models import MyUser
-from phonenumber_field.modelfields import PhoneNumberField
-
 
 
 class Address(models.Model):
@@ -65,7 +63,7 @@ class Company(models.Model):
     directory_listing = models.CharField(("Directory Listing"), max_length=50, blank=False, null=True)
     listing_name = models.CharField(("Listing Name"), max_length=50, blank=False, null=True)
     category_listing = models.CharField(("Category Listing"), max_length=50, blank=False, null=True)
-    listing_phone = PhoneNumberField(("Listing Phone Number"), blank=False, null=True)
+    listing_phone = models.CharField(("Listing Phone Number"), max_length=16, blank=False, null=True)
     listing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, related_name='listing_address', null=True)
 
     #Inserting null into blanks for phones
@@ -94,7 +92,7 @@ class Numbers(models.Model):
     
     id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
-    number = PhoneNumberField((""), blank=False, null=False)
+    number = models.CharField((""), max_length=16, blank=False, null=False)
     Address_911 = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, null=True)
     Type = models.BooleanField((""), blank=False, null=True)
 
@@ -110,7 +108,7 @@ class Extention(models.Model):
     ext = models.IntegerField((""), blank=False, null=False)
     name = models.CharField((""), max_length=50, blank=False, null=False)
     caller_id_name = models.CharField((""), max_length=50, blank=False, null=False)
-    called_id_number = PhoneNumberField((""), blank=False, null=False)
+    called_id_number = models.CharField((""), max_length=16, blank=False, null=False)
     voicemail = models.BooleanField((""), blank=False)
     voicemail_toEmail = models.BooleanField((""), blank=False, null=True)
     voicemail_email = models.EmailField((""), max_length=254, blank=False, null=True)

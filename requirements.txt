@@ -3,5 +3,3 @@ openpyxl
 pylint
 psycopg2
 mysqlclient
-django-phonenumber-field
-phonenumberslite

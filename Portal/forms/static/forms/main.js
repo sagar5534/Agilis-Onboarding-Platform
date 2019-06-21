@@ -83,9 +83,9 @@ function addDiscNumber() {
 
 
 $(document).ready(function () {
-    $(".step1").hide();
+    $(".step1").show();
     $(".step2").hide();
-    $(".step3").show();
+    $(".step3").hide();
 
 
     //For Step 2 --- Yes or No for Directory Listing
@@ -129,9 +129,7 @@ $(document).ready(function () {
             })
             .done(function (data) {
                 if (data.status == "form-invalid") {
-                    //Fix errors
-                    alert(data.formerrors['Postal'])
-                    console.log(data)
+                    alert(data.formerrors.Phone411)
                 } else {
                     //If valid form
                     getAddress()
@@ -184,10 +182,12 @@ $(document).ready(function () {
             })
             .done(function(data) {
                 if (data.status == "form-invalid") {
-                    //Fix errors
-                    console.log(data)
+                    var output = '';
+                    for (var property in data.formerrors) {
+                    output += data.formerrors[property]+'\n';
+                    }
+                    alert(output);
                 } else {
-                    //If valid form
                     $(".step3").show();
                     $(".step2").hide();
                 }
@@ -213,12 +213,14 @@ $(document).ready(function () {
         for (var i=0; i<div.childNodes.length; i++) {
             var child = div.childNodes[i];
             if (child.name == 'phone'){
-                child.value = validatePhone(child.value)
-                if (child.value.length == 10){
-                    elements.push(child.value)
-                }else{
-                    formCorrect = false;
-                    break;
+                if (!(child.value == "")){
+                    child.value = validatePhone(child.value)
+                    if (child.value.length == 10 && (/^\d+$/.test(child.value))){
+                        elements.push(child.value)
+                    }else{
+                        formCorrect = false;
+                        break;
+                    }
                 }
             }
         }
@@ -229,12 +231,14 @@ $(document).ready(function () {
         for (var i=0; i<div.childNodes.length; i++) {
             var child = div.childNodes[i];
             if (child.name == 'phone'){
-                child.value = validatePhone(child.value)
-                if (child.value.length == 10){
-                    discelements.push(child.value)
-                }else{
-                    formCorrect = false;
-                    break;
+                if (!(child.value == "")){
+                    child.value = validatePhone(child.value)
+                    if (child.value.length == 10 && (/^\d+$/.test(child.value))){
+                        discelements.push(child.value)
+                    }else{
+                        formCorrect = false;
+                        break;
+                    }
                 }
             }
         }
@@ -253,7 +257,12 @@ $(document).ready(function () {
                     method: 'POST'
                 })
                 .done(function (data) {
-                    $(".step3").hide();
+                    if (data.status == "form-invalid") {
+                        alert(data.formerrors.Phone411)
+                    } else {
+                        //If valid form
+                        $(".step3").hide();
+                    }
                 });
         }else{
            alert("Please enter a Valid Phone Number") 
