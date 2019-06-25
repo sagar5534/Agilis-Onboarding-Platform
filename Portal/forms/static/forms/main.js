@@ -27,67 +27,134 @@ $.ajaxSetup({
 });
 
 function PromptNewAddress(period) {
-    if (period == "0"){
+    if (period == "0") {
         document.getElementById('NewAddress').style.display = "block"
-    }else{
+    } else {
         document.getElementById('NewAddress').style.display = "none"
     }
-} 
+}
 
 
-function getAddress() {
+function getAddress(element) {
 
     $.ajax({
-        url: '/forms/getAddress',
-        data: {
-        },
-        method: 'POST',
-    })
-    .done(function (data) {
-        document.getElementById('SelectAddress').innerHTML = ""
+            url: '/forms/getAddress',
+            data: {},
+            method: 'POST',
+        })
+        .done(function (data) {
+            document.getElementById(element).innerHTML = ""
 
-        for (x in data.address){
-            document.getElementById('SelectAddress').innerHTML += '<option value=' + data.address[x].id + '>' + data.address[x].address+ '</option>'
-        }
+            for (x in data.address) {
+                document.getElementById(element).innerHTML += '<option value=' + data.address[x].id + '>' + data.address[x].address + '</option>'
+            }
+            if (element != 'SelectAddress2'){
+                document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
+            }
 
-        document.getElementById('SelectAddress').innerHTML +=  '<option value=0>Add a new Address</option>'
+        });
+}
 
-    });
+
+function getPhone(element) {
+
+    $.ajax({
+            url: '/forms/getPhone',
+            data: {},
+            method: 'POST',
+        })
+        .done(function (data) {
+            document.getElementById(element).innerHTML = ""
+            
+            if (element == "SelectPhone2"){
+                document.getElementById(element).innerHTML += '<option value="0">---------</option>'
+            }
+            for (x in data.phone) {
+                document.getElementById(element).innerHTML += '<option value=' + data.phone[x].id + '>' + data.phone[x].phone + '</option>'
+            }
+
+        });
 }
 
 
 let portId = 1;
 let discId = 1;
 
-function removePortNumber(x){
+function removePortNumber(x) {
     document.getElementById("portnumber" + x).remove();
     document.getElementById("portremoveNumber" + x).remove();
     document.getElementById("portbr" + x).remove();
 }
 
-function removeDiscNumber(x){
+function removeDiscNumber(x) {
     document.getElementById("discnumber" + x).remove();
     document.getElementById("discremoveNumber" + x).remove();
     document.getElementById("discbr" + x).remove();
 }
 
 function addPortNumber() {
-    portId++; 
-    $('#portnumberForm').append("<br id='portbr" + portId +"'><input id=portnumber"+portId+" name='phone' type='text'><button id='portremoveNumber"+portId+ "' type=button onclick='removePortNumber("+portId+")'>X</button>");
+    portId++;
+    $('#portnumberForm').append("<br id='portbr" + portId + "'><input id=portnumber" + portId + " name='phone' type='text'><button id='portremoveNumber" + portId + "' type=button onclick='removePortNumber(" + portId + ")'>X</button>");
 }
 
 function addDiscNumber() {
-    discId++; 
-    $('#discnumberForm').append("<br id='discbr" + discId +"'><input id=discnumber"+discId+" name='phone' type='text'><button id='discremoveNumber"+discId+ "' type=button onclick='removeDiscNumber("+discId+")'>X</button>");
+    discId++;
+    $('#discnumberForm').append("<br id='discbr" + discId + "'><input id=discnumber" + discId + " name='phone' type='text'><button id='discremoveNumber" + discId + "' type=button onclick='removeDiscNumber(" + discId + ")'>X</button>");
 }
 
+function validatePhone(val) {
+    var x = val
+    x = x.replace('+1', '');
+    x = x.replace(/[-+()\s]/g, '');
+    return x;
+}
+
+let ruleID = 1;
+
+var nums = {
+
+    "647": "89 Bleasdale"
+}
+
+var output = ""
+for (var property in nums) {
+    output += nums[property] + '\n';
+}
+console.log(output)
+
+function addRule() {
+    
+    var phone = document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].value
+    
+    if (phone != "0"){
+        var phone = document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].text
+        var address = document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].text
+
+        document.getElementById('RulesTable').innerHTML += '<tr id="rule' + document.getElementById("SelectPhone2").selectedIndex + '">' +
+                                                                '<td>' + phone + '</td>' + 
+                                                                '<td>' + address + '</td>' +
+                                                                '<td>' +
+                                                                    '<button type=button onclick="removeRule(' + document.getElementById("SelectPhone2").selectedIndex + ')">X</button>' +
+                                                                '</td>' +
+                                                            '</tr>'
+
+        nums.push({num : 3, app:'helloagain_again',message:'yet another message'});
+
+        document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].disabled = true;
+        document.getElementById("SelectPhone2").selectedIndex = 0;
+    }
+    
+}
+
+function removeRule(id){
+    
+    document.getElementById("SelectPhone2").options[id].disabled = false;
+    document.getElementById("rule" + id).remove();
+    
+}
 
 $(document).ready(function () {
-    $(".step1").show();
-    $(".step2").hide();
-    $(".step3").hide();
-
-
+    
     //For Step 2 --- Yes or No for Directory Listing
     $("input:radio[name='option']").click(function () {
         var radioValue = $("input[name='option']:checked").val();
@@ -96,7 +163,10 @@ $(document).ready(function () {
             document.getElementById('Category').disabled = false;
             document.getElementById('phone').disabled = false;
             document.getElementById('SelectAddress').disabled = false;
+            document.getElementById('SelectPhone').disabled = false;
             PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
+            PromptNewPhone(document.getElementById("SelectPhone").options[document.getElementById("SelectPhone").selectedIndex].value)
+
         } else {
             document.getElementById('NewAddress').style.display = "none"
             document.getElementById('CompanyName411').value = '';
@@ -104,169 +174,8 @@ $(document).ready(function () {
             document.getElementById('Category').disabled = true;
             document.getElementById('phone').disabled = true;
             document.getElementById('SelectAddress').disabled = true;
+            document.getElementById('SelectPhone').disabled = true;
         }
     });
 
-
-    //Step 1
-    $(".step1").submit(function (e) {
-        e.preventDefault();
-        $.ajax({
-                url: '/forms/catch',
-                data: {
-                    companyName: $(".step1").children().children("input[name='CompanyName']").val(),
-                    type: document.getElementById("id_Bus_Res").options[document.getElementById("id_Bus_Res").selectedIndex].text,
-                    CurProvider: $(".step1").children().children("input[name='CurProvider']").val(),
-                    Suite: document.getElementById("Suite").value,
-                    StreetNum: document.getElementById("street_number").value,
-                    Street: document.getElementById("route").value,
-                    City: document.getElementById("locality").value,
-                    Prov: document.getElementById("administrative_area_level_1").value,
-                    Postal: document.getElementById("postal_code").value,
-                    Country: document.getElementById("country").value,
-                },
-                method: 'POST',
-            })
-            .done(function (data) {
-                if (data.status == "form-invalid") {
-                    alert(data.formerrors.Phone411)
-                } else {
-                    //If valid form
-                    getAddress()
-                    $(".step1").hide();
-                    $(".step2").show();
-                }
-            });
-    });
-
-
-    //Step 2
-    $(".step2").submit(function (e) {
-
-        //Type of Data to be send over to Catch2
-        if (document.getElementById('radio-yes').checked == true){
-            if (document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value == 0){
-                data = {
-                    CompanyName411: document.getElementById('CompanyName411').value,
-                    Category: document.getElementById('Category').value,
-                    Phone411: document.getElementById('phone').value,
-                    Suite: document.getElementById("Suite2").value,
-                    StreetNum: document.getElementById("street_number2").value,
-                    Street: document.getElementById("route2").value,
-                    City: document.getElementById("locality2").value,
-                    Prov: document.getElementById("administrative_area_level_12").value,
-                    Postal: document.getElementById("postal_code2").value,
-                    Country: document.getElementById("country2").value,
-                }
-            }
-            else{
-                data = {
-                    CompanyName411: document.getElementById('CompanyName411').value,
-                    Category: document.getElementById('Category').value,
-                    Phone411: document.getElementById('phone').value,
-                    address: document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value
-                }
-            }
-        }
-        else{
-            data = {
-                ignore: 1
-            }
-        }
-
-        e.preventDefault();
-        $.ajax({
-                url: '/forms/catch2',
-                data: data,
-                method: 'POST',
-            })
-            .done(function(data) {
-                if (data.status == "form-invalid") {
-                    var output = '';
-                    for (var property in data.formerrors) {
-                    output += data.formerrors[property]+'\n';
-                    }
-                    alert(output);
-                } else {
-                    $(".step3").show();
-                    $(".step2").hide();
-                }
-            });
-    });
-
-    function validatePhone(val){
-        var x = val
-        x = x.replace('+1', '');
-        x = x.replace(/[-+()\s]/g, '');
-        return x;
-    }
-
-    //Step 3
-    $(".step3").submit(function (e) {
-        e.preventDefault();
-
-        var formCorrect = true;
-
-        var div = document.getElementById('portnumberForm')
-        var children = div.childNodes;
-        var elements = [];
-        for (var i=0; i<div.childNodes.length; i++) {
-            var child = div.childNodes[i];
-            if (child.name == 'phone'){
-                if (!(child.value == "")){
-                    child.value = validatePhone(child.value)
-                    if (child.value.length == 10 && (/^\d+$/.test(child.value))){
-                        elements.push(child.value)
-                    }else{
-                        formCorrect = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        var div = document.getElementById('discnumberForm')
-        var children = div.childNodes;
-        var discelements = [];
-        for (var i=0; i<div.childNodes.length; i++) {
-            var child = div.childNodes[i];
-            if (child.name == 'phone'){
-                if (!(child.value == "")){
-                    child.value = validatePhone(child.value)
-                    if (child.value.length == 10 && (/^\d+$/.test(child.value))){
-                        discelements.push(child.value)
-                    }else{
-                        formCorrect = false;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        if (formCorrect == true){
-             //Data
-            let Data = {
-                port: elements,
-                disc: discelements
-            }  
-
-            $.ajax({
-                    url: '/forms/catch3',
-                    data: JSON.stringify(Data),
-                    contentType: "application/json",
-                    method: 'POST'
-                })
-                .done(function (data) {
-                    if (data.status == "form-invalid") {
-                        alert(data.formerrors.Phone411)
-                    } else {
-                        //If valid form
-                        $(".step3").hide();
-                    }
-                });
-        }else{
-           alert("Please enter a Valid Phone Number") 
-        }
-       
-    });
 });

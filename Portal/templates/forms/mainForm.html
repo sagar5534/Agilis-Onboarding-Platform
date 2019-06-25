@@ -12,6 +12,7 @@
     <script> var company = {{ company }};</script>
     <script src="{% static 'forms/google.js' %}"></script>
     <script src="{% static 'forms/main.js' %}"></script>
+    <script src="{% static 'forms/pages.js' %}"></script>
     <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete"
             async defer>
@@ -90,9 +91,32 @@
             <button type="submit">Submit</button>
 
         </form>
-
-
+ 
         <form class="step2">
+
+            <h1>Port Phone Numbers</h1>
+
+            <p>Numbers to be Ported</p> 
+            <div class='numbers' id='portnumberForm'>
+                <input name="phone" type="text">
+            </div>
+            <br>
+
+            <button id='addPNumber' type=button onclick="addPortNumber()">+</button>
+
+
+            <p>Numbers to be discontinued</p> 
+            <div class='numbers' id='discnumberForm'>
+                <input name="phone" type="text">
+            </div>
+            <br>
+
+            <button id='addDNumber' type=button onclick="addDiscNumber()">+</button>
+            <button type="submit">Submit</button>
+        </form> 
+
+
+        <form class="step3">
 
             <h1>411 Information</h1>
 
@@ -114,11 +138,17 @@
                 <input class="field" id="Category" type="text" name="Category" maxlength="100" placeholder="Category" required>
             </div>
 
-            <div id="locationField">
-                <label class="label"  for="phone">Phone Number:</label>
-                <input class="field" id="phone" type="text" name="phone" maxlength="100" placeholder="Phone" required>
-            </div>
+             <br>
 
+             <div id="locationField">
+                <label class="label">Phone To Be Listed:</label>
+                <br>
+                <select id='SelectPhone'>
+                </select>
+                
+            </div>
+            <br>
+            
             <div id="locationField">
                 <label class="label">Address To Be Listed:</label>
                 <br>
@@ -172,29 +202,99 @@
             </div>
 
         </form>
- 
-        <form class="step3">
 
-            <h1>Port Phone Numbers</h1>
+        <form class="step4">
 
-            <p>Numbers to be Ported</p> 
-            <div class='numbers' id='portnumberForm'>
-                <input name="phone" type="text">
+            <h1>911 Address Information</h1>
+
+            <div id="locationField">
+                <label class="label" >Main Site: </label>
+                <br>
+                <select id='SelectAddress2'>
+                </select>
+            </div>
+
+            <br><br><br>
+
+
+             <div id="locationField">
+                <label class="label">911 Address Info Per Number (If different from Main Site)</label>
+                <br>
             </div>
             <br>
 
-            <button id='addPNumber' type=button onclick="addPortNumber()">+</button>
+            
+            <div id="locationField">
+                <label class="label">Phone:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</label>
+                <label class="label">Address:</label>
+                <br>
+                <select id='SelectPhone2'>
+                </select>
+                &emsp;
+                 <select id='SelectAddress3'>
+                </select>
 
+                <br>
+                <button id='AddRule' type=button onclick="addRule()">Add Rule</button>
 
-            <p>Numbers to be discontinued</p> 
-            <div class='numbers' id='discnumberForm'>
-                <input name="phone" type="text">
             </div>
+
+            
+            <br>
+            <br>
             <br>
 
-            <button id='addDNumber' type=button onclick="addDiscNumber()">+</button>
-            <button type="submit">Submit</button>
-        </form> 
+             <div id='Rules'>
+                <table id='RulesTable'>
+                    <tr><th>Phone</th><th>Address</th><th></th></tr>
+                </table>
+             </div>
+
+
+            <div id='NewAddress' style='display: none'>
+                <div id="locationField">
+                    <input id="autocomplete2" placeholder="Enter your address" onFocus="geolocate()" type="text" />
+                </div>
+
+                <table id="address">
+                    <tr>
+                        <td class="label">Suite/Apt #</td>
+                        <td class="wideField" colspan="3">
+                            <input name="Suite2" class="field" id="Suite2" placeholder="Enter if Applicable" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Street address</td>
+                        <td class="slimField"><input name="StreetNum2" class="field" id="street_number2" disabled="true" />
+                        </td>
+                        <td class="wideField" colspan="2"><input name="Street2" class="field" id="route2" disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">City</td>
+                        <td class="wideField" colspan="3"><input name="City2" class="field" id="locality2" disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prov.</td>
+                        <td class="slimField"><input name="Prov2" class="field" id="administrative_area_level_12" disabled="true" /></td>
+                        <td class="label">Postal Code</td>
+                        <td class="wideField"><input name="Postal2" class="field" id="postal_code2" disabled="true" /></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Country</td>
+                        <td class="wideField" colspan="3"><input name="Country2" class="field" id="country2" disabled="true" /></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="submit">
+                <br><br>
+                <button type="submit">Submit</button>
+                
+            </div>
+
+        </form>
 
 </body>
 

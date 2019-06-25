@@ -13,7 +13,7 @@ urlpatterns = [
     path('catch2', views.catch2, name='catch2'),
     path('catch3', views.catch3, name='catch3'),
     path('getAddress', views.getAddress, name='getAddress'),
-
+    path('getPhone', views.getPhone, name='getPhone'),
 
 ]
    
