@@ -1,3 +1,4 @@
+//All Methods for CSRF Token Sending between JS and Python
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -26,7 +27,8 @@ $.ajaxSetup({
     }
 });
 
-function clearGoogleAddress(id){
+//Clearing Google Fill in Address Bar
+function clearGoogleAddress(id) {
     document.getElementById("Suite" + id).value = ""
     document.getElementById("street_number" + id).value = ""
     document.getElementById("route" + id).value = ""
@@ -36,6 +38,8 @@ function clearGoogleAddress(id){
     document.getElementById("country" + id).value = ""
 }
 
+
+//Check if NEEDED
 function PromptNewAddress(period) {
     if (period == "0") {
         document.getElementById('NewAddress').style.display = "block"
@@ -44,8 +48,9 @@ function PromptNewAddress(period) {
     }
 }
 
-function getAddress(element, callback){
 
+//Function to getAddress
+function getAddress(element, callback) {
     $.ajax({
             url: '/forms/getAddress',
             data: {},
@@ -57,11 +62,11 @@ function getAddress(element, callback){
             for (x in data.address) {
                 document.getElementById(element).innerHTML += '<option value=' + data.address[x].id + '>' + data.address[x].address + '</option>'
             }
-            if (element != 'SelectAddress2'){
+            if (element != 'SelectAddress2') {
                 document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
             }
 
-            if (element == 'SelectAddress2'){
+            if (element == 'SelectAddress2') {
                 window.RuleAddress = data.address;
             }
             callback(data.address);
@@ -69,7 +74,7 @@ function getAddress(element, callback){
 };
 
 
-
+//Function to getPhone
 function getPhone(element, callback) {
 
     $.ajax({
@@ -79,11 +84,11 @@ function getPhone(element, callback) {
         })
         .done(function (data) {
             document.getElementById(element).innerHTML = ""
-            
+
             RulePhone = data.phone
-            if (element == "SelectPhone2"){
+            if (element == "SelectPhone2") {
                 document.getElementById(element).innerHTML += '<option value="0">---------</option>'
-                
+
             }
             for (x in data.phone) {
                 document.getElementById(element).innerHTML += '<option value=' + data.phone[x].id + '>' + data.phone[x].phone + '</option>'
@@ -93,31 +98,45 @@ function getPhone(element, callback) {
         });
 }
 
-let portId = 1; 
+
+//Global Vars for Numbers - Form 
+let portId = 1;
 let discId = 1;
 
+
+//Both Functions are for Numbers - Forms 
+//Functions to remove Port Number
 function removePortNumber(x) {
     document.getElementById("portnumber" + x).remove();
     document.getElementById("portremoveNumber" + x).remove();
     document.getElementById("portbr" + x).remove();
 }
 
+
+//Functions to remove Disc Number
 function removeDiscNumber(x) {
     document.getElementById("discnumber" + x).remove();
     document.getElementById("discremoveNumber" + x).remove();
     document.getElementById("discbr" + x).remove();
 }
 
+
+//Functions to Add a Port Number
+//Check if NEEDED
 function addPortNumber() {
     portId++;
     $('#portnumberForm').append("<br id='portbr" + portId + "'><input id=portnumber" + portId + " name='phone' type='text'><button id='portremoveNumber" + portId + "' type=button onclick='removePortNumber(" + portId + ")'>X</button>");
 }
 
+
+//Function to Add a Disconnect Number
 function addDiscNumber() {
     discId++;
     $('#discnumberForm').append("<br id='discbr" + discId + "'><input id=discnumber" + discId + " name='phone' type='text'><button id='discremoveNumber" + discId + "' type=button onclick='removeDiscNumber(" + discId + ")'>X</button>");
 }
 
+
+//Function to validate a phone number
 function validatePhone(val) {
     var x = val
     x = x.replace('+1', '');
@@ -125,12 +144,15 @@ function validatePhone(val) {
     return x;
 }
 
-var normalRules = []
+
+//Global Vars for 911 Info 
+var normalRules = {}
 var ExceptionRules = {}
 
-function createRuleTable(phone, address) {
 
-    Object.keys(phone).forEach(function(key){
+//Creating the rule table on page startup 911 Info - Forms
+function createRuleTable(phone, address) {
+    Object.keys(phone).forEach(function (key) {
         normalRules[phone[key].id] = {
             phoneID: phone[key].id,
             addressID: address[0].id,
@@ -139,50 +161,47 @@ function createRuleTable(phone, address) {
         }
 
         document.getElementById('RulesTable').innerHTML += '<tr id="rule' + phone[key].id + '">' +
-                                                                '<td>' + phone[key].phone + '</td>' + 
-                                                                '<td>' + address[0].address + '</td>' +
-                                                            '</tr>'
+            '<td>' + phone[key].phone + '</td>' +
+            '<td>' + address[0].address + '</td>' +
+            '</tr>'
     });
-
-    console.log(normalRules)
-    console.log(phone)
-    console.log(address)
 }
 
+
+//Adding a Rule into 911 Info - Forms
 function addRule() {
-    
+
     var phoneID = document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].value
     var addressID = document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].value
     console.log(document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].text)
-    if (phoneID != "0"){
+    if (phoneID != "0") {
         var phone = document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].text
 
-        if (addressID != '0'){
-            
+        if (addressID != '0') {
+
             var address = document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].text
 
             document.getElementById('ExceptionsTable').innerHTML += '<tr id="exception' + phoneID + '">' +
-                                                                    '<td>' + phone + '</td>' + 
-                                                                    '<td>' + address + '</td>' +
-                                                                    '<td>' +
-                                                                        '<button type=button onclick="removeRule(' + phoneID + ', ' + document.getElementById("SelectPhone2").selectedIndex + ')">X</button>' +
-                                                                    '</td>' +
-                                                                '</tr>'
-            
+                '<td>' + phone + '</td>' +
+                '<td>' + address + '</td>' +
+                '<td>' +
+                '<button type=button onclick="removeRule(' + phoneID + ', ' + document.getElementById("SelectPhone2").selectedIndex + ')">X</button>' +
+                '</td>' +
+                '</tr>'
+
             ExceptionRules[document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].value] = {
                 phoneID: document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].value,
                 phone: document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].text,
                 addressID: document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].value,
                 address: document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].text
             }
-            
+
             delete normalRules[phoneID]
             document.getElementById("rule" + phoneID).remove();
-        
+
             document.getElementById("SelectPhone2").options[document.getElementById("SelectPhone2").selectedIndex].disabled = true;
             document.getElementById("SelectPhone2").selectedIndex = 0;
-        }
-        else{
+        } else {
             //Create a new address
             data = {
                 Suite: document.getElementById("Suite3").value,
@@ -195,33 +214,33 @@ function addRule() {
             }
 
             $.ajax({
-                url: '/forms/setAddress',
-                data: data,
-                method: 'POST',
-            })
-            .done(function (data) {
-                if (data.status == "form-invalid") {
-                    var output = '';
-                    for (var property in data.formerrors) {
-                        output += data.formerrors[property] + '\n';
+                    url: '/forms/setAddress',
+                    data: data,
+                    method: 'POST',
+                })
+                .done(function (data) {
+                    if (data.status == "form-invalid") {
+                        var output = '';
+                        for (var property in data.formerrors) {
+                            output += data.formerrors[property] + '\n';
+                        }
+                        alert(output);
+                    } else {
+                        console.log("done")
+                        getAddress('SelectAddress3', function (address) {
+                            document.getElementById("SelectAddress3").selectedIndex = address.length - 1;
+                            addRule()
+                            document.getElementById('NewAddress3').style.display = "none"
+                        });
                     }
-                    alert(output);
-                } 
-                
-                else {
-                    console.log("done")
-                    getAddress('SelectAddress3', function(address){
-                        document.getElementById("SelectAddress3").selectedIndex = address.length - 1;
-                        addRule()
-                        document.getElementById('NewAddress3').style.display = "none"
-                    });  
-                }
-            });
+                });
         }
     }
 }
 
-function removeRule(id, location){
+
+//Removing an Exception from 911 Info - Forms
+function removeRule(id, location) {
 
     var addressID = document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].value
     var address = document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].text
@@ -234,9 +253,9 @@ function removeRule(id, location){
     }
 
     document.getElementById('RulesTable').innerHTML += '<tr id="rule' + normalRules[id].phoneID + '">' +
-                                                            '<td>' + normalRules[id].phone + '</td>' + 
-                                                            '<td>' + normalRules[id].address + '</td>' +
-                                                        '</tr>'
+        '<td>' + normalRules[id].phone + '</td>' +
+        '<td>' + normalRules[id].address + '</td>' +
+        '</tr>'
 
     delete ExceptionRules[id]
     document.getElementById("SelectPhone2").options[location].disabled = false;
@@ -244,81 +263,91 @@ function removeRule(id, location){
 
     console.log(ExceptionRules)
     console.log(normalRules)
-    
+
 }
 
+
+//To merge two objects into one - 911 Info 
+function merge_options(obj1, obj2) {
+    var obj3 = {};
+    for (var attrname in obj1) {
+        obj3[attrname] = obj1[attrname];
+    }
+    for (var attrname in obj2) {
+        obj3[attrname] = obj2[attrname];
+    }
+    return obj3;
+}
+
+
+ //Does user want to be listed in 411 Directory - 411 Directory - Forms
+ $("input:radio[name='option']").click(function () {
+    var radioValue = $("input[name='option']:checked").val();
+    if (radioValue == 1) {
+        document.getElementById('CompanyName411').disabled = false;
+        document.getElementById('Category').disabled = false;
+        document.getElementById('phone').disabled = false;
+        document.getElementById('SelectAddress').disabled = false;
+        document.getElementById('SelectPhone').disabled = false;
+        PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
+        PromptNewPhone(document.getElementById("SelectPhone").options[document.getElementById("SelectPhone").selectedIndex].value)
+
+    } else {
+        document.getElementById('NewAddress').style.display = "none"
+        document.getElementById('CompanyName411').value = '';
+        document.getElementById('CompanyName411').disabled = true;
+        document.getElementById('Category').disabled = true;
+        document.getElementById('phone').disabled = true;
+        document.getElementById('SelectAddress').disabled = true;
+        document.getElementById('SelectPhone').disabled = true;
+    }
+});
+
+
+ //A main site is changed on 911 Info - Form
+ $("#SelectAddress2").on('change', function () {
+
+    document.getElementById('RulesTable').innerHTML = "<tr><th>Phone</th><th>Address</th><th></th></tr>"
+
+    Object.keys(normalRules).forEach(function (key) {
+        normalRules[key] = {
+            phone: normalRules[key].phone,
+            phoneID: normalRules[key].phoneID,
+            address: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].text,
+            addressID: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].value
+        }
+
+        document.getElementById('RulesTable').innerHTML += '<tr id="rule' + normalRules[key].phoneID + '">' +
+            '<td>' + normalRules[key].phone + '</td>' +
+            '<td>' + normalRules[key].address + '</td>' +
+            '</tr>'
+    });
+
+});
+
+
+ //Show Google Address bar
+ $("#SelectAddress3").on('change', function () {
+    var add3 = document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].value;
+    if (add3 == "0") {
+        clearGoogleAddress(3)
+        document.getElementById('NewAddress3').style.display = "block"
+    } else {
+        document.getElementById('NewAddress3').style.display = "none"
+    }
+});
+
+
+//Instructions that occur once document is ready
 $(document).ready(function () {
-    
-    //For Step 2 --- Yes or No for Directory Listing
-    $("input:radio[name='option']").click(function () {
-        var radioValue = $("input[name='option']:checked").val();
-        if (radioValue == 1) {
-            document.getElementById('CompanyName411').disabled = false;
-            document.getElementById('Category').disabled = false;
-            document.getElementById('phone').disabled = false;
-            document.getElementById('SelectAddress').disabled = false;
-            document.getElementById('SelectPhone').disabled = false;
-            PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
-            PromptNewPhone(document.getElementById("SelectPhone").options[document.getElementById("SelectPhone").selectedIndex].value)
 
-        } else {
-            document.getElementById('NewAddress').style.display = "none"
-            document.getElementById('CompanyName411').value = '';
-            document.getElementById('CompanyName411').disabled = true;
-            document.getElementById('Category').disabled = true;
-            document.getElementById('phone').disabled = true;
-            document.getElementById('SelectAddress').disabled = true;
-            document.getElementById('SelectPhone').disabled = true;
-        }
-    });
-
-    $("#SelectAddress2").on('change', function() {
-        
-        document.getElementById('RulesTable').innerHTML = "<tr><th>Phone</th><th>Address</th><th></th></tr>"
-
-        Object.keys(normalRules).forEach(function(key){
-            normalRules[key] = {
-                phone: normalRules[key].phone,
-                phoneID: normalRules[key].phoneID,
-                address: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].text,
-                addressID: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].value
-            }
-            
-            document.getElementById('RulesTable').innerHTML += '<tr id="rule' + normalRules[key].phoneID + '">' +
-                                                                    '<td>' + normalRules[key].phone + '</td>' + 
-                                                                    '<td>' + normalRules[key].address + '</td>' +
-                                                                '</tr>'
-        });
-
-    });
-
-    //Hiding for the Address on Step 4
-    $("#SelectAddress3").on('change', function() {
-        var add3 = document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].value;
-        if (add3 == "0"){
-            clearGoogleAddress(3)
-            document.getElementById('NewAddress3').style.display = "block"
-        }else{
-            document.getElementById('NewAddress3').style.display = "none"
-        }
-    });
-    
     //Showing Screens
-    $(".step1").hide();
+    $(".step1").show();
     $(".step2").hide();
-    getPhone('SelectPhone', function(){})
-    getAddress('SelectAddress', function(){})
     $(".step3").hide();
-    
-    getAddress("SelectAddress2", function(address) {
-        getPhone("SelectPhone2", function(phone) {
-            createRuleTable(phone, address);
-        });
-    });
-    getAddress('SelectAddress3', function(){})
-    $(".step4").show();
-    
-    //Step 1
+    $(".step4").hide();
+
+    //Company Info
     $(".step1").submit(function (e) {
         e.preventDefault();
         $.ajax({
@@ -342,14 +371,13 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } else {
                     //If valid form
-                    getAddress('SelectAddress')
                     $(".step1").hide();
                     $(".step2").show();
                 }
             });
     });
 
-    //Step 2
+    //Port Number
     $(".step2").submit(function (e) {
         e.preventDefault();
 
@@ -407,9 +435,14 @@ $(document).ready(function () {
                 .done(function (data) {
                     if (data.status == "form-invalid") {
                         alert(data.formerrors.Phone411)
-                    } else {
-                        //If valid form
-                        getPhone('SelectAddress')
+                    } 
+                    else {
+                        getAddress("SelectAddress2", function (address) {
+                            getPhone("SelectPhone2", function (phone) {
+                                createRuleTable(phone, address);
+                            });
+                        });
+                        getAddress('SelectAddress3', function () {})
                         $(".step2").hide();
                         $(".step3").show();
                     }
@@ -420,7 +453,7 @@ $(document).ready(function () {
 
     });
 
-    //Step 3
+    //411 Info
     $(".step3").submit(function (e) {
 
         //Type of Data to be send over to Catch2
@@ -451,7 +484,7 @@ $(document).ready(function () {
                 ignore: 1
             }
         }
-        
+
         e.preventDefault();
         $.ajax({
                 url: '/forms/catch3',
@@ -471,12 +504,16 @@ $(document).ready(function () {
             });
     });
 
+    //911 Info 
     $(".step4").submit(function (e) {
+
+        data = merge_options(normalRules, ExceptionRules)
 
         e.preventDefault();
         $.ajax({
                 url: '/forms/catch4',
-                data: data,
+                data: JSON.stringify(data),
+                contentType: "application/json",
                 method: 'POST',
             })
             .done(function (data) {
@@ -493,3 +530,4 @@ $(document).ready(function () {
     });
 
 });
+

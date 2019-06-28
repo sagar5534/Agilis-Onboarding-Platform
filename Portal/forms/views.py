@@ -430,3 +430,33 @@ def catch3(request):
     comp.save()
 
     return form_response(form)
+
+
+
+@login_required
+def catch4(request):
+
+    print(request)
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+
+    if request.method == "POST":
+        json_data = json.loads(request.body)
+        
+        for i in json_data:
+            pid = json_data[i]['phoneID']
+            aid = json_data[i]['addressID']
+            print(str(pid) + "- " + str(aid))
+
+            
+            tempNum = Numbers.objects.get(pk=pid)
+            tempNum.Address_911_id = aid
+            tempNum.save()
+
+    else:
+        return Http404
+    
+    return HttpResponse("Done")
+
