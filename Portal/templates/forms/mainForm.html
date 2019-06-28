@@ -7,19 +7,19 @@
     <title>Agilis Portal Forms</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" type="text/css" href="{% static 'forms/css/main.css' %}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script> var company = {{ company }};</script>
     <script src="{% static 'forms/google.js' %}"></script>
     <script src="{% static 'forms/main.js' %}"></script>
-    <script src="{% static 'forms/pages.js' %}"></script>
+
     <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete"
             async defer>
     </script>
 
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-    <link rel="stylesheet" type="text/css" href="{% static 'forms/css/main.css' %}">
 </head>
 
 <body>
@@ -216,14 +216,12 @@
 
             <br><br><br>
 
-
-             <div id="locationField">
+            <div id="locationField">
                 <label class="label">911 Address Info Per Number (If different from Main Site)</label>
                 <br>
             </div>
             <br>
 
-            
             <div id="locationField">
                 <label class="label">Phone:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</label>
                 <label class="label">Address:</label>
@@ -233,19 +231,65 @@
                 &emsp;
                  <select id='SelectAddress3'>
                 </select>
-
-                <br>
-                <button id='AddRule' type=button onclick="addRule()">Add Rule</button>
-
             </div>
 
+            <br>
+            <br>
+            
+            <div id='NewAddress3' style='display: none'>
+                <div id="locationField">
+                    <input id="autocomplete3" placeholder="Enter your address" onFocus="geolocate()" type="text" />
+                </div>
+
+                <table id="address">
+                    <tr>
+                        <td class="label">Suite/Apt #</td>
+                        <td class="wideField" colspan="3">
+                            <input name="Suite3" class="field" id="Suite3" placeholder="Enter if Applicable" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Street address</td>
+                        <td class="slimField"><input name="StreetNum3" class="field" id="street_number3" disabled="true" />
+                        </td>
+                        <td class="wideField" colspan="2"><input name="Street3" class="field" id="route3" disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">City</td>
+                        <td class="wideField" colspan="3"><input name="City3" class="field" id="locality3" disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prov.</td>
+                        <td class="slimField"><input name="Prov3" class="field" id="administrative_area_level_13" disabled="true" /></td>
+                        <td class="label">Postal Code</td>
+                        <td class="wideField"><input name="Postal3" class="field" id="postal_code3" disabled="true" /></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Country</td>
+                        <td class="wideField" colspan="3"><input name="Country3" class="field" id="country3" disabled="true" /></td>
+                    </tr>
+                </table>
+            </div>
+           
+            
+            <button id='AddRule' type=button onclick="addRule()">Add Rule</button>
             
             <br>
             <br>
-            <br>
+            
 
              <div id='Rules'>
+                <h3>Normal</h3>
                 <table id='RulesTable'>
+                    <tr><th>Phone</th><th>Address</th><th></th></tr>
+                </table>
+             </div>
+            
+             <div id='Rules'>
+                <h3>Exceptions</h3>
+                <table id='ExceptionsTable'>
                     <tr><th>Phone</th><th>Address</th><th></th></tr>
                 </table>
              </div>

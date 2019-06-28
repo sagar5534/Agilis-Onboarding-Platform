@@ -1,12 +1,15 @@
+
 $(document).ready(function () {
     $(".step1").hide();
     $(".step2").hide();
-    getPhone('SelectPhone')
-    getAddress('SelectAddress')
+    //getPhone('SelectPhone')
+    //getAddress('SelectAddress')
     $(".step3").hide();
-    getPhone('SelectPhone2')
-    getAddress('SelectAddress2')
-    getAddress('SelectAddress3')
+    
+    //getAddress('SelectAddress2');
+    //getPhone('SelectPhone2');
+    //getAddress('SelectAddress3');
+
     $(".step4").show();
         
     //Step 1

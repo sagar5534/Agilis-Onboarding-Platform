@@ -61,3 +61,22 @@ class Data411(forms.Form):
     Postal = forms.CharField(label="Postal", max_length=200, required=False)
     Country = forms.CharField(label="Country", max_length=200, required=False)
     address = forms.IntegerField()
+
+
+class SetAddress(forms.Form):
+    Suite = forms.CharField(label="Suite", max_length=100, required=False)
+    StreetNum = forms.IntegerField(label="StreetNum", required=False)
+    Street = forms.CharField(label="Street", max_length=350, required=False)
+    City = forms.CharField(label="City", max_length=200, required=False)
+    Prov = forms.CharField(label="Prov", max_length=200, required=False)
+    Postal = forms.CharField(label="Postal", max_length=200, required=False)
+    Country = forms.CharField(label="Country", max_length=200, required=False)
+
+    def is_valid(self):
+        return super().is_valid()
+    
+    def checkPostal(self):
+        if (self.cleaned_data['Country'] == 'Canada'):
+            return postalValidateCA(self.cleaned_data['Postal'])
+        if (self.cleaned_data['Country'] == 'United States'):
+            return postalValidateUS(self.cleaned_data['Postal'])

@@ -60,7 +60,7 @@ def MainForm(request):
 
 
 def form_response(form):
-
+    
     if form.errors:
         error_dict = {
             "status": "form-invalid",
@@ -68,6 +68,7 @@ def form_response(form):
         }
     else:
         error_dict = {"status": "form-valid"}
+
     return HttpResponse(
         json.dumps(error_dict),
         content_type="application/json",
@@ -115,7 +116,7 @@ def getAddress(request):
 
     y = y + "]}"
 
-    print(y)
+    
     return HttpResponse(y, content_type="application/json")
 
 
@@ -144,9 +145,75 @@ def getPhone(request):
 
     y = y + "]}"
 
-    print(y)
     return HttpResponse(y, content_type="application/json")
 
+
+@login_required
+def setAddress(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+
+    if request.method == "POST":
+        form = SetAddress(request.POST)
+    else:
+        return Http404
+
+    if form.is_valid():
+        if form.checkPostal():
+            Suite = form.cleaned_data["Suite"]
+            StreetNum = form.cleaned_data["StreetNum"]
+            Street = form.cleaned_data["Street"]
+            City = form.cleaned_data["City"]
+            Prov = form.cleaned_data["Prov"]
+            Postal = form.cleaned_data["Postal"]
+            Country = form.cleaned_data["Country"]
+        else:
+            return Http404
+    else:
+        return form_response(form)
+
+    tempAddress = Address.objects.create(
+            Suite=Suite,
+            StreetNum=StreetNum,
+            Street=Street,
+            City=City,
+            Prov=Prov,
+            Postal=Postal,
+            Country=Country,
+        )
+    tempAddress.save()
+    tempLink = CompanyAddressLink.objects.create(
+        Address_id=tempAddress.pk, Company_id=company
+    )
+    tempLink.save()
+
+    y = '{ "address": ['
+
+    if tempAddress.Suite == "":
+        suiteHandler = ""
+    else:
+        suiteHandler = str(tempAddress.Suite) + " - "
+    
+    x = {
+        "address": suiteHandler
+        + str(tempAddress.StreetNum)
+        + " "
+        + tempAddress.Street
+        + ", "
+        + tempAddress.City
+        + ", "
+        + tempAddress.Prov,
+        "id": tempAddress.id,
+    }
+
+    y = y + json.dumps(x)
+    y = y + "]"
+    y = y + ', "status": "form-valid"}'
+
+    return HttpResponse(y, content_type="application/json")
 
 @login_required
 def catch(request):

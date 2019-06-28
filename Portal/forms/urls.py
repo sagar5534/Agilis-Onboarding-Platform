@@ -5,7 +5,6 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-
     path('', views.index, name='index'),
     path('<int:company>/', views.detail, name='detail'),
     path('submit', views.MainForm, name='submit'),
@@ -14,6 +13,6 @@ urlpatterns = [
     path('catch3', views.catch3, name='catch3'),
     path('getAddress', views.getAddress, name='getAddress'),
     path('getPhone', views.getPhone, name='getPhone'),
-
+    path('setAddress', views.setAddress, name='setAddress'),
 ]
    
