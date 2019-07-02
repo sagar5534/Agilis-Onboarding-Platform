@@ -12,11 +12,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        var company = {
-            {
-                company
-            }
-        };
+        var company = {{ company }};
     </script>
     <script src="{% static 'forms/google.js' %}"></script>
     <script src="{% static 'forms/main.js' %}"></script>
@@ -161,7 +157,7 @@
             <div id="locationField">
                 <label class="label">Address To Be Listed:</label>
                 <br>
-                <select id='SelectAddress' onchange="PromptNewAddress(this.value)">
+                <select id='SelectAddress'>
                 </select>
             </div>
 
@@ -371,6 +367,102 @@
                 <br><br>
                 <button type="submit">Submit</button>
 
+            </div>
+
+        </form>
+
+
+        <form class="step5">
+
+            <h1>Extensions</h1>
+
+            <div id="locationField">
+                <label class="label">Directory Listing: </label> <br>
+                <input type="radio" id="radio-yes" name="option" value=1 checked>Yes<br>
+                <input type="radio" id="radio-no" name="option" value=0>No<br>
+            </div>
+
+            <br><br><br>
+
+            <div id="locationField">
+                <label class="label" for="CompanyName411">Company Name:</label>
+                <input class="field" id="CompanyName411" type="text" name="CompanyName411" maxlength="100"
+                    placeholder="Company Name to be Listed" required>
+            </div>
+
+            <div id="locationField">
+                <label class="label" for="Category">Category:</label>
+                <input class="field" id="Category" type="text" name="Category" maxlength="100" placeholder="Category"
+                    required>
+            </div>
+
+            <br>
+
+            <div id="locationField">
+                <label class="label">Phone To Be Listed:</label>
+                <br>
+                <select id='SelectPhone'>
+                </select>
+
+            </div>
+            <br>
+
+            <div id="locationField">
+                <label class="label">Address To Be Listed:</label>
+                <br>
+                <select id='SelectAddress'>
+                </select>
+            </div>
+
+            <br>
+            <br>
+
+            <div id='NewAddress' style='display: none'>
+                <div id="locationField">
+                    <input id="autocomplete2" placeholder="Enter your address" onFocus="geolocate()" type="text" />
+                </div>
+
+                <table id="address">
+                    <tr>
+                        <td class="label">Suite/Apt #</td>
+                        <td class="wideField" colspan="3">
+                            <input name="Suite2" class="field" id="Suite2" placeholder="Enter if Applicable" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Street address</td>
+                        <td class="slimField"><input name="StreetNum2" class="field" id="street_number2"
+                                disabled="true" />
+                        </td>
+                        <td class="wideField" colspan="2"><input name="Street2" class="field" id="route2"
+                                disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">City</td>
+                        <td class="wideField" colspan="3"><input name="City2" class="field" id="locality2"
+                                disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prov.</td>
+                        <td class="slimField"><input name="Prov2" class="field" id="administrative_area_level_12"
+                                disabled="true" /></td>
+                        <td class="label">Postal Code</td>
+                        <td class="wideField"><input name="Postal2" class="field" id="postal_code2" disabled="true" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Country</td>
+                        <td class="wideField" colspan="3"><input name="Country2" class="field" id="country2"
+                                disabled="true" /></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="submit">
+                <br><br>
+                <button type="submit">Submit</button>
             </div>
 
         </form>

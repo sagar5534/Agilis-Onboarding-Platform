@@ -39,16 +39,6 @@ function clearGoogleAddress(id) {
 }
 
 
-//Check if NEEDED
-function PromptNewAddress(period) {
-    if (period == "0") {
-        document.getElementById('NewAddress').style.display = "block"
-    } else {
-        document.getElementById('NewAddress').style.display = "none"
-    }
-}
-
-
 //Function to getAddress
 function getAddress(element, callback) {
     $.ajax({
@@ -280,71 +270,68 @@ function merge_options(obj1, obj2) {
 }
 
 
- //Does user want to be listed in 411 Directory - 411 Directory - Forms
- $("input:radio[name='option']").click(function () {
-    var radioValue = $("input[name='option']:checked").val();
-    if (radioValue == 1) {
-        document.getElementById('CompanyName411').disabled = false;
-        document.getElementById('Category').disabled = false;
-        document.getElementById('phone').disabled = false;
-        document.getElementById('SelectAddress').disabled = false;
-        document.getElementById('SelectPhone').disabled = false;
-        PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
-        PromptNewPhone(document.getElementById("SelectPhone").options[document.getElementById("SelectPhone").selectedIndex].value)
+ 
 
+function PromptNewAddress(period) {
+    var sel = "SelectAddress" + period
+
+    var address = document.getElementById(sel).options[document.getElementById(sel).selectedIndex].value;
+    if (address == "0") {
+        clearGoogleAddress(period)
+        document.getElementById('NewAddress' + period).style.display = "block"
     } else {
-        document.getElementById('NewAddress').style.display = "none"
-        document.getElementById('CompanyName411').value = '';
-        document.getElementById('CompanyName411').disabled = true;
-        document.getElementById('Category').disabled = true;
-        document.getElementById('phone').disabled = true;
-        document.getElementById('SelectAddress').disabled = true;
-        document.getElementById('SelectPhone').disabled = true;
+        document.getElementById('NewAddress' + period).style.display = "none"
     }
-});
-
-
- //A main site is changed on 911 Info - Form
- $("#SelectAddress2").on('change', function () {
-
-    document.getElementById('RulesTable').innerHTML = "<tr><th>Phone</th><th>Address</th><th></th></tr>"
-
-    Object.keys(normalRules).forEach(function (key) {
-        normalRules[key] = {
-            phone: normalRules[key].phone,
-            phoneID: normalRules[key].phoneID,
-            address: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].text,
-            addressID: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].value
-        }
-
-        document.getElementById('RulesTable').innerHTML += '<tr id="rule' + normalRules[key].phoneID + '">' +
-            '<td>' + normalRules[key].phone + '</td>' +
-            '<td>' + normalRules[key].address + '</td>' +
-            '</tr>'
-    });
-
-});
-
-
- //Show Google Address bar
- $("#SelectAddress3").on('change', function () {
-    var add3 = document.getElementById("SelectAddress3").options[document.getElementById("SelectAddress3").selectedIndex].value;
-    if (add3 == "0") {
-        clearGoogleAddress(3)
-        document.getElementById('NewAddress3').style.display = "block"
-    } else {
-        document.getElementById('NewAddress3').style.display = "none"
-    }
-});
+}
 
 
 //Instructions that occur once document is ready
 $(document).ready(function () {
 
+    //A main site is changed on 911 Info - Form
+    $("#SelectAddress2").change( function(e){
+        e.preventDefault();
+        document.getElementById('RulesTable').innerHTML = "<tr><th>Phone</th><th>Address</th><th></th></tr>"
+    
+        Object.keys(normalRules).forEach(function (key) {
+            normalRules[key] = {
+                phone: normalRules[key].phone,
+                phoneID: normalRules[key].phoneID,
+                address: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].text,
+                addressID: document.getElementById("SelectAddress2").options[document.getElementById("SelectAddress2").selectedIndex].value
+            }
+
+            document.getElementById('RulesTable').innerHTML += '<tr id="rule' + normalRules[key].phoneID + '">' +
+                '<td>' + normalRules[key].phone + '</td>' +
+                '<td>' + normalRules[key].address + '</td>' +
+                '</tr>'
+        });
+    });
+    
+     //Does user want to be listed in 411 Directory - 411 Directory - Forms
+    $("input:radio[name='option']").click(function () {
+        var radioValue = $("input[name='option']:checked").val();
+        if (radioValue == 1) {
+            document.getElementById('CompanyName411').disabled = false;
+            document.getElementById('Category').disabled = false;
+            document.getElementById('SelectAddress').disabled = false;
+            document.getElementById('SelectPhone').disabled = false;
+            //PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
+
+        } else {
+            document.getElementById('NewAddress').style.display = "none"
+            document.getElementById('CompanyName411').value = '';
+            document.getElementById('CompanyName411').disabled = true;
+            document.getElementById('Category').disabled = true;
+            document.getElementById('SelectAddress').disabled = true;
+            document.getElementById('SelectPhone').disabled = true;
+        }
+    });
+
     //Showing Screens
-    $(".step1").show();
+    $(".step1").hide();
     $(".step2").hide();
-    $(".step3").hide();
+    $(".step3").show();
     $(".step4").hide();
 
     //Company Info
@@ -437,12 +424,11 @@ $(document).ready(function () {
                         alert(data.formerrors.Phone411)
                     } 
                     else {
-                        getAddress("SelectAddress2", function (address) {
-                            getPhone("SelectPhone2", function (phone) {
-                                createRuleTable(phone, address);
-                            });
-                        });
-                        getAddress('SelectAddress3', function () {})
+                        getAddress('SelectAddress', function () {
+                            $('#SelectAddress').on('change', PromptNewAddress(''))
+                        })
+                        getPhone('SelectPhone', function () {})
+                       
                         $(".step2").hide();
                         $(".step3").show();
                     }
@@ -456,7 +442,6 @@ $(document).ready(function () {
     //411 Info
     $(".step3").submit(function (e) {
 
-        //Type of Data to be send over to Catch2
         if (document.getElementById('radio-yes').checked == true) {
             if (document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value == 0) {
                 data = {
@@ -499,7 +484,18 @@ $(document).ready(function () {
                     }
                     alert(output);
                 } else {
+                    getAddress("SelectAddress2", function (address) {
+                        getPhone("SelectPhone2", function (phone) {
+                            createRuleTable(phone, address);
+                            
+                        });
+                    });
+
                     $(".step3").hide();
+                    $(".step4").show();
+                    getAddress('SelectAddress3', function(){
+                        $('#SelectAddress3').on('change', PromptNewAddress('3'))
+                    })
                 }
             });
     });
