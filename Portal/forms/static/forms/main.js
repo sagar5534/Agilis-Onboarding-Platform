@@ -288,6 +288,29 @@ function PromptNewAddress(period) {
 //Instructions that occur once document is ready
 $(document).ready(function () {
 
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+    }
+
+    $('#ExtNumber').on('input', function() {
+        document.getElementById('ExtCard1').innerHTML = '#' + document.getElementById("ExtNumber").value
+    });
+
+    $("ExtNumber").change(function(){
+        alert("The text has been changed.");
+      });
+
     //A main site is changed on 911 Info - Form
     $("#SelectAddress2").change( function(e){
         e.preventDefault();
@@ -328,11 +351,37 @@ $(document).ready(function () {
         }
     });
 
+    //Step 5 - Extenstions
+    $("input:radio[name='optionV']").click(function () {
+        var radioValue = $("input[name='optionV']:checked").val();
+        if (radioValue == 1) {
+            document.getElementById('VTE').style.display = "block"
+            //PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
+
+        } else {
+            document.getElementById('VTE').style.display = "none"
+        }
+    });
+
+    $("input:radio[name='optionVTE']").click(function () {
+        var radioValue = $("input[name='optionVTE']:checked").val();
+        if (radioValue == 1) {
+            document.getElementById('EmailVTE').style.display = "block"
+            //PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
+
+        } else {
+            document.getElementById('EmailVTE').style.display = "none"
+        }
+    });
+
+
     //Showing Screens
     $(".step1").hide();
     $(".step2").hide();
-    $(".step3").show();
+    $(".step3").hide();
     $(".step4").hide();
+    getPhone('SelectPhoneExt', function(){})
+    $(".step5").show();
 
     //Company Info
     $(".step1").submit(function (e) {
@@ -521,9 +570,37 @@ $(document).ready(function () {
                     alert(output);
                 } else {
                     $(".step4").hide();
+                    $(".step5").show();
                 }
             });
     });
+
+    //911 Info 
+    $(".step5").submit(function (e) {
+
+        data = merge_options(normalRules, ExceptionRules)
+
+        e.preventDefault();
+        $.ajax({
+                url: '/forms/catch4',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: 'POST',
+            })
+            .done(function (data) {
+                if (data.status == "form-invalid") {
+                    var output = '';
+                    for (var property in data.formerrors) {
+                        output += data.formerrors[property] + '\n';
+                    }
+                    alert(output);
+                } else {
+                    $(".step5").hide();
+                }
+            });
+    });
+
+
 
 });
 
