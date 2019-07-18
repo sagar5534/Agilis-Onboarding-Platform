@@ -304,29 +304,9 @@ function collapsible() {
     }
 }
 
-//Step 5 - Extensions
-ExtNum = 1;
-function addExt(){
-
-    document.getElementById('cards').innerHTML += '<button class="collapsible" type="button" id="ExtCard' + ExtNum + '">New Extension</button>' + 
-
-    '<div class="content"> <br><br> <div id="locationField"> <label class="label">Extension #:</label> <input class="field" id="ExtNumber' + ExtNum + '" type="text" name="ExtNumber" maxlength="100" placeholder="Extension Number" required> <br> <label class="label" for="ExtName">Name:</label> <input class="field" id="ExtName" type="text" name="Name" maxlength="100" placeholder="Name" required> <br> <label class="label" for="ExtCallerID">Caller ID Name:</label> <input class="field" id="ExtCallerID" type="text" name="ExtCallerID" maxlength="100" placeholder="Caller ID Name" required> <br> <label class="label" for="ExtCallerID">Caller ID Number:</label> <select id="SelectPhoneExt"> </select> </div> <br><br><br> <div id="locationField"> <label class="label">Voicemail:</label><br> <input type="radio" id="radio-yes" name="optionV" value=1 checked>Yes<br> <input type="radio" id="radio-no" name="optionV" value=0>No<br> </div> <br><br><br> <div id="VTE"> <label class="label">Voicemail To Email:</label><br> <input type="radio" id="radio-yes" name="optionVTE" value=1 checked>Yes<br> <input type="radio" id="radio-no" name="optionVTE" value=0>No<br> <br> <div id="EmailVTE"> <label class="label" for="ExtEmail">Email:</label> <input class="field" id="ExtEmail" type="text" name="ExtEmail" maxlength="100" placeholder="Email For Voicemail" required> <br> </div> </div> <br><br> </div> '
-    
-    ExtNum++
-    collapsible()
-
-    $('#ExtNumber1').on('input', function() {
-        document.getElementById('ExtCard1').innerHTML = '#' + document.getElementById('ExtNumber1').value
-        console.log("DID")
-    });
-
-}
-
 
 //Instructions that occur once document is ready
 $(document).ready(function () {
-
-    addExt()
 
     //A main site is changed on 911 Info - Form
     $("#SelectAddress2").change( function(e){
@@ -368,37 +348,13 @@ $(document).ready(function () {
         }
     });
 
-    //Step 5 - Extenstions
-    $("input:radio[name='optionV']").click(function () {
-        var radioValue = $("input[name='optionV']:checked").val();
-        if (radioValue == 1) {
-            document.getElementById('VTE').style.display = "block"
-            //PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
-
-        } else {
-            document.getElementById('VTE').style.display = "none"
-        }
-    });
-
-    $("input:radio[name='optionVTE']").click(function () {
-        var radioValue = $("input[name='optionVTE']:checked").val();
-        if (radioValue == 1) {
-            document.getElementById('EmailVTE').style.display = "block"
-            //PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
-
-        } else {
-            document.getElementById('EmailVTE').style.display = "none"
-        }
-    });
-
 
     //Showing Screens
     $(".step1").hide();
     $(".step2").hide();
     $(".step3").hide();
-    $(".step4").hide();
-    getPhone('SelectPhoneExt', function(){})
-    $(".step5").show();
+    $(".step4").show();
+    $(".step5").hide();
 
     //Company Info
     $(".step1").submit(function (e) {
@@ -587,7 +543,7 @@ $(document).ready(function () {
                     alert(output);
                 } else {
                     $(".step4").hide();
-                    addExt()
+                    //addExt()
                     $(".step5").show();
                 }
             });

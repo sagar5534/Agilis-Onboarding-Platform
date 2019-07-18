@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    $(".step1").hide();
+    $(".step1").show();
     $(".step2").hide();
     //getPhone('SelectPhone')
     //getAddress('SelectAddress')
@@ -10,7 +10,7 @@ $(document).ready(function () {
     //getPhone('SelectPhone2');
     //getAddress('SelectAddress3');
 
-    $(".step4").show();
+    $(".step4").hide();
         
     //Step 1
     $(".step1").submit(function (e) {

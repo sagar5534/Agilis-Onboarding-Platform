@@ -393,12 +393,12 @@ $(document).ready(function () {
 
 
     //Showing Screens
-    $(".step1").hide();
+    $(".step1").show();
     $(".step2").hide();
     $(".step3").hide();
     $(".step4").hide();
     getPhone('SelectPhoneExt', function(){})
-    $(".step5").show();
+    $(".step5").hide();
 
     //Company Info
     $(".step1").submit(function (e) {
@@ -587,7 +587,7 @@ $(document).ready(function () {
                     alert(output);
                 } else {
                     $(".step4").hide();
-                    addExt()
+                    //addExt()
                     $(".step5").show();
                 }
             });
