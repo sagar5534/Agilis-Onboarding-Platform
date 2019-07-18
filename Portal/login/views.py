@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.http import Http404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
@@ -38,11 +39,8 @@ from django.core.mail import send_mail
 #Ensure user is logged in before they can access this view otherwise send to login form
 @login_required
 def index(request):
-
-    #Test
-    #send_mail('subject', 'body of the message', 'no-reply@agilismail.com', ['sagar_patel5@hotmail.com',])
-
-    return render(request, 'login/index.html')
+    #Sending to Forms/Index
+    return redirect(reverse('index'))
 
 #Login Protocol to handle user logins at the website front. NOT ADMIN
 def loginProtocol(request):

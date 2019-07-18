@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Agilis - Forms</title>
+    </head>
+    <body>
+        <h1>Companies</h1>
+        {% if companies %}
+            <ul>
+            {% for company in companies %}
+                {% if company.completed %}
+                    <li><a>{{ company.company_name }} - Completed</a></li>
+                {% else %}
+                    <li><a href="/forms/{{ company.id }}/">{{ company.company_name }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No companies are available.</p>
+        {% endif %}
+    </body>
+</html>
+
+

@@ -25,12 +25,16 @@ SECRET_KEY = '2$0ok)3rna3p@ffc#r*%wu_f+ff6_*%yx921)909ob)=aw)flj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '216.223.104.111',
+    'localhost',
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'forms.apps.FormsConfig',
     'login.apps.LoginConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,9 +85,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Portal',
-        'USER': 'sagar',
+        'USER': 'root',
         'PASSWORD': '72427Patel',
-        'HOST': 'sagarpatel.ca',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
@@ -123,6 +129,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
+STATIC_ROOT= os.path.join(BASE_DIR,'static/')
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
