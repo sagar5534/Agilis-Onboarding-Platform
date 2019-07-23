@@ -45,6 +45,7 @@ def index(request):
 #Login Protocol to handle user logins at the website front. NOT ADMIN
 def loginProtocol(request):
 
+
     #Requests the next url to redirect to once login is completed
     if 'next' in request.GET:
         next = request.GET['next']
@@ -60,11 +61,10 @@ def loginProtocol(request):
     if request.method == 'POST':
 
         form = LoginForm(request.POST)
-
         #Gets and cleans data 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+            username = form.cleaned_data['Email']
+            password = form.cleaned_data['Password']
             #Authenticates user using Authentication Model
             user = authenticate(request, username=username, password=password)
 
