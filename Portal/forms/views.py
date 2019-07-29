@@ -25,7 +25,8 @@ def index(request):
     for x in Companies:
         comps.append(Company.objects.get(id=x.company_id))
 
-    context = {"companies": comps}
+    context = {"companies": comps, 
+               'user': request.user.email}
 
     return render(request, "forms/index.html", context)
 
@@ -45,18 +46,20 @@ def detail(request, company):
     comp = Company.objects.get(id=company)
     request.session["company"] = comp.pk
 
-    context = {"company": comp}
+    context = {"companies": comp, 
+               'user': request.user.email}
 
-    return render(request, "forms/detail.html", context)
+    return render(request, "forms/site.html", context)
 
 
 @login_required
 def MainForm(request):
     # Work with company session
     comps = request.session.get("company")
-    context = {"company": comps}
+    context = {"companies": comps, 
+               'user': request.user.email}
 
-    return render(request, "forms/mainForm.html", context)
+    return render(request, "forms/submit.html", context)
 
 
 def form_response(form):

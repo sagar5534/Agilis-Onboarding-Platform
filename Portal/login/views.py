@@ -61,10 +61,15 @@ def loginProtocol(request):
     if request.method == 'POST':
 
         form = LoginForm(request.POST)
+        print(form)
+
         #Gets and cleans data 
         if form.is_valid():
             username = form.cleaned_data['Email']
             password = form.cleaned_data['Password']
+
+            print(username)
+            print(password)
             #Authenticates user using Authentication Model
             user = authenticate(request, username=username, password=password)
 
