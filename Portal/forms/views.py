@@ -46,7 +46,7 @@ def detail(request, company):
     comp = Company.objects.get(id=company)
     request.session["company"] = comp.pk
 
-    context = {"companies": comp, 
+    context = {"company": comp, 
                'user': request.user.email}
 
     return render(request, "forms/site.html", context)
@@ -224,25 +224,22 @@ def catch(request):
     if request.session.get("company"):
         company = request.session.get("company")
     else:
-        return Http404
+        raise Http404
 
     if request.method == "POST":
         form = CompanyData(request.POST)
     else:
-        return Http404
+        raise Http404
 
     if form.is_valid():
         if form.checkPostal():
             companyName = form.cleaned_data["companyName"]
             Type = form.cleaned_data["type"]
             CurProvider = form.cleaned_data["CurProvider"]
-            Suite = form.cleaned_data["Suite"]
-            StreetNum = form.cleaned_data["StreetNum"]
-            Street = form.cleaned_data["Street"]
-            City = form.cleaned_data["City"]
-            Prov = form.cleaned_data["Prov"]
             Postal = form.cleaned_data["Postal"]
-            Country = form.cleaned_data["Country"]
+            StreetAddress = form.cleaned_data["StreetAddress"]
+            Suite = form.cleaned_data["Suite"]
+
         else:
             form.add_error(
                 "Postal Code Error",
@@ -254,22 +251,14 @@ def catch(request):
     try:
         tempAddress = Address.objects.get(
             Suite=Suite,
-            StreetNum=StreetNum,
-            Street=Street,
-            City=City,
-            Prov=Prov,
             Postal=Postal,
-            Country=Country,
+            StreetAddress=StreetAddress
         )
     except Address.DoesNotExist:
         tempAddress = Address.objects.create(
             Suite=Suite,
-            StreetNum=StreetNum,
-            Street=Street,
-            City=City,
-            Prov=Prov,
             Postal=Postal,
-            Country=Country,
+            StreetAddress=StreetAddress
         )
         tempAddress.save()
         tempLink = CompanyAddressLink.objects.create(

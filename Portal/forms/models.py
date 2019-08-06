@@ -10,39 +10,13 @@ class Address(models.Model):
         ordering = ('id',)
         
     def __str__(self):
-        return str(self.StreetNum) + " " + self.Street + ", " + self.City + ", " + self.Prov
+        return str(self.StreetAddress)
 
     id = models.AutoField(("ID:"), primary_key=True)
     Suite = models.CharField(("Suite"), max_length=50, null=True, blank=True)
-    StreetNum = models.IntegerField(("Street Number"), default=0, blank=False, null=False)
-    Street = models.CharField(("Street"), default="", max_length=50, blank=False, null=False)
-    City = models.CharField(("City"), default="", max_length=50, blank=False, null=False)
-    Prov = models.CharField(("Province"), default="", max_length=50, blank=False, null=False)
+    StreetAddress = models.CharField(("Street Address"), max_length=250, blank=True, null=False)
     Postal = models.CharField(("Postal Code"), max_length=7, blank=False, null=False)
-    Country = models.CharField(("Country"),default="", max_length=50, blank=False, null=False)
 
-    '''
-    provTypes = [
-        ('Ontario', 'ON'),
-        ('Quebec', 'QC'),
-        ('British Columbia', 'BC'),
-        ('Alberta', 'AB'),
-        ('Manitoba', 'MB'),
-        ('Saskatchewan', 'SK'),
-        ('Nova Scotia', 'NS'),
-        ('New Brunswick', 'NB'),
-        ('Newfoundland and Labrador', 'NL'),
-        ('Prince Edward Island', 'PE'),
-        ('Northwest Territories', 'NT'),
-        ('Yukon', 'YT'),
-        ('Nunavut', 'NU'),
-    ]
-    Province = models.CharField(
-        max_length=2,
-        choices=provTypes,
-        default='Ontario',
-    )
-    '''
 
 class Company(models.Model):
 

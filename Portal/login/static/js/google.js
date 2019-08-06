@@ -1,11 +1,6 @@
 var placeSearch, autocomplete;
 
 var componentForm = {
-  street_number: 'short_name',
-  route: 'long_name',
-  locality: 'long_name',
-  administrative_area_level_1: 'short_name',
-  country: 'long_name',
   postal_code: 'short_name'
 };
 
@@ -30,9 +25,9 @@ var componentForm3 = {
 function initAutocomplete() {
   // Create the autocomplete object, restricting the search predictions to
   // geographical location types.
-  var input = document.getElementById('autocomplete')
-  var input2 = document.getElementById('autocomplete2')
-  var input3 = document.getElementById('autocomplete3')
+  var input = document.getElementById('GoogleAddress')
+  //var input2 = document.getElementById('autocomplete2')
+  //var input3 = document.getElementById('autocomplete3')
 
   var options = {
     types: ['geocode'],
@@ -40,20 +35,20 @@ function initAutocomplete() {
   };
 
   autocomplete = new google.maps.places.Autocomplete(input, options);
-  autocomplete2 = new google.maps.places.Autocomplete(input2, options);
-  autocomplete3 = new google.maps.places.Autocomplete(input3, options);
+  // autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+  // autocomplete3 = new google.maps.places.Autocomplete(input3, options);
 
   // Avoid paying for data that you don't need by restricting the set of
   // place fields that are returned to just the address components.
   autocomplete.setFields(['address_component']);
-  autocomplete2.setFields(['address_component']);
-  autocomplete3.setFields(['address_component']);
+  //autocomplete2.setFields(['address_component']);
+  //autocomplete3.setFields(['address_component']);
 
   // When the user selects an address from the drop-down, populate the
   // address fields in the form.
   autocomplete.addListener('place_changed', fillInAddress);
-  autocomplete2.addListener('place_changed', fillInAddress2);
-  autocomplete3.addListener('place_changed', fillInAddress3);
+  //autocomplete2.addListener('place_changed', fillInAddress2);
+  //autocomplete3.addListener('place_changed', fillInAddress3);
 }
 
 function fillInAddress() {
@@ -74,6 +69,8 @@ function fillInAddress() {
       document.getElementById(addressType).value = val;
     }
   }
+
+  
 }
 
 function fillInAddress2() {

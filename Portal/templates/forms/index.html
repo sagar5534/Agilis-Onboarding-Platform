@@ -72,7 +72,7 @@
 
           <a href="#" class="site-clickable w-inline-block">
             <div class="site w-clearfix">
-              <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address }}</div><img
+              <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address_id }}</div><img
                 src="{% static 'images/Tick_Mark_Dark-512.png' %}" alt="" class="site-image-done">
             </div>
           </a>
@@ -80,7 +80,7 @@
         {% else %}
 
           <a href="/forms/{{ company.id }}/" class="site-clickable w-inline-block">
-            <div class="site w-clearfix">
+            <div class="site w-cahh learfix">
               <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address }}</div><img
                 src="{% static 'images/61456.png' %}"
                 srcset="{% static 'images/61456-p-500.png' %} 500w, {% static 'images/61456-p-800.png' %} 800w, {% static 'images/61456-p-1080.png' %} 1080w, {% static 'images/61456.png' %} 1200w"

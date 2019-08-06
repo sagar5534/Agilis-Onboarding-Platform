@@ -27,15 +27,15 @@ $.ajaxSetup({
     }
 });
 
+
+
+
+
+
 //Clearing Google Fill in Address Bar
 function clearGoogleAddress(id) {
     document.getElementById("Suite" + id).value = ""
-    document.getElementById("street_number" + id).value = ""
-    document.getElementById("route" + id).value = ""
-    document.getElementById("locality" + id).value = ""
-    document.getElementById("administrative_area_level_1" + id).value = ""
     document.getElementById("postal_code" + id).value = ""
-    document.getElementById("country" + id).value = ""
 }
 
 
@@ -97,8 +97,8 @@ let discId = 1;
 //Both Functions are for Numbers - Forms 
 //Functions to remove Port Number
 function removePortNumber(x) {
-    document.getElementById("portnumber" + x).remove();
-    document.getElementById("portremoveNumber" + x).remove();
+    //document.getElementById("portnumber" + x).remove();
+    //document.getElementById("portremoveNumber" + x).remove();
     document.getElementById("portbr" + x).remove();
 }
 
@@ -114,8 +114,12 @@ function removeDiscNumber(x) {
 //Functions to Add a Port Number
 //Check if NEEDED
 function addPortNumber() {
+
+
     portId++;
-    $('#portnumberForm').append("<br id='portbr" + portId + "'><input id=portnumber" + portId + " name='phone' type='text'><button id='portremoveNumber" + portId + "' type=button onclick='removePortNumber(" + portId + ")'>X</button>");
+
+    $('#portgroup').append('<div class="div-block-17 w-clearfix" id=portbr' + portId + '><div class="text-block-14">#</div><div class="form-number">(647)-546-8965</div><a type=button onclick=removePortNumber(' + portId + ') class="form-x-btn w-button">X</a></div>')
+
 }
 
 
@@ -284,27 +288,6 @@ function PromptNewAddress(period) {
     }
 }
 
-function collapsible() {
-
-    var coll = document.getElementsByClassName("collapsible");
-    console.log(coll)
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-        console.log(coll[i])
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-            content.style.display = "none";
-            } else {
-            content.style.display = "block";
-            }
-        });
-    }
-}
-
-
 //Instructions that occur once document is ready
 $(document).ready(function () {
 
@@ -350,28 +333,25 @@ $(document).ready(function () {
 
 
     //Showing Screens
-    $(".step1").hide();
-    $(".step2").hide();
-    $(".step3").hide();
-    $(".step4").show();
-    $(".step5").hide();
+    $(".formcompany").show();
+    $(".formporting").hide();
+    $(".form411").hide();
+    $(".form911").hide();
+    $(".formext").hide();
+    $(".formupload").hide();
 
     //Company Info
-    $(".step1").submit(function (e) {
+    $("#wf-form-FormCompany").submit(function (e) {
         e.preventDefault();
         $.ajax({
                 url: '/forms/catch',
                 data: {
-                    companyName: $(".step1").children().children("input[name='CompanyName']").val(),
-                    type: document.getElementById("id_Bus_Res").options[document.getElementById("id_Bus_Res").selectedIndex].text,
-                    CurProvider: $(".step1").children().children("input[name='CurProvider']").val(),
+                    companyName: document.getElementById("CompanyName").value,
+                    type: document.getElementById("Type").options[document.getElementById("Type").selectedIndex].text,
+                    CurProvider: document.getElementById("Provider").value,
                     Suite: document.getElementById("Suite").value,
-                    StreetNum: document.getElementById("street_number").value,
-                    Street: document.getElementById("route").value,
-                    City: document.getElementById("locality").value,
-                    Prov: document.getElementById("administrative_area_level_1").value,
                     Postal: document.getElementById("postal_code").value,
-                    Country: document.getElementById("country").value,
+                    StreetAddress: document.getElementById("GoogleAddress").value,
                 },
                 method: 'POST',
             })
@@ -380,8 +360,8 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } else {
                     //If valid form
-                    $(".step1").hide();
-                    $(".step2").show();
+                    $(".formcompany").hide();
+                    $(".formporting").show();
                 }
             });
     });
