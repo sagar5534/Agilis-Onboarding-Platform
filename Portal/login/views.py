@@ -78,7 +78,7 @@ def loginProtocol(request):
                 login(request, user)
                 return redirect(next)
             #Otherwise add error. Page reloaded will pick up the issue
-            form.add_error('password', 'Incorrect Credentials')
+            form.add_error('Password', 'Incorrect Credentials')
     #If post data does not exist then send back empty page with Form ready for user creds.
     else:
         form = LoginForm()

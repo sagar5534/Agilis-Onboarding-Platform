@@ -30,7 +30,6 @@ def index(request):
 
     return render(request, "forms/index.html", context)
 
-
 # Page with details for specific site - Presents information that users need to continue
 @login_required
 def detail(request, company):
@@ -422,7 +421,6 @@ def catch3(request):
     comp.save()
 
     return form_response(form)
-
 
 
 @login_required
