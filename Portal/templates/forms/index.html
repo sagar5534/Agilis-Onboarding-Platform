@@ -2,8 +2,8 @@
 
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Mon Jul 29 2019 02:40:58 GMT+0000 (UTC)  -->
-<html data-wf-page="5d306d5dffc9be451e815fb1" data-wf-site="5d1f8e2ff235ae4ee0c9c0df">
+<!--  Last Published: Wed Aug 07 2019 18:40:37 GMT+0000 (UTC)  -->
+<html data-wf-page="5d306d5dffc9be451e815fb1" data-wf-site="5d1f8e2ff235ae4ee0c9c0df" lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -31,8 +31,8 @@
         t + "touch")
     }(window, document);
   </script>
-  <link href="{% static 'images/Agilis-Favicon-Apple.png' %}" rel="shortcut icon" type="image/x-icon">
-  <link href="{% static 'images/Agilis-Favicon-01.png' %}" rel="apple-touch-icon">
+  <link href="{% static 'icons/favicon.png' %}" rel="shortcut icon" type="image/x-icon">
+  <link href="{% static 'icons/webclip.png' %}" rel="apple-touch-icon">
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-140421895-1"></script>
   <script type="text/javascript">
     window.dataLayer = window.dataLayer || [];
@@ -49,8 +49,9 @@
 
 <body class="body-2">
   <div class="section-3 w-clearfix">
-  <a href="{% url 'index' %}"> <img src="{% static 'images/agilis-logo.png' %}" alt="" class="image-3"></a>
-  <a href="/logout" class="button-4 w-button">Logout</a><a href="#" class="welcome-user w-button">Welcome {{ user }}</a>
+    <a href="{% url 'index' %}"><img src="{% static 'images/agilis-logo.png' %}" alt="" class="image-3"></a>
+    <a href="/logout" class="button-4 w-button">Logout</a>
+    <div class="welcome-user">Welcome {{ user }}</div>
   </div>
   <div class="section-4">
     <div class="container-4 w-container">
@@ -60,51 +61,48 @@
         vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique
         posuere.</p>
       <div>
-        <h5 class="heading-5">Manage your Sites</h5>
+        <h5 class="heading-5">Manage your Applications</h5>
       </div>
 
       {% if companies %}
-      
+
       <div class="site-box">
       {% for company in companies %}
 
         {% if company.completed %}
-
-          <a href="#" class="site-clickable w-inline-block">
-            <div class="site w-clearfix">
-              <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address_id }}</div><img
-                src="{% static 'images/Tick_Mark_Dark-512.png' %}" alt="" class="site-image-done">
-            </div>
-          </a>
+        
+        <a href="#" class="site-clickable done w-inline-block">
+          <div class="site w-clearfix">
+            <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address_id }}</div><img
+              src="{% static 'images/Group-2.png' %}" alt="" class="site-image-done">
+          </div>
+        </a>
 
         {% else %}
 
-          <a href="/forms/{{ company.id }}/" class="site-clickable w-inline-block">
-            <div class="site w-cahh learfix">
-              <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address }}</div><img
-                src="{% static 'images/61456.png' %}"
-                srcset="{% static 'images/61456-p-500.png' %} 500w, {% static 'images/61456-p-800.png' %} 800w, {% static 'images/61456-p-1080.png' %} 1080w, {% static 'images/61456.png' %} 1200w"
-                sizes="100vw" alt="" class="site-image-edit">
-            </div>
-          </a>
+        <a href="/forms/{{ company.id }}/" class="site-clickable progress w-inline-block">
+          <div class="site w-clearfix">
+            <div class="site-info">ORD2456-12<br>{{ company.company_name }}<br>{{ company.site_address }}</div><img
+              src="{% static 'images/Group-1.png' %}" alt="" class="site-image-edit">
+          </div>
+        </a>
 
-        {% endif %}
+         {% endif %}
 
       {% endfor %}
       </div>
 
-      {% else %}
+        {% else %}
       <div class="site-box zero">
         <a href="#" class="site-clickable w-inline-block">
           <div class="site w-clearfix">
-            <div class="site-info">You do not have any linked Companies. Request a Site or Contact Agilis</div>
+            <div class="site-info">You do not have any linked Applications. Contact Agilis Networks for help.</div>
           </div>
         </a>
       </div>
 
       {% endif %}
       <div class="div-block-8"></div>
-      <div class="text-block-7">-- OR --</div><a href="#" class="request-site-btn w-button">Request a new Site</a>
     </div>
   </div>
   <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js" type="text/javascript"
