@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Submit</title>
+    <title>HEY THERE</title>
     <meta content="Submit" property="og:title">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Webflow" name="generator">
@@ -129,9 +129,9 @@
                             <div class="address">
                                 <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" onFocus="geolocate()" type="text" required="">
                                 <div class="div-block-30">
-                                    <input type="text" class="form-field w-input" maxlength="256" name="PostalCode" data-name="PostalCode" placeholder="Postal Code" id="PostalCode" required="">
+                                    <input type="text" class="form-field w-input" maxlength="256" name="postal_code" data-name="PostalCode" placeholder="Postal Code" id="postal_code" required="">
                                     <div class="div-block-31"></div>
-                                    <input type="text" class="form-field w-input" maxlength="256" name="Country" data-name="Country" placeholder="Country" id="Country" required="">
+                                    <input type="text" class="form-field w-input" maxlength="256" name="country" data-name="Country" placeholder="Country" id="country" required="">
                                 </div>
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite" data-name="Suite" placeholder="Enter Suite # (If Needed)" id="Suite">
                             </div>
@@ -291,7 +291,7 @@
                                                             <div class="address">
                                                                 <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" onFocus="geolocate()" type="text" required="">
                                                                 <div class="div-block-30">
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="PostalCode" data-name="PostalCode" placeholder="Postal Code" id="PostalCode" required="">
+                                                                    <input type="text" class="form-field w-input" maxlength="256" name="postal_code" data-name="PostalCode" placeholder="Postal Code" id="postal_code" required="">
                                                                     <div class="div-block-31"></div>
                                                                     <input type="text" class="form-field w-input" maxlength="256" name="Country" data-name="Country" placeholder="Country" id="Country" required="">
                                                                 </div>
@@ -866,20 +866,19 @@
                         </div>
                     </div>
                 </div>
-                <div>
+
+                <div class="formconfirm">
                     <h3 class="form-heading">Confirm</h3>
-                </div>
-                <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or
-                    go back and submit another time. </h5>
-                <div class="w-form">
-                    <form id="email-form-9" name="email-form-9" data-name="Email Form 9"><a href="#" class="form-back w-button">Back</a>
-                        <input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button">
-                    </form>
-                    <div class="w-form-done">
-                        <div>Thank you! Your submission has been received!</div>
-                    </div>
-                    <div class="w-form-fail">
-                        <div>Oops! Something went wrong while submitting the form.</div>
+                    <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
+                    <div class="w-form">
+                        <form id="email-form-9" name="email-form-9" data-name="Email Form 9"><a href="#" class="form-back w-button">Back</a><input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button"></form>
+                        
+                        <div class="w-form-done">
+                            <div>Thank you! Your submission has been received!</div>
+                        </div>
+                        <div class="w-form-fail">
+                            <div>Oops! Something went wrong while submitting the form.</div>
+                        </div>
                     </div>
                 </div>
             </div>

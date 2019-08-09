@@ -68,8 +68,6 @@ def loginProtocol(request):
             username = form.cleaned_data['Email']
             password = form.cleaned_data['Password']
 
-            print(username)
-            print(password)
             #Authenticates user using Authentication Model
             user = authenticate(request, username=username, password=password)
 
@@ -81,7 +79,7 @@ def loginProtocol(request):
             form.add_error('Password', 'Incorrect Credentials')
     #If post data does not exist then send back empty page with Form ready for user creds.
     else:
-        form = LoginForm()
+        form = LoginForm(request.POST)
     
     #Sends this info to the HTML
     context = {

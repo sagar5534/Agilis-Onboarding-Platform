@@ -1,8 +1,7 @@
 var placeSearch, autocomplete;
 
 var componentForm = {
-  postal_code: 'short_name',
-  country: 'long_name'
+  postal_code: 'short_name'
 };
 
 var componentForm2 = {
