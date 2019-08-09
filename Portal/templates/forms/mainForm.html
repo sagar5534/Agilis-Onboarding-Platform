@@ -17,17 +17,13 @@
     <script src="{% static 'forms/google.js' %}"></script>
     <script src="{% static 'forms/main.js' %}"></script>
 
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete"
-        async defer>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete" async defer>
     </script>
-
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 
 </head>
 
@@ -41,8 +37,7 @@
 
             <div id="locationField">
                 <label class="label" for="CompanyName">Company Name:</label>
-                <input class="field" id="CompanyName" type="text" name="CompanyName" maxlength="100"
-                    placeholder="Company Name" required>
+                <input class="field" id="CompanyName" type="text" name="CompanyName" maxlength="100" placeholder="Company Name" required>
             </div>
 
             <div id="locationField">
@@ -55,8 +50,7 @@
 
             <div id="locationField">
                 <label class="label" for="CurProvider">Current Provider:</label>
-                <input class="field" id="CurProvider" type="text" name="CurProvider" maxlength="100"
-                    placeholder="Current Provider" required>
+                <input class="field" id="CurProvider" type="text" name="CurProvider" maxlength="100" placeholder="Current Provider" required>
             </div>
 
             <br>
@@ -74,27 +68,34 @@
                 </tr>
                 <tr>
                     <td class="label">Street address</td>
-                    <td class="slimField"><input name="StreetNum" class="field" id="street_number" disabled="true" />
+                    <td class="slimField">
+                        <input name="StreetNum" class="field" id="street_number" disabled="true" />
                     </td>
-                    <td class="wideField" colspan="2"><input name="Street" class="field" id="route" disabled="true" />
+                    <td class="wideField" colspan="2">
+                        <input name="Street" class="field" id="route" disabled="true" />
                     </td>
                 </tr>
                 <tr>
                     <td class="label">City</td>
-                    <td class="wideField" colspan="3"><input name="City" class="field" id="locality" disabled="true" />
+                    <td class="wideField" colspan="3">
+                        <input name="City" class="field" id="locality" disabled="true" />
                     </td>
                 </tr>
                 <tr>
                     <td class="label">Prov.</td>
-                    <td class="slimField"><input name="Prov" class="field" id="administrative_area_level_1"
-                            disabled="true" /></td>
+                    <td class="slimField">
+                        <input name="Prov" class="field" id="administrative_area_level_1" disabled="true" />
+                    </td>
                     <td class="label">Postal Code</td>
-                    <td class="wideField"><input name="Postal" class="field" id="postal_code" disabled="true" /></td>
+                    <td class="wideField">
+                        <input name="Postal" class="field" id="postal_code" disabled="true" />
+                    </td>
                 </tr>
                 <tr>
                     <td class="label">Country</td>
-                    <td class="wideField" colspan="3"><input name="Country" class="field" id="country"
-                            disabled="true" /></td>
+                    <td class="wideField" colspan="3">
+                        <input name="Country" class="field" id="country" disabled="true" />
+                    </td>
                 </tr>
             </table>
 
@@ -114,7 +115,6 @@
 
             <button id='addPNumber' type=button onclick="addPortNumber()">+</button>
 
-
             <p>Numbers to be discontinued</p>
             <div class='numbers' id='discnumberForm'>
                 <input name="phone" type="text">
@@ -125,29 +125,31 @@
             <button type="submit">Submit</button>
         </form>
 
-
         <form class="step3">
 
             <h1>411 Information</h1>
 
             <div id="locationField">
-                <label class="label">Directory Listing: </label> <br>
-                <input type="radio" id="radio-yes" name="option" value=1 checked>Yes<br>
-                <input type="radio" id="radio-no" name="option" value=0>No<br>
+                <label class="label">Directory Listing: </label>
+                <br>
+                <input type="radio" id="radio-yes" name="option" value=1 checked>Yes
+                <br>
+                <input type="radio" id="radio-no" name="option" value=0>No
+                <br>
             </div>
 
-            <br><br><br>
+            <br>
+            <br>
+            <br>
 
             <div id="locationField">
                 <label class="label" for="CompanyName411">Company Name:</label>
-                <input class="field" id="CompanyName411" type="text" name="CompanyName411" maxlength="100"
-                    placeholder="Company Name to be Listed" required>
+                <input class="field" id="CompanyName411" type="text" name="CompanyName411" maxlength="100" placeholder="Company Name to be Listed" required>
             </div>
 
             <div id="locationField">
                 <label class="label" for="Category">Category:</label>
-                <input class="field" id="Category" type="text" name="Category" maxlength="100" placeholder="Category"
-                    required>
+                <input class="field" id="Category" type="text" name="Category" maxlength="100" placeholder="Category" required>
             </div>
 
             <br>
@@ -185,37 +187,41 @@
                     </tr>
                     <tr>
                         <td class="label">Street address</td>
-                        <td class="slimField"><input name="StreetNum2" class="field" id="street_number2"
-                                disabled="true" />
+                        <td class="slimField">
+                            <input name="StreetNum2" class="field" id="street_number2" disabled="true" />
                         </td>
-                        <td class="wideField" colspan="2"><input name="Street2" class="field" id="route2"
-                                disabled="true" />
+                        <td class="wideField" colspan="2">
+                            <input name="Street2" class="field" id="route2" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">City</td>
-                        <td class="wideField" colspan="3"><input name="City2" class="field" id="locality2"
-                                disabled="true" />
+                        <td class="wideField" colspan="3">
+                            <input name="City2" class="field" id="locality2" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">Prov.</td>
-                        <td class="slimField"><input name="Prov2" class="field" id="administrative_area_level_12"
-                                disabled="true" /></td>
+                        <td class="slimField">
+                            <input name="Prov2" class="field" id="administrative_area_level_12" disabled="true" />
+                        </td>
                         <td class="label">Postal Code</td>
-                        <td class="wideField"><input name="Postal2" class="field" id="postal_code2" disabled="true" />
+                        <td class="wideField">
+                            <input name="Postal2" class="field" id="postal_code2" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">Country</td>
-                        <td class="wideField" colspan="3"><input name="Country2" class="field" id="country2"
-                                disabled="true" /></td>
+                        <td class="wideField" colspan="3">
+                            <input name="Country2" class="field" id="country2" disabled="true" />
+                        </td>
                     </tr>
                 </table>
             </div>
 
             <div id="submit">
-                <br><br>
+                <br>
+                <br>
                 <button type="submit">Submit</button>
             </div>
 
@@ -232,7 +238,9 @@
                 </select>
             </div>
 
-            <br><br><br>
+            <br>
+            <br>
+            <br>
 
             <div id="locationField">
                 <label class="label">911 Address Info Per Number (If different from Main Site)</label>
@@ -268,41 +276,42 @@
                     </tr>
                     <tr>
                         <td class="label">Street address</td>
-                        <td class="slimField"><input name="StreetNum3" class="field" id="street_number3"
-                                disabled="true" />
+                        <td class="slimField">
+                            <input name="StreetNum3" class="field" id="street_number3" disabled="true" />
                         </td>
-                        <td class="wideField" colspan="2"><input name="Street3" class="field" id="route3"
-                                disabled="true" />
+                        <td class="wideField" colspan="2">
+                            <input name="Street3" class="field" id="route3" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">City</td>
-                        <td class="wideField" colspan="3"><input name="City3" class="field" id="locality3"
-                                disabled="true" />
+                        <td class="wideField" colspan="3">
+                            <input name="City3" class="field" id="locality3" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">Prov.</td>
-                        <td class="slimField"><input name="Prov3" class="field" id="administrative_area_level_13"
-                                disabled="true" /></td>
+                        <td class="slimField">
+                            <input name="Prov3" class="field" id="administrative_area_level_13" disabled="true" />
+                        </td>
                         <td class="label">Postal Code</td>
-                        <td class="wideField"><input name="Postal3" class="field" id="postal_code3" disabled="true" />
+                        <td class="wideField">
+                            <input name="Postal3" class="field" id="postal_code3" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">Country</td>
-                        <td class="wideField" colspan="3"><input name="Country3" class="field" id="country3"
-                                disabled="true" /></td>
+                        <td class="wideField" colspan="3">
+                            <input name="Country3" class="field" id="country3" disabled="true" />
+                        </td>
                     </tr>
                 </table>
             </div>
-
 
             <button id='AddRule' type=button onclick="addRule()">Add Rule</button>
 
             <br>
             <br>
-
 
             <div id='Rules'>
                 <h3>Normal</h3>
@@ -326,7 +335,6 @@
                 </table>
             </div>
 
-
             <div id='NewAddress' style='display: none'>
                 <div id="locationField">
                     <input id="autocomplete2" placeholder="Enter your address" onFocus="geolocate()" type="text" />
@@ -341,37 +349,41 @@
                     </tr>
                     <tr>
                         <td class="label">Street address</td>
-                        <td class="slimField"><input name="StreetNum2" class="field" id="street_number2"
-                                disabled="true" />
+                        <td class="slimField">
+                            <input name="StreetNum2" class="field" id="street_number2" disabled="true" />
                         </td>
-                        <td class="wideField" colspan="2"><input name="Street2" class="field" id="route2"
-                                disabled="true" />
+                        <td class="wideField" colspan="2">
+                            <input name="Street2" class="field" id="route2" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">City</td>
-                        <td class="wideField" colspan="3"><input name="City2" class="field" id="locality2"
-                                disabled="true" />
+                        <td class="wideField" colspan="3">
+                            <input name="City2" class="field" id="locality2" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">Prov.</td>
-                        <td class="slimField"><input name="Prov2" class="field" id="administrative_area_level_12"
-                                disabled="true" /></td>
+                        <td class="slimField">
+                            <input name="Prov2" class="field" id="administrative_area_level_12" disabled="true" />
+                        </td>
                         <td class="label">Postal Code</td>
-                        <td class="wideField"><input name="Postal2" class="field" id="postal_code2" disabled="true" />
+                        <td class="wideField">
+                            <input name="Postal2" class="field" id="postal_code2" disabled="true" />
                         </td>
                     </tr>
                     <tr>
                         <td class="label">Country</td>
-                        <td class="wideField" colspan="3"><input name="Country2" class="field" id="country2"
-                                disabled="true" /></td>
+                        <td class="wideField" colspan="3">
+                            <input name="Country2" class="field" id="country2" disabled="true" />
+                        </td>
                     </tr>
                 </table>
             </div>
 
             <div id="submit">
-                <br><br>
+                <br>
+                <br>
                 <button type="submit">Submit</button>
 
             </div>
