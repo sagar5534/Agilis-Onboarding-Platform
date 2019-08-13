@@ -30,15 +30,6 @@ $.ajaxSetup({
 
 
 
-
-
-//Clearing Google Fill in Address Bar
-function clearGoogleAddress(id) {
-    document.getElementById("Suite" + id).value = ""
-    document.getElementById("postal_code" + id).value = ""
-}
-
-
 //Function to getAddress
 function getAddress(element, callback) {
     $.ajax({
@@ -52,13 +43,14 @@ function getAddress(element, callback) {
             for (x in data.address) {
                 document.getElementById(element).innerHTML += '<option value=' + data.address[x].id + '>' + data.address[x].address + '</option>'
             }
-            if (element != 'SelectAddress2') {
+            if (element == 'SelectAddress411' || element == 'SelectAddressExc911') {
                 document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
             }
 
-            if (element == 'SelectAddress2') {
+            if (element == 'SelectAddress411') {
                 window.RuleAddress = data.address;
             }
+
             callback(data.address);
         });
 };
@@ -74,8 +66,9 @@ function getPhone(element, callback) {
         })
         .done(function (data) {
             document.getElementById(element).innerHTML = ""
-
-            RulePhone = data.phone
+            
+            console.log(data)
+            //RulePhone = data.phone
             if (element == "SelectPhone2") {
                 document.getElementById(element).innerHTML += '<option value="0">---------</option>'
 
@@ -90,43 +83,50 @@ function getPhone(element, callback) {
 
 
 //Global Vars for Numbers - Form 
-let portId = 1;
-let discId = 1;
-
+let portId = 0;
+let discId = 0;
 
 //Both Functions are for Numbers - Forms 
 //Functions to remove Port Number
 function removePortNumber(x) {
     //document.getElementById("portnumber" + x).remove();
     //document.getElementById("portremoveNumber" + x).remove();
-    document.getElementById("portbr" + x).remove();
+    document.getElementById("portid" + x).remove();
 }
-
 
 //Functions to remove Disc Number
 function removeDiscNumber(x) {
-    document.getElementById("discnumber" + x).remove();
-    document.getElementById("discremoveNumber" + x).remove();
-    document.getElementById("discbr" + x).remove();
+    //document.getElementById("discnumber" + x).remove();
+    //document.getElementById("discremoveNumber" + x).remove();
+    document.getElementById("discid" + x).remove();
 }
-
 
 //Functions to Add a Port Number
-//Check if NEEDED
 function addPortNumber() {
 
-
+    console.log("AddPortNumber")
+    var x = document.getElementById("PortNumber").value
     portId++;
+    $('#numbersPort').append("<div class='div-block-17 w-clearfix' id='portid" + portId + "'>"
+    + "<div class='text-block-14'>#</div>"
+    + "<div class='form-number'>" + x + "</div>"
+    + "<a class='form-x-btn w-button' onclick='removePortNumber(" + portId + ")'>X</a></div>")
 
-    $('#portgroup').append('<div class="div-block-17 w-clearfix" id=portbr' + portId + '><div class="text-block-14">#</div><div class="form-number">(647)-546-8965</div><a type=button onclick=removePortNumber(' + portId + ') class="form-x-btn w-button">X</a></div>')
+    document.getElementById("PortNumber").value = ""
 
 }
-
 
 //Function to Add a Disconnect Number
 function addDiscNumber() {
-    discId++;
-    $('#discnumberForm').append("<br id='discbr" + discId + "'><input id=discnumber" + discId + " name='phone' type='text'><button id='discremoveNumber" + discId + "' type=button onclick='removeDiscNumber(" + discId + ")'>X</button>");
+
+    console.log("AddPortNumber")
+    var x = document.getElementById("DiscNumber").value
+    discId++;    
+    $('#numbersDisc').append("<div class='div-block-17 w-clearfix' id='discid" + discId + "'>"
+    + "<div class='text-block-14'>#</div>"
+    + "<div class='form-number'>" + x + "</div>"
+    + "<a class='form-x-btn w-button' onclick='removeDiscNumber(" + discId + ")'>X</a></div>")
+    document.getElementById("DiscNumber").value = ""
 }
 
 
@@ -154,11 +154,14 @@ function createRuleTable(phone, address) {
             address: address[0].address
         }
 
-        document.getElementById('RulesTable').innerHTML += '<tr id="rule' + phone[key].id + '">' +
-            '<td>' + phone[key].phone + '</td>' +
-            '<td>' + address[0].address + '</td>' +
-            '</tr>'
+        document.getElementById('RulesTable').innerHTML += "<div class='grid-entry'>" + 
+        "<div id='w-node-7ad72b18e096-37815fb7' class='form-grid-entry'>" + phone[key].phone + "</div>" +
+        "<div class='form-grid-entry'>" + address[0].address + "</div>" +
+        "</div>"
+
     });
+
+    console.log(normalRules)
 }
 
 
@@ -262,6 +265,7 @@ function removeRule(id, location) {
 
 
 //To merge two objects into one - 911 Info 
+//Check if needed
 function merge_options(obj1, obj2) {
     var obj3 = {};
     for (var attrname in obj1) {
@@ -276,20 +280,47 @@ function merge_options(obj1, obj2) {
 
  
 
-function PromptNewAddress(period) {
-    var sel = "SelectAddress" + period
+function PromptNewAddress(id) {
+    console.log("PrompNewAddress" + id)
+    var sel = "SelectAddress" + id
 
     var address = document.getElementById(sel).options[document.getElementById(sel).selectedIndex].value;
     if (address == "0") {
-        clearGoogleAddress(period)
-        document.getElementById('NewAddress' + period).style.display = "block"
+        //Clear
+        document.getElementById("postal_code" + id).value = ""
+        document.getElementById("country" + id).value = ""
+        document.getElementById("Suite-" + id).value = ""
+        document.getElementById("GoogleAddress-" + id).value = ""
+
+        //Enable
+        document.getElementById("postal_code" + id).disabled = false;
+        document.getElementById("country" + id).disabled = false;
+        document.getElementById("Suite-" + id).disabled = false;
+        document.getElementById("GoogleAddress-" + id).disabled = false;
+        //Show
+        document.getElementById('NewAddress' + id).style.display = "block"
+        
     } else {
-        document.getElementById('NewAddress' + period).style.display = "none"
+        //Hide
+        document.getElementById('NewAddress' + id).style.display = "none"
+        //Enable
+        document.getElementById("postal_code" + id).disabled = true;
+        document.getElementById("country" + id).disabled = true;
+        document.getElementById("Suite-" + id).disabled = true;
+        document.getElementById("GoogleAddress-" + id).disabled = true;
     }
 }
 
 //Instructions that occur once document is ready
 $(document).ready(function () {
+
+    $('#SelectAddress411').change(function () {
+        PromptNewAddress('411')
+    }); 
+
+    $('#SelectAddressExc911').change(function () {
+        PromptNewAddress('Exc911')
+    }); 
 
     //A main site is changed on 911 Info - Form
     $("#SelectAddress2").change( function(e){
@@ -312,37 +343,55 @@ $(document).ready(function () {
     });
     
      //Does user want to be listed in 411 Directory - 411 Directory - Forms
-    $("input:radio[name='option']").click(function () {
-        var radioValue = $("input[name='option']:checked").val();
-        if (radioValue == 1) {
-            document.getElementById('CompanyName411').disabled = false;
-            document.getElementById('Category').disabled = false;
-            document.getElementById('SelectAddress').disabled = false;
-            document.getElementById('SelectPhone').disabled = false;
-            //PromptNewAddress(document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value)
+    $("input:radio[name='411-Directory']").click(function () {
+        var radioValue = $("input[name='411-Directory']:checked").val();
+        console.log(radioValue)
+        if (radioValue == 'Yes') {
+            document.getElementById('CompanyNameList').disabled = false;
+            document.getElementById('Category411').disabled = false;
+            document.getElementById('SelectAddress411').disabled = false;
+            document.getElementById('SelectPhone411').disabled = false;
+            PromptNewAddress("411")
+            document.getElementById('411Box').display = "Block";
 
         } else {
-            document.getElementById('NewAddress').style.display = "none"
-            document.getElementById('CompanyName411').value = '';
-            document.getElementById('CompanyName411').disabled = true;
-            document.getElementById('Category').disabled = true;
-            document.getElementById('SelectAddress').disabled = true;
-            document.getElementById('SelectPhone').disabled = true;
+            document.getElementById('CompanyNameList').value = '';
+            document.getElementById('Category411').value = '';
+            document.getElementById('CompanyNameList').disabled = true;
+            document.getElementById('Category411').disabled = true;
+            document.getElementById('SelectPhone411').disabled = true;
+            document.getElementById('SelectAddress411').disabled = true;
+            document.getElementById('411Box').style.display = "none";
+
         }
     });
 
 
     //Showing Screens
-    $(".formcompany").show();
+    $(".formcompany").hide();
     $(".formporting").hide();
+
+
+    getAddress('SelectAddress411', function () {})
+    getPhone('SelectPhone411', function () {})
+
     $(".form411").hide();
-    $(".form911").hide();
+
+    getAddress("SelectAddress911", function (address) {
+        getPhone("SelectPhoneExc911", function (phone) {
+            createRuleTable(phone, address);
+        });
+    });
+    getAddress("SelectAddressExc911")
+
+
+    $(".form911").show();
     $(".formext").hide();
     $(".formupload").hide();
     $(".formconfirm").hide();
 
     //Company Info
-    $("#wf-form-FormCompany").submit(function (e) {
+    $(".companyFormNext").submit(function (e) {
         e.preventDefault();
         $.ajax({
                 url: '/forms/catch',
@@ -368,46 +417,46 @@ $(document).ready(function () {
     });
 
     //Port Number
-    $(".step2").submit(function (e) {
+    $(".portingFormNext").submit(function (e) {
         e.preventDefault();
 
         var formCorrect = true;
 
-        var div = document.getElementById('portnumberForm')
-        var children = div.childNodes;
-        var elements = [];
-        for (var i = 0; i < div.childNodes.length; i++) {
-            var child = div.childNodes[i];
-            if (child.name == 'phone') {
-                if (!(child.value == "")) {
-                    child.value = validatePhone(child.value)
-                    if (child.value.length == 10 && (/^\d+$/.test(child.value))) {
-                        elements.push(child.value)
-                    } else {
-                        formCorrect = false;
-                        break;
-                    }
-                }
-            }
-        }
+        // var div = document.getElementById('numbersPort')
+        // var children = div.childNodes;
+        // var elements = [];
+        // for (var i = 0; i < div.childNodes.length; i++) {
+        //     var child = div.childNodes[i];
+        //     if (child.name == 'phone') {
+        //         if (!(child.value == "")) {
+        //             child.value = validatePhone(child.value)
+        //             if (child.value.length == 10 && (/^\d+$/.test(child.value))) {
+        //                 elements.push(child.value)
+        //             } else {
+        //                 formCorrect = false;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
-        var div = document.getElementById('discnumberForm')
-        var children = div.childNodes;
-        var discelements = [];
-        for (var i = 0; i < div.childNodes.length; i++) {
-            var child = div.childNodes[i];
-            if (child.name == 'phone') {
-                if (!(child.value == "")) {
-                    child.value = validatePhone(child.value)
-                    if (child.value.length == 10 && (/^\d+$/.test(child.value))) {
-                        discelements.push(child.value)
-                    } else {
-                        formCorrect = false;
-                        break;
-                    }
-                }
-            }
-        }
+        // var div = document.getElementById('discnumberForm')
+        // var children = div.childNodes;
+        // var discelements = [];
+        // for (var i = 0; i < div.childNodes.length; i++) {
+        //     var child = div.childNodes[i];
+        //     if (child.name == 'phone') {
+        //         if (!(child.value == "")) {
+        //             child.value = validatePhone(child.value)
+        //             if (child.value.length == 10 && (/^\d+$/.test(child.value))) {
+        //                 discelements.push(child.value)
+        //             } else {
+        //                 formCorrect = false;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
         if (formCorrect == true) {
             //Data
@@ -443,7 +492,7 @@ $(document).ready(function () {
     });
 
     //411 Info
-    $(".step3").submit(function (e) {
+    $(".411FormNext").submit(function (e) {
 
         if (document.getElementById('radio-yes').checked == true) {
             if (document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value == 0) {
@@ -530,7 +579,7 @@ $(document).ready(function () {
             });
     });
 
-    //911 Info 
+     
     $(".step5").submit(function (e) {
 
         data = merge_options(normalRules, ExceptionRules)

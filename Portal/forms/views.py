@@ -101,13 +101,9 @@ def getAddress(request):
 
         x = {
             "address": suiteHandler
-            + str(temp2.StreetNum)
-            + " "
-            + temp2.Street
+            + temp2.StreetAddress
             + ", "
-            + temp2.City
-            + ", "
-            + temp2.Prov,
+            + temp2.Postal,
             "id": temp2.id,
         }
 

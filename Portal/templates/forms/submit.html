@@ -1,8 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Wed Aug 07 2019 18:40:37 GMT+0000 (UTC)  -->
+
 <html data-wf-page="5d306d5dffc9be6137815fb7" data-wf-site="5d1f8e2ff235ae4ee0c9c0df" lang="en">
 
 <head>
@@ -48,13 +47,14 @@
             'anonymize_ip': false
         });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete" async defer>
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initMap" async defer></script>
+
     <script>
-        var company = {{ company }};
+        //var company = {{ company }};
     </script>
     <script src="{% static 'js/google.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
 </head>
 
 <body class="body-4">
@@ -63,9 +63,11 @@
         <a href="/logout" class="button-4 w-button">Logout</a>
         <div class="welcome-user">Welcome {{ user }}</div>
     </div>
+
     <div class="submit">
         <div class="submit-container w-container">
             <div class="status-bar"></div>
+
             <div class="form-nav">
                 <a href="#" class="step-item w-inline-block">
                     <div id="CompanyCircle" class="circle">
@@ -110,11 +112,13 @@
                     <div class="item-lbl">Confirm</div>
                 </a>
             </div>
+            
             <div class="form-container">
+
                 <div class="formcompany">
                     <h3 class="form-heading">Company Information</h3>
                     <div class="w-form">
-                        <form id="wf-form-FormCompany" name="wf-form-FormCompany" data-name="FormCompany" method="post">
+                        <form id="companyFormNext" name="wf-form-FormCompany" data-name="FormCompany" method="post">
                             <input type="text" class="form-field w-input" maxlength="256" name="CompanyName" data-name="CompanyName" placeholder="Company Name" id="CompanyName" required="">
                             <div class="div-block-14">
                                 <input type="text" class="form-field company w-input" maxlength="256" name="Provider" data-name="Provider" placeholder="Current Telephone Provider" id="Provider" required="">
@@ -135,7 +139,7 @@
                                 </div>
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite" data-name="Suite" placeholder="Enter Suite # (If Needed)" id="Suite">
                             </div>
-                            <div class="w-widget w-widget-map"></div>
+                            <div id="map"></div>
                             <input type="submit" value="Next" data-wait="Please wait..." id="CompanyNext" class="form-next company w-button">
                         </form>
                         <div class="w-form-done">
@@ -146,485 +150,29 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="formporting">
+
                     <h3 class="form-heading">Port Phone Numbers</h3>
                     <div class="w-form">
-                        <form id="email-form-2" name="email-form-2" data-name="Email Form 2">
+                        <form id="PortNumbers" name="PortNumbers" data-name="PortNumbers" onsubmit="addPortNumber()">
                             <label for="name-2" class="field-label">Numbers to be Ported</label>
                             <div class="div-block-15">
-                                <input type="tel" class="form-field phone w-input" maxlength="10" name="PortNumber" data-name="PortNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="PortNumber"><a href="#" class="form-add w-button">+</a></div>
+                                <input type="tel" class="form-field phone w-input" maxlength="10" name="PortNumber" data-name="PortNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="PortNumber">
+                                <input type="submit" class="form-add w-button" name="+" value="+">
+                            </div>
                             <div class="div-block-33 port">
                                 <div>Error</div>
                             </div>
-                            <div class="numbersgroup">{% load static %}
-
-                                <!DOCTYPE html>
-                                <!--  This site was created in Webflow. http://www.webflow.com  -->
-                                <!--  Last Published: Wed Aug 07 2019 18:40:37 GMT+0000 (UTC)  -->
-                                <html data-wf-page="5d306d5dffc9be6137815fb7" data-wf-site="5d1f8e2ff235ae4ee0c9c0df" lang="en">
-
-                                <head>
-                                    <meta charset="utf-8">
-                                    <title>Submit</title>
-                                    <meta content="Submit" property="og:title">
-                                    <meta content="width=device-width, initial-scale=1" name="viewport">
-                                    <meta content="Webflow" name="generator">
-                                    <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css">
-                                    <link href="{% static 'css/webflow.css' %}" rel="stylesheet" type="text/css">
-                                    <link href="{% static 'css/agilis-e999a0.webflow.css' %}" rel="stylesheet" type="text/css">
-                                    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
-
-                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-                                    <script type="text/javascript">
-                                        WebFont.load({
-                                            google: {
-                                                families: ["Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic"]
-                                            }
-                                        });
-                                    </script>
-                                    <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
-                                    <script type="text/javascript">
-                                        ! function(o, c) {
-                                            var n = c.documentElement,
-                                                t = " w-mod-";
-                                            n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n
-                                                .className += t + "touch")
-                                        }(window, document);
-                                    </script>
-                                    <link href="{% static 'icons/favicon.png' %}" rel="shortcut icon" type="image/x-icon">
-                                    <link href="{% static 'icons/webclip.png' %}" rel="apple-touch-icon">
-                                    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-140421895-1"></script>
-                                    <script type="text/javascript">
-                                        window.dataLayer = window.dataLayer || [];
-
-                                        function gtag() {
-                                            dataLayer.push(arguments);
-                                        }
-                                        gtag('js', new Date());
-                                        gtag('config', 'UA-140421895-1', {
-                                            'anonymize_ip': false
-                                        });
-                                    </script>
-                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initAutocomplete" async defer>
-                                    </script>
-                                    <script>
-                                        var company = {
-                                            {
-                                                company
-                                            }
-                                        };
-                                    </script>
-                                    <script src="{% static 'js/google.js' %}"></script>
-                                    <script src="{% static 'js/main.js' %}"></script>
-                                </head>
-
-                                <body class="body-4">
-                                    <div class="section-3 w-clearfix">
-                                        <a href="{% url 'index' %}"><img src="{% static 'images/agilis-logo.png' %}" alt="" class="image-3"></a>
-                                        <a href="/logout" class="button-4 w-button">Logout</a>
-                                        <div class="welcome-user">Welcome {{ user }}</div>
-                                    </div>
-                                    <div class="submit">
-                                        <div class="submit-container w-container">
-                                            <div class="status-bar"></div>
-                                            <div class="form-nav">
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="CompanyCircle" class="circle">
-                                                        <div class="text-block-9">1</div>
-                                                    </div>
-                                                    <div class="item-lbl">Company Info</div>
-                                                </a>
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="PortingCircle" class="circle">
-                                                        <div class="text-block-9">2</div>
-                                                    </div>
-                                                    <div class="item-lbl">Porting</div>
-                                                </a>
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="411Circle" class="circle">
-                                                        <div class="text-block-9">3</div>
-                                                    </div>
-                                                    <div class="item-lbl">411 Info</div>
-                                                </a>
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="911Circle" class="circle">
-                                                        <div class="text-block-9">4</div>
-                                                    </div>
-                                                    <div class="item-lbl">911 Info</div>
-                                                </a>
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="ExtensionCircle" class="circle">
-                                                        <div class="text-block-9">5</div>
-                                                    </div>
-                                                    <div class="item-lbl">Extensions</div>
-                                                </a>
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="UploadCircle" class="circle">
-                                                        <div class="text-block-9">6</div>
-                                                    </div>
-                                                    <div class="item-lbl">Upload Bill</div>
-                                                </a>
-                                                <a href="#" class="step-item w-inline-block">
-                                                    <div id="ConfirmCircle" class="circle">
-                                                        <div class="text-block-9">7</div>
-                                                    </div>
-                                                    <div class="item-lbl">Confirm</div>
-                                                </a>
-                                            </div>
-                                            <div class="form-container">
-                                                <div class="formcompany">
-                                                    <h3 class="form-heading">Company Information</h3>
-                                                    <div class="w-form">
-                                                        <form id="wf-form-FormCompany" name="wf-form-FormCompany" data-name="FormCompany" method="post">
-                                                            <input type="text" class="form-field w-input" maxlength="256" name="CompanyName" data-name="CompanyName" placeholder="Company Name" id="CompanyName" required="">
-                                                            <div class="div-block-14">
-                                                                <input type="text" class="form-field company w-input" maxlength="256" name="Provider" data-name="Provider" placeholder="Current Telephone Provider" id="Provider" required="">
-                                                                <label for="Type" class="field-label typesite">Type of Site</label>
-                                                                <select id="Type" name="Type" required="" data-name="Type" class="form-select w-select">
-                                                                    <option value="">Select one...</option>
-                                                                    <option value="Business">Business</option>
-                                                                    <option value="Residential">Residential</option>
-                                                                </select>
-                                                            </div>
-                                                            <label for="name-2" class="field-label">Company Address</label>
-                                                            <div class="address">
-                                                                <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" onFocus="geolocate()" type="text" required="">
-                                                                <div class="div-block-30">
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="postal_code" data-name="PostalCode" placeholder="Postal Code" id="postal_code" required="">
-                                                                    <div class="div-block-31"></div>
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="Country" data-name="Country" placeholder="Country" id="Country" required="">
-                                                                </div>
-                                                                <input type="text" class="form-field w-input" maxlength="256" name="Suite" data-name="Suite" placeholder="Enter Suite # (If Needed)" id="Suite">
-                                                            </div>
-                                                            <div class="w-widget w-widget-map"></div>
-                                                            <input type="submit" value="Next" data-wait="Please wait..." id="CompanyNext" class="form-next company w-button">
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="formporting">
-                                                    <h3 class="form-heading">Port Phone Numbers</h3>
-                                                    <div class="w-form">
-                                                        <form id="email-form-2" name="email-form-2" data-name="Email Form 2">
-                                                            <label for="name-2" class="field-label">Numbers to be Ported</label>
-                                                            <div class="div-block-15">
-                                                                <input type="tel" class="form-field phone w-input" maxlength="10" name="PortNumber" data-name="PortNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="PortNumber"><a href="#" class="form-add w-button">+</a></div>
-                                                            <div class="div-block-33 port">
-                                                                <div>Error</div>
-                                                            </div>
-                                                            <div class="numbersgroup">
-                                                                <h6 class="form-heading-8">Porting Numbers</h6>
-                                                                <div class="div-block-17 w-clearfix">
-                                                                    <div class="text-block-14">#</div>
-                                                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                                                </div>
-                                                                <div class="div-block-17 w-clearfix">
-                                                                    <div class="text-block-14">#</div>
-                                                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="w-form">
-                                                        <form id="email-form-7" name="email-form-7" data-name="Email Form 7">
-                                                            <label for="email" class="field-label">Numbers to be Disconnected</label>
-                                                            <div class="div-block-15">
-                                                                <input type="text" class="form-field phone w-input" maxlength="10" name="DiscNumber" data-name="DiscNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="DiscNumber">
-                                                                <input type="submit" value="+" data-wait="Please wait..." class="form-add w-button">
-                                                            </div>
-                                                            <div class="div-block-33 disc">
-                                                                <div>Error</div>
-                                                            </div>
-                                                            <div class="numbersgroup">
-                                                                <h6 class="form-heading-8">Disconnect Numbers</h6>
-                                                                <div class="div-block-17 w-clearfix">
-                                                                    <div class="text-block-14">#</div>
-                                                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                                                </div>
-                                                                <div class="div-block-17 w-clearfix">
-                                                                    <div class="text-block-14">#</div>
-                                                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="w-form">
-                                                        <form id="email-form-8" name="email-form-8" data-name="Email Form 8"><a id="NumbersBack" href="#" class="form-back w-button">Back</a>
-                                                            <input type="submit" value="Next" data-wait="Please wait..." id="NumbersNext" class="form-next w-button">
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form911">
-                                                    <h3 class="form-heading">911 Information</h3>
-                                                    <div class="w-form">
-                                                        <form id="email-form-4" name="email-form-4" data-name="Email Form 4">
-                                                            <label for="SelectAddress" class="form-heading-8">Main Site Address</label>
-                                                            <select id="SelectAddress911" name="SelectAddress911" data-name="SelectAddress911" required="" class="form-select w-select">
-                                                                <option value="">Select one...</option>
-                                                                <option value="First">First Choice</option>
-                                                                <option value="Second">Second Choice</option>
-                                                                <option value="Third">Third Choice</option>
-                                                            </select>
-                                                            <label for="email" class="form-heading-8">Create an Exception</label>
-                                                            <div class="div-block-19">
-                                                                <div class="field-label _911 first">Phone</div>
-                                                                <select id="SelectPhoneExc911" name="SelectPhoneExc" data-name="SelectPhoneExc" class="form-select w-select">
-                                                                    <option value="">Select one...</option>
-                                                                    <option value="First">First Choice</option>
-                                                                    <option value="Second">Second Choice</option>
-                                                                    <option value="Third">Third Choice</option>
-                                                                </select>
-                                                                <div class="field-label _911">Address</div>
-                                                                <select id="SelectAddressExc911" name="SelectAddressExc" data-name="SelectAddressExc" class="form-select w-select">
-                                                                    <option value="">Select one...</option>
-                                                                    <option value="First">First Choice</option>
-                                                                    <option value="Second">Second Choice</option>
-                                                                    <option value="Third">Third Choice</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="address">
-                                                                <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" required="">
-                                                                <div class="div-block-30">
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-2" data-name="Postal Code 2" placeholder="Postal Code" id="Postal-Code-2" required="">
-                                                                    <div class="div-block-31"></div>
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="Country-2" data-name="Country 2" placeholder="Country" id="Country-2" required="">
-                                                                </div>
-                                                                <input type="text" class="form-field w-input" maxlength="256" name="Suite-2" data-name="Suite 2" placeholder="Enter Suite # (If Needed)" id="Suite-2">
-                                                            </div>
-                                                            <div>
-                                                                <h4 class="form-heading-8">Rules</h4>
-                                                                <div class="heading-grid">
-                                                                    <div class="form-grid-heading">Phone</div>
-                                                                    <div class="form-grid-heading">Address</div>
-                                                                </div>
-                                                                <div class="grid-entry">
-                                                                    <div id="w-node-489d1385eaa5-37815fb7" class="form-grid-entry">647-629-8391</div>
-                                                                    <div class="form-grid-entry">89 Bleasdale Ave, Brampton, ON</div>
-                                                                </div>
-                                                                <div class="grid-entry">
-                                                                    <div id="w-node-7ad72b18e096-37815fb7" class="form-grid-entry">647-629-8391</div>
-                                                                    <div class="form-grid-entry">89 Bleasdale Ave, Brampton, ON</div><a href="#" class="w-button">X</a>
-                                                                </div>
-                                                            </div><a id="911Back" href="#" class="form-back w-button">Back</a>
-                                                            <input type="submit" value="Next" data-wait="Please wait..." id="911Next" class="form-next w-button">
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form411">
-                                                    <h3 class="form-heading">411 Information</h3>
-                                                    <div class="form-heading-8">Would you like to share your Company Info with 411</div>
-                                                    <div class="w-form">
-                                                        <form id="email-form-3" name="email-form-3" data-name="Email Form 3">
-                                                            <div class="div-block-18">
-                                                                <label class="w-radio">
-                                                                    <input type="radio" data-name="411 Directory" id="411Yes" name="411-Directory" value="Yes" required="" data-w-id="150fe67e-1a4e-9995-fb03-f48a99bddbc5" class="w-radio-input"><span for="Yes" class="w-form-label">Yes</span></label>
-                                                                <label class="radio-button-field w-radio">
-                                                                    <input type="radio" data-name="411 Directory" id="411No" name="411-Directory" value="No" data-w-id="39b0b00d-a354-2bd6-e824-7db1bfdd3862" class="w-radio-input"><span for="No" class="w-form-label">No</span></label>
-                                                            </div>
-                                                            <div data-w-id="54b22c51-ca8d-7d74-d716-9ea8bb92b6ec" style="height:0PX;display:none;opacity:0">
-                                                                <label for="CompanyName-2" class="form-heading-8">Company Name to be listed</label>
-                                                                <input type="text" class="form-field w-input" maxlength="256" name="CompanyName" data-name="CompanyName" placeholder="Company Name" id="CompanyNameList" required="">
-                                                                <label for="Category" class="form-heading-8">Category to be listed under
-                                                                </label>
-                                                                <input type="text" class="form-field w-input" maxlength="256" name="Category" data-name="Category" placeholder="Category" id="Category411" required="">
-                                                                <div class="form-heading-8">Phone to be listed:</div>
-                                                                <select id="SelectPhone411" name="SelectPhone411" required="" data-name="SelectPhone411" class="form-select w-select">
-                                                                    <option value="">Select one...</option>
-                                                                    <option value="First">First Choice</option>
-                                                                </select>
-                                                                <div class="form-heading-8">Address to be listed:</div>
-                                                                <select id="SelectAddress411" name="SelectAddress411" required="" data-name="SelectAddress411" class="form-select w-select">
-                                                                    <option value="">Select one...</option>
-                                                                    <option value="First">First Choice</option>
-                                                                </select>
-                                                                <div class="address">
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" required="">
-                                                                    <div class="div-block-30">
-                                                                        <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-3" data-name="Postal Code 3" placeholder="Postal Code" id="Postal-Code-3" required="">
-                                                                        <div class="div-block-31"></div>
-                                                                        <input type="text" class="form-field w-input" maxlength="256" name="Country-3" data-name="Country 3" placeholder="Country" id="Country-3" required="">
-                                                                    </div>
-                                                                    <input type="text" class="form-field w-input" maxlength="256" name="Suite-3" data-name="Suite 3" placeholder="Enter Suite # (If Needed)" id="Suite-3">
-                                                                </div>
-                                                            </div><a id="411Back" href="#" class="form-back w-button">Back</a>
-                                                            <input type="submit" value="Next" data-wait="Please wait..." id="411Next" class="form-next w-button">
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id="FormExtensions" class="formext">
-                                                    <h3 class="form-heading">Extensions</h3>
-                                                    <p class="form-heading-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
-                                                    <h4 class="heading-10">Your Extensions</h4>
-                                                    <div class="w-form">
-                                                        <form id="email-form-6" name="email-form-6" data-name="Email Form 6">
-                                                            <div class="accordian-wrapper">
-                                                                <div class="accordian-item">
-                                                                    <div data-w-id="b0bea07e-42c7-1040-d18f-66f6ec874e03" class="accordian-trigger w-clearfix">
-                                                                        <h5 class="tigger-header"># 4566 - Sagar Patel<br></h5><a href="#" class="form-x-btn w-button">X</a>
-                                                                    </div>
-                                                                    <div style="height:0PX" class="accordian-content">
-                                                                        <div class="form-heading-8">Create a 4 Digit Extension Number</div>
-                                                                        <input type="number" class="form-field w-input" maxlength="256" name="ExtNumber" data-name="ExtNumber" placeholder="Extension Number" id="ExtNumber" required="">
-                                                                        <div class="div-block-33 ext">
-                                                                            <div>Error</div>
-                                                                        </div>
-                                                                        <div class="form-heading-8">User for this Extension Number</div>
-                                                                        <input type="text" class="form-field w-input" maxlength="256" name="ExtName" data-name="ExtName" placeholder="User&#x27;s Name" id="ExtName" required="">
-                                                                        <div class="form-heading-8">Caller ID Name</div>
-                                                                        <select id="ExtCallerID" name="ExtCallerID" data-name="ExtCallerID" required="" class="form-select w-select">
-                                                                            <option value="">Select one...</option>
-                                                                            <option value="First">Company Name</option>
-                                                                            <option value="custom">Custom Name</option>
-                                                                        </select>
-                                                                        <input type="text" class="form-field w-input" maxlength="256" name="CustomCallerID" data-name="CustomCallerID" placeholder="Caller ID Name" id="CustomCallerID" required="">
-                                                                        <div class="form-heading-8">Caller ID Phone Number</div>
-                                                                        <select id="ExtCallerNumber" name="ExtCallerNumber" data-name="ExtCallerNumber" class="form-select w-select">
-                                                                            <option value="">Select one...</option>
-                                                                            <option value="First">First Choice</option>
-                                                                            <option value="Second">Second Choice</option>
-                                                                        </select>
-                                                                        <input type="tel" class="form-field w-input" maxlength="256" name="CustomCallerNumber" data-name="CustomCallerNumber" placeholder="Caller ID Phone Number" id="CustomCallerNumber" required="">
-                                                                        <div class="form-heading-8">Would you like Voicemail for this Extension?</div>
-                                                                        <div class="div-block-23">
-                                                                            <label class="w-radio">
-                                                                                <input type="radio" data-name="ExtVoicemail" id="Yes" name="ExtVoicemail" value="Yes" required="" data-w-id="14e89844-9a87-ce92-3d00-5d3f58c3e8c2" class="w-radio-input"><span for="Yes" class="w-form-label">Yes</span></label>
-                                                                            <label class="radio-button-field-2 w-radio">
-                                                                                <input type="radio" data-name="ExtVoicemail" id="No" name="ExtVoicemail" value="No" data-w-id="e0a5d27c-e8c1-c3a9-0430-4b939c9bc02f" class="w-radio-input"><span for="No" class="w-form-label">No</span></label>
-                                                                        </div>
-                                                                        <div data-w-id="762d5bde-f86c-3acb-bf97-a700c63c9cb3" style="opacity:0;height:0PX" class="div-block-32">
-                                                                            <div class="form-heading-8">Type of Voicemail</div>
-                                                                            <div class="div-block-23">
-                                                                                <label class="w-radio">
-                                                                                    <input type="radio" data-name="ExtVoicemailEmail" id="Yes" name="ExtVoicemailEmail" value="Yes" required="" class="w-radio-input"><span for="Yes-2" class="w-form-label">Voicemail via Phone</span></label>
-                                                                                <label class="radio-button-field-2 w-radio">
-                                                                                    <input type="radio" data-name="ExtVoicemailEmail" id="No" name="ExtVoicemailEmail" value="No" class="w-radio-input"><span for="No-2" class="w-form-label">Voicemail via Email</span></label>
-                                                                            </div>
-                                                                            <input type="email" class="form-field w-input" maxlength="256" name="VoicemailEmail" data-name="VoicemailEmail" placeholder="Email for Voicemail" id="VoicemailEmail" required="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="divider">
-                                                                <div class="divider-bar"></div><a href="#" class="addext-btn w-button">Add an
-                                    Extension</a>
-                                                            </div><a href="#" class="form-back w-button">Back</a>
-                                                            <input type="submit" value="Next" data-wait="Please wait..." class="form-next w-button">
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="formupload">
-                                                    <h3 class="form-heading">Upload Bill</h3>
-                                                    <p class="form-heading-8">To process your application we need an PDF/Image of your most recent Phone Bill
-                                                        <br>Please ensure the PDF/Image is legible</p>
-                                                    <div class="w-form">
-                                                        <form id="email-form-5" name="email-form-5" data-name="Email Form 5">
-                                                            <div class="upload-box">
-                                                                <div id="upload" class="upload-inner-box"><img src="images/icons8-upload-to-cloud-100.png" alt="" class="upload-image">
-                                                                    <div class="upload-text"><a href="#" class="upload-link link">Choose a File </a>
-                                                                        <div class="upload-link">or Drag it here.</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="div-block-33 upload">
-                                                                <div>Error</div>
-                                                            </div><a id="UploadBack" href="#" class="form-back w-button">Back</a>
-                                                            <input type="submit" value="Next" data-wait="Please wait..." id="UploadNext" class="form-next w-button">
-                                                        </form>
-                                                        <div class="w-form-done">
-                                                            <div>Thank you! Your submission has been received!</div>
-                                                        </div>
-                                                        <div class="w-form-fail">
-                                                            <div>Oops! Something went wrong while submitting the form.</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <h3 class="form-heading">Confirm</h3>
-                                                </div>
-                                                <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or
-                    go back and submit another time. </h5>
-                                                <div class="w-form">
-                                                    <form id="email-form-9" name="email-form-9" data-name="Email Form 9"><a href="#" class="form-back w-button">Back</a>
-                                                        <input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button">
-                                                    </form>
-                                                    <div class="w-form-done">
-                                                        <div>Thank you! Your submission has been received!</div>
-                                                    </div>
-                                                    <div class="w-form-fail">
-                                                        <div>Oops! Something went wrong while submitting the form.</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-                                    <script src="{% static 'js/webflow.js' %}" type="text/javascript"></script>
-                                    <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
-                                </body>
-
-                                </html>
+                            <div class="numbersgroup" id="numbersPort">
                                 <h6 class="form-heading-8">Porting Numbers</h6>
-                                <div class="div-block-17 w-clearfix">
-                                    <div class="text-block-14">#</div>
-                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                </div>
-                                <div class="div-block-17 w-clearfix">
-                                    <div class="text-block-14">#</div>
-                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                </div>
+
                             </div>
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
+
                     </div>
                     <div class="w-form">
-                        <form id="email-form-7" name="email-form-7" data-name="Email Form 7">
+                        <form id="email-form-7" name="email-form-7" data-name="Email Form 7" onsubmit="addDiscNumber()">
                             <label for="email" class="field-label">Numbers to be Disconnected</label>
                             <div class="div-block-15">
                                 <input type="text" class="form-field phone w-input" maxlength="10" name="DiscNumber" data-name="DiscNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="DiscNumber">
@@ -633,37 +181,20 @@
                             <div class="div-block-33 disc">
                                 <div>Error</div>
                             </div>
-                            <div class="numbersgroup">
+                            <div class="numbersgroup" id="numbersDisc">
                                 <h6 class="form-heading-8">Disconnect Numbers</h6>
-                                <div class="div-block-17 w-clearfix">
-                                    <div class="text-block-14">#</div>
-                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                </div>
-                                <div class="div-block-17 w-clearfix">
-                                    <div class="text-block-14">#</div>
-                                    <div class="form-number">(647)-546-8965</div><a href="#" class="form-x-btn w-button">X</a>
-                                </div>
                             </div>
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
+
                     </div>
                     <div class="w-form">
-                        <form id="email-form-8" name="email-form-8" data-name="Email Form 8"><a id="NumbersBack" href="#" class="form-back w-button">Back</a>
+                        <form id="portingFormNext" name="email-form-8" data-name="Email Form 8">
+                            <a id="NumbersBack" href="#" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." id="NumbersNext" class="form-next w-button">
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
                     </div>
                 </div>
+
                 <div class="form911">
                     <h3 class="form-heading">911 Information</h3>
                     <div class="w-form">
@@ -691,25 +222,23 @@
                                     <option value="Second">Second Choice</option>
                                     <option value="Third">Third Choice</option>
                                 </select>
+                                <input type="button" value="+" data-wait="Please wait..." class="form-add w-button">
+
                             </div>
-                            <div class="address">
-                                <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" required="">
+                            <div class="address" id="NewAddressExc911">
+                                <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress-Exc911" required="">
                                 <div class="div-block-30">
-                                    <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-2" data-name="Postal Code 2" placeholder="Postal Code" id="Postal-Code-2" required="">
+                                    <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-2" data-name="Postal Code 2" placeholder="Postal Code" id="postal_codeExc911" required="">
                                     <div class="div-block-31"></div>
-                                    <input type="text" class="form-field w-input" maxlength="256" name="Country-2" data-name="Country 2" placeholder="Country" id="Country-2" required="">
+                                    <input type="text" class="form-field w-input" maxlength="256" name="Country-2" data-name="Country 2" placeholder="Country" id="countryExc911" required="">
                                 </div>
-                                <input type="text" class="form-field w-input" maxlength="256" name="Suite-2" data-name="Suite 2" placeholder="Enter Suite # (If Needed)" id="Suite-2">
+                                <input type="text" class="form-field w-input" maxlength="256" name="Suite-2" data-name="Suite 2" placeholder="Enter Suite # (If Needed)" id="Suite-Exc911">
                             </div>
-                            <div>
+                            <div id="RulesTable">
                                 <h4 class="form-heading-8">Rules</h4>
                                 <div class="heading-grid">
                                     <div class="form-grid-heading">Phone</div>
                                     <div class="form-grid-heading">Address</div>
-                                </div>
-                                <div class="grid-entry">
-                                    <div id="w-node-489d1385eaa5-37815fb7" class="form-grid-entry">647-629-8391</div>
-                                    <div class="form-grid-entry">89 Bleasdale Ave, Brampton, ON</div>
                                 </div>
                                 <div class="grid-entry">
                                     <div id="w-node-7ad72b18e096-37815fb7" class="form-grid-entry">647-629-8391</div>
@@ -726,18 +255,19 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="form411">
                     <h3 class="form-heading">411 Information</h3>
                     <div class="form-heading-8">Would you like to share your Company Info with 411</div>
                     <div class="w-form">
-                        <form id="email-form-3" name="email-form-3" data-name="Email Form 3">
+                        <form id="411FormNext" name="411FormNext" data-name="411FormNext">
                             <div class="div-block-18">
                                 <label class="w-radio">
                                     <input type="radio" data-name="411 Directory" id="411Yes" name="411-Directory" value="Yes" required="" data-w-id="150fe67e-1a4e-9995-fb03-f48a99bddbc5" class="w-radio-input"><span for="Yes" class="w-form-label">Yes</span></label>
                                 <label class="radio-button-field w-radio">
                                     <input type="radio" data-name="411 Directory" id="411No" name="411-Directory" value="No" data-w-id="39b0b00d-a354-2bd6-e824-7db1bfdd3862" class="w-radio-input"><span for="No" class="w-form-label">No</span></label>
                             </div>
-                            <div data-w-id="54b22c51-ca8d-7d74-d716-9ea8bb92b6ec" style="height:0PX;display:none;opacity:0">
+                            <div data-w-id="54b22c51-ca8d-7d74-d716-9ea8bb92b6ec" style="height:0PX;display:none;opacity:0" id="411Box">
                                 <label for="CompanyName-2" class="form-heading-8">Company Name to be listed</label>
                                 <input type="text" class="form-field w-input" maxlength="256" name="CompanyName" data-name="CompanyName" placeholder="Company Name" id="CompanyNameList" required="">
                                 <label for="Category" class="form-heading-8">Category to be listed under
@@ -753,26 +283,21 @@
                                     <option value="">Select one...</option>
                                     <option value="First">First Choice</option>
                                 </select>
-                                <div class="address">
-                                    <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" required="">
+                                <div class="address" style="display: none" id="NewAddress411">
+                                    <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress-411" required="" onFocus="geolocate()">
                                     <div class="div-block-30">
-                                        <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-3" data-name="Postal Code 3" placeholder="Postal Code" id="Postal-Code-3" required="">
+                                        <input type="text" class="form-field w-input" maxlength="256" name="postal_code411" data-name="postal_code411" placeholder="Postal Code" id="postal_code411" required="">
                                         <div class="div-block-31"></div>
-                                        <input type="text" class="form-field w-input" maxlength="256" name="Country-3" data-name="Country 3" placeholder="Country" id="Country-3" required="">
+                                        <input type="text" class="form-field w-input" maxlength="256" name="country411" data-name="country411" placeholder="Country" id="country411" required="">
                                     </div>
-                                    <input type="text" class="form-field w-input" maxlength="256" name="Suite-3" data-name="Suite 3" placeholder="Enter Suite # (If Needed)" id="Suite-3">
+                                    <input type="text" class="form-field w-input" maxlength="256" name="Suite-3" data-name="Suite-3" placeholder="Enter Suite # (If Needed)" id="Suite-411">
                                 </div>
                             </div><a id="411Back" href="#" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." id="411Next" class="form-next w-button">
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
                     </div>
                 </div>
+
                 <div id="FormExtensions" class="formext">
                     <h3 class="form-heading">Extensions</h3>
                     <p class="form-heading-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
@@ -840,6 +365,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="formupload">
                     <h3 class="form-heading">Upload Bill</h3>
                     <p class="form-heading-8">To process your application we need an PDF/Image of your most recent Phone Bill
@@ -871,8 +397,10 @@
                     <h3 class="form-heading">Confirm</h3>
                     <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
                     <div class="w-form">
-                        <form id="email-form-9" name="email-form-9" data-name="Email Form 9"><a href="#" class="form-back w-button">Back</a><input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button"></form>
-                        
+                        <form id="email-form-9" name="email-form-9" data-name="Email Form 9"><a href="#" class="form-back w-button">Back</a>
+                            <input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button">
+                        </form>
+
                         <div class="w-form-done">
                             <div>Thank you! Your submission has been received!</div>
                         </div>
@@ -881,12 +409,14 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
-    <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
     <script src="{% static 'js/webflow.js' %}" type="text/javascript"></script>
-    <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+
 </body>
 
 </html>
