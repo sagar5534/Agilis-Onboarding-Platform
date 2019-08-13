@@ -152,36 +152,26 @@ def setAddress(request):
     if request.session.get("company"):
         company = request.session.get("company")
     else:
-        return Http404
+        raise Http404
 
     if request.method == "POST":
         form = SetAddress(request.POST)
     else:
-        return Http404
+        raise Http404
 
     if form.is_valid():
-        if form.checkPostal():
             Suite = form.cleaned_data["Suite"]
-            StreetNum = form.cleaned_data["StreetNum"]
-            Street = form.cleaned_data["Street"]
-            City = form.cleaned_data["City"]
-            Prov = form.cleaned_data["Prov"]
+            StreetAddress = form.cleaned_data["StreetAddress"]
             Postal = form.cleaned_data["Postal"]
             Country = form.cleaned_data["Country"]
-        else:
-            return Http404
     else:
         return form_response(form)
 
     tempAddress = Address.objects.create(
             Suite=Suite,
-            StreetNum=StreetNum,
-            Street=Street,
-            City=City,
-            Prov=Prov,
+            StreetAddress=StreetAddress,
             Postal=Postal,
-            Country=Country,
-        )
+    )
     tempAddress.save()
     tempLink = CompanyAddressLink.objects.create(
         Address_id=tempAddress.pk, Company_id=company
@@ -197,13 +187,9 @@ def setAddress(request):
     
     x = {
         "address": suiteHandler
-        + str(tempAddress.StreetNum)
-        + " "
-        + tempAddress.Street
+        + str(tempAddress.StreetAddress)
         + ", "
-        + tempAddress.City
-        + ", "
-        + tempAddress.Prov,
+        + tempAddress.Postal,
         "id": tempAddress.id,
     }
 

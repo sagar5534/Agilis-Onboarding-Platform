@@ -10,13 +10,9 @@ var componentForm411 = {
   postal_code411: 'short_name'
 };
 
-var componentForm3 = {
-  street_number3: 'short_name',
-  route3: 'long_name',
-  locality3: 'long_name',
-  administrative_area_level_13: 'short_name',
-  country3: 'long_name',
-  postal_code3: 'short_name'
+var componentFormExc911 = {
+  countryExc911: 'long_name',
+  postal_codeExc911: 'short_name'
 };
 
 function initAutocomplete() {
@@ -89,11 +85,11 @@ function fillInAddress411() {
 
 }
 
-function fillInAddress3() {
+function fillInAddressExc911() {
   // Get the place details from the autocomplete object.
-  var place = autocomplete3.getPlace();
+  var place = autocompleteExc911.getPlace();
 
-  for (var component in componentForm3) {
+  for (var component in componentFormExc911) {
     document.getElementById(component).value = '';
     document.getElementById(component).disabled = false;
   }
@@ -102,10 +98,9 @@ function fillInAddress3() {
   // and fill the corresponding field on the form.
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
-    console.log(addressType)
-    if (componentForm3[addressType + "3"]) {
-      var val = place.address_components[i][componentForm3[addressType + "3"]];
-      document.getElementById(addressType + "3").value = val;
+    if (componentFormExc911[addressType + "Exc911"]) {
+      var val = place.address_components[i][componentFormExc911[addressType + "Exc911"]];
+      document.getElementById(addressType + "Exc911").value = val;
     }
   }
 }
@@ -141,13 +136,10 @@ function initMap() {
   autocomplete411.addListener('place_changed', fillInAddress411);
 
   //For 911 Exc
-  var input411 = document.getElementById('GoogleAddress-411')
-  autocomplete411 = new google.maps.places.Autocomplete(input411, options);
-  autocomplete411.setFields(['address_component']);
-  autocomplete411.addListener('place_changed', fillInAddress411);
-?˘¸
-
-
+  var inputExc911 = document.getElementById('GoogleAddress-Exc911')
+  autocompleteExc911 = new google.maps.places.Autocomplete(inputExc911, options);
+  autocompleteExc911.setFields(['address_component']);
+  autocompleteExc911.addListener('place_changed', fillInAddressExc911);
 
 
   var map = new google.maps.Map(

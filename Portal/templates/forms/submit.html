@@ -140,14 +140,9 @@
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite" data-name="Suite" placeholder="Enter Suite # (If Needed)" id="Suite">
                             </div>
                             <div id="map"></div>
-                            <input type="submit" value="Next" data-wait="Please wait..." id="CompanyNext" class="form-next company w-button">
+                            <input type="submit" value="Next" id="CompanyNext" class="form-next company w-button">
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -222,10 +217,10 @@
                                     <option value="Second">Second Choice</option>
                                     <option value="Third">Third Choice</option>
                                 </select>
-                                <input type="button" value="+" data-wait="Please wait..." class="form-add w-button">
+                                <input type="button" value="+" class="form-add w-button" onclick="addRule()">
 
                             </div>
-                            <div class="address" id="NewAddressExc911">
+                            <div class="address" id="NewAddressExc911" style="display: none" >
                                 <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress-Exc911" required="">
                                 <div class="div-block-30">
                                     <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-2" data-name="Postal Code 2" placeholder="Postal Code" id="postal_codeExc911" required="">
@@ -234,25 +229,23 @@
                                 </div>
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite-2" data-name="Suite 2" placeholder="Enter Suite # (If Needed)" id="Suite-Exc911">
                             </div>
-                            <div id="RulesTable">
+                            <div>
                                 <h4 class="form-heading-8">Rules</h4>
                                 <div class="heading-grid">
                                     <div class="form-grid-heading">Phone</div>
                                     <div class="form-grid-heading">Address</div>
                                 </div>
-                                <div class="grid-entry">
-                                    <div id="w-node-7ad72b18e096-37815fb7" class="form-grid-entry">647-629-8391</div>
-                                    <div class="form-grid-entry">89 Bleasdale Ave, Brampton, ON</div><a href="#" class="w-button">X</a>
+                                <div id="RulesTable">
+                                    <div class="grid-entry">
+                                        <div id="w-node-7ad72b18e096-37815fb7" class="form-grid-entry">647-629-8391</div>
+                                        <div class="form-grid-entry">89 Bleasdale Ave, Brampton, ON</div>
+                                        <a href="#" class="w-button">X</a>
+                                    </div>
                                 </div>
+
                             </div><a id="911Back" href="#" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." id="911Next" class="form-next w-button">
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
                     </div>
                 </div>
 
@@ -304,8 +297,8 @@
                     <h4 class="heading-10">Your Extensions</h4>
                     <div class="w-form">
                         <form id="email-form-6" name="email-form-6" data-name="Email Form 6">
-                            <div class="accordian-wrapper">
-                                <div class="accordian-item">
+                            <div class="accordian-wrapper" id="accordian-wrapper">
+                                <div class="accordian-item" id="Ext">
                                     <div data-w-id="b0bea07e-42c7-1040-d18f-66f6ec874e03" class="accordian-trigger w-clearfix">
                                         <h5 class="tigger-header"># 4566 - Sagar Patel<br></h5><a href="#" class="form-x-btn w-button">X</a>
                                     </div>
@@ -352,17 +345,12 @@
                                 </div>
                             </div>
                             <div class="divider">
-                                <div class="divider-bar"></div><a href="#" class="addext-btn w-button">Add an
-                                    Extension</a>
-                            </div><a href="#" class="form-back w-button">Back</a>
+                                <div class="divider-bar"></div>
+                                <a class="addext-btn w-button" id="addExt">Add an Extension</a>
+                            </div>
+                            <a href="#" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." class="form-next w-button">
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
                     </div>
                 </div>
 
