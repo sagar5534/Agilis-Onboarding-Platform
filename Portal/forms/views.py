@@ -200,7 +200,7 @@ def setAddress(request):
     return HttpResponse(y, content_type="application/json")
 
 @login_required
-def catch(request):
+def catchCompany(request):
 
     if request.session.get("company"):
         company = request.session.get("company")
@@ -259,7 +259,7 @@ def catch(request):
 
 
 @login_required
-def catch2(request):
+def catchPorting(request):
 
     if request.session.get("company"):
         company = request.session.get("company")
@@ -308,7 +308,7 @@ def catch2(request):
 
 
 @login_required
-def catch3(request):
+def catch411(request):
 
     if request.session.get("company"):
         company = request.session.get("company")
@@ -340,14 +340,13 @@ def catch3(request):
         Category = form.cleaned_data["Category"]
         Phone411 = form.cleaned_data["Phone411"]
 
-        if request.POST.get("Suite2"):
-            Suite = form.cleaned_data["Suite2"]
-            StreetNum = form.cleaned_data["StreetNum2"]
-            Street = form.cleaned_data["Street2"]
-            City = form.cleaned_data["City2"]
-            Prov = form.cleaned_data["Prov2"]
-            Postal = form.cleaned_data["Postal2"]
-            Country = form.cleaned_data["Country2"]
+        print(request.POST)
+
+        if request.POST.get("Postal"):
+            Suite = form.cleaned_data["Suite"]
+            StreetAddress = form.cleaned_data["StreetAddress"]
+            Postal = form.cleaned_data["Postal"]
+            Country = form.cleaned_data["Country"]
         else:
             address = get_object_or_404(
                 Address, pk=form.cleaned_data["address"]
@@ -355,39 +354,19 @@ def catch3(request):
     else:
         return form_response(form)
 
-    Phone411 = Phone411.replace("+1", "")
-    Phone411 = Phone411.replace("(", "")
-    Phone411 = Phone411.replace(")", "")
-    Phone411 = Phone411.replace("+", "")
-    Phone411 = Phone411.replace("-", "")
-
-    if len(Phone411) != 10 or Phone411.isdigit() == False:
-        form.add_error(
-            "Phone411", "Please Enter a Valid Phone Number"
-        )
-        return form_response(form)
-
-    if request.POST.get("Suite2"):
+    if request.POST.get("Postal"):
         try:
             address = Address.objects.get(
                 Suite=Suite,
-                StreetNum=StreetNum,
-                Street=Street,
-                City=City,
-                Prov=Prov,
-                Postal=Postal,
-                Country=Country,
+                StreetAddress=StreetAddress,
+                Postal=Postal
             )
             # Is it adding to CompanyAddressLink
         except Address.DoesNotExist:
             address = Address.objects.create(
                 Suite=Suite,
-                StreetNum=StreetNum,
-                Street=Street,
-                City=City,
-                Prov=Prov,
-                Postal=Postal,
-                Country=Country,
+                StreetAddress=StreetAddress,
+                Postal=Postal
             )
             address.save()
             linkAddress = CompanyAddressLink.objects.create(
@@ -406,7 +385,7 @@ def catch3(request):
 
 
 @login_required
-def catch4(request):
+def catch911(request):
 
     print(request)
     if request.session.get("company"):
@@ -432,3 +411,7 @@ def catch4(request):
     
     return HttpResponse("Done")
 
+@login_required
+def catchExt(request):
+
+    return HttpResponse("Done")

@@ -319,6 +319,7 @@ function PromptNewAddress(id) {
 
 //-----------------------------------------------------------//
 
+
  
 //Instructions that occur once document is ready
 $(document).ready(function () {
@@ -369,7 +370,7 @@ $(document).ready(function () {
         var radioValue = $("input[name='411-Directory']:checked").val();
         console.log(radioValue)
         if (radioValue == 'Yes') {
-            document.getElementById('CompanyNameList').disabled = false;
+            document.getElementById('CompanyName411').disabled = false;
             document.getElementById('Category411').disabled = false;
             document.getElementById('SelectAddress411').disabled = false;
             document.getElementById('SelectPhone411').disabled = false;
@@ -377,9 +378,9 @@ $(document).ready(function () {
             document.getElementById('411Box').display = "Block";
 
         } else {
-            document.getElementById('CompanyNameList').value = '';
+            document.getElementById('CompanyName411').value = '';
             document.getElementById('Category411').value = '';
-            document.getElementById('CompanyNameList').disabled = true;
+            document.getElementById('CompanyName411').disabled = true;
             document.getElementById('Category411').disabled = true;
             document.getElementById('SelectPhone411').disabled = true;
             document.getElementById('SelectAddress411').disabled = true;
@@ -390,7 +391,7 @@ $(document).ready(function () {
 
     $("#addExt").click(function () {
         
-        document.getElementById('accordian-wrapper').innerHTML += "<div class='accordian-item' id='Ext'" + extId + ">"
+        document.getElementById('accordian-wrapper').innerHTML += "<div class='accordian-item' id='Ext" + extId + "'>"
                 + "<div data-w-id='b0bea07e-42c7-1040-d18f-66f6ec874e03' class='accordian-trigger w-clearfix'>"
                 +    "<h5 class='tigger-header'># 4566 - Sagar Patel<br></h5><a href='#' class='form-x-btn w-button'>X</a>"
                 +"</div>"
@@ -446,25 +447,8 @@ $(document).ready(function () {
     //Showing Screens
     $(".formcompany").show();
     $(".formporting").hide();
-
-    //TEMP
-    getAddress('SelectAddress411', function () {})
-    getPhone('SelectPhone411', function () {})
-
-    $(".form411").hide();
-
-    //TEMP
-    getAddress("SelectAddress911", function (address) {
-        getPhone("SelectPhoneExc911", function (phone) {
-            createRuleTable(phone, address);
-        });
-    });
-    getAddress("SelectAddressExc911")
-
-
-//-----------------------------------------------------------//
-
     $(".form911").hide();
+    $(".form411").hide();
     $(".formext").hide();
     $(".formupload").hide();
     $(".formconfirm").hide();
@@ -474,7 +458,7 @@ $(document).ready(function () {
     $("#companyFormNext").submit(function (e) {
         e.preventDefault();
         $.ajax({
-                url: '/forms/catch',
+                url: '/forms/catchCompany',
                 data: {
                     companyName: document.getElementById("CompanyName").value,
                     type: document.getElementById("Type").options[document.getElementById("Type").selectedIndex].text,
@@ -499,102 +483,95 @@ $(document).ready(function () {
     //Port Number
     $("#portingFormNext").submit(function (e) {
         e.preventDefault();
-
-        var formCorrect = true;
-
         
-        // var div = document.getElementById('numbersPort')
-        // var children = div.childNodes;
-        // var elements = [];
-        // for (var i = 0; i < div.childNodes.length; i++) {
-        //     var child = div.childNodes[i];
-        //     if (child.name == 'phone') {
-        //         if (!(child.value == "")) {
-        //             child.value = validatePhone(child.value)
-        //             if (child.value.length == 10 && (/^\d+$/.test(child.value))) {
-        //                 elements.push(child.value)
-        //             } else {
-        //                 formCorrect = false;
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
+        var filteredport = portNumbers.filter(function (el) {
+            return el != null;
+          });
+        var filtereddisc = discNumbers.filter(function (el) {
+        return el != null;
+        });
 
-        // var div = document.getElementById('discnumberForm')
-        // var children = div.childNodes;
-        // var discelements = [];
-        // for (var i = 0; i < div.childNodes.length; i++) {
-        //     var child = div.childNodes[i];
-        //     if (child.name == 'phone') {
-        //         if (!(child.value == "")) {
-        //             child.value = validatePhone(child.value)
-        //             if (child.value.length == 10 && (/^\d+$/.test(child.value))) {
-        //                 discelements.push(child.value)
-        //             } else {
-        //                 formCorrect = false;
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
-
-        if (formCorrect == true) {
-            //Data
-            let Data = {
-                port: elements,
-                disc: discelements
-            }
-
-            $.ajax({
-                    url: '/forms/catch2',
-                    data: JSON.stringify(Data),
-                    contentType: "application/json",
-                    method: 'POST'
-                })
-                .done(function (data) {
-                    if (data.status == "form-invalid") {
-                        alert(data.formerrors.Phone411)
-                    } 
-                    else {
-                        getAddress('SelectAddress', function () {
-                            $('#SelectAddress').on('change', PromptNewAddress(''))
-                        })
-                        getPhone('SelectPhone', function () {})
-                       
-                        $(".step2").hide();
-                        $(".step3").show();
-                    }
-                });
-        } else {
-            alert("Please enter a Valid Phone Number")
+        let Data = {
+            port: filteredport,
+            disc: filtereddisc
         }
 
+        $.ajax({
+                url: '/forms/catchPorting',
+                data: JSON.stringify(Data),
+                contentType: "application/json",
+                method: 'POST'
+            })
+            .done(function (data) {
+                if (data.status == "form-invalid") {
+                    alert(data.formerrors.Phone411)
+                } 
+                else {
+
+                    getAddress("SelectAddress911", function (address) {
+                        getPhone("SelectPhoneExc911", function (phone) {
+                            createRuleTable(phone, address);
+                        });
+                    });
+                    getAddress("SelectAddressExc911")
+                    PromptNewAddress('Exc911')
+
+                    $(".formporting").hide();
+                    $(".form911").show();
+                }
+            });
     });
 
-    //411 Info
-    $(".411FormNext").submit(function (e) {
+    //911 Info
+    $("#Exc911FormNext").submit(function (e) {
+        e.preventDefault();
+        console.log("911Next")
+        data = merge_options(normalRules, ExceptionRules)
 
-        if (document.getElementById('radio-yes').checked == true) {
-            if (document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value == 0) {
+        $.ajax({
+                url: '/forms/catch911',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: 'POST',
+            })
+            .done(function (data) {
+                if (data.status == "form-invalid") {
+                    var output = '';
+                    for (var property in data.formerrors) {
+                        output += data.formerrors[property] + '\n';
+                    }
+                    alert(output);
+                } else {
+                    $(".form911").hide();
+
+                    getAddress('SelectAddress411', function () {})
+                    getPhone('SelectPhone411', function () {})
+
+                    $(".form411").show();
+                }
+            });
+    });
+
+     //411 Info
+    $("#411FormNext").submit(function (e) {
+
+        if (document.getElementById('411Yes').checked == true) {
+            if (document.getElementById("SelectAddress411").options[document.getElementById("SelectAddress411").selectedIndex].value == 0) {
                 data = {
                     CompanyName411: document.getElementById('CompanyName411').value,
-                    Category: document.getElementById('Category').value,
-                    Phone411: document.getElementById("SelectPhone").options[document.getElementById("SelectPhone").selectedIndex].text,
-                    Suite: document.getElementById("Suite2").value,
-                    StreetNum: document.getElementById("street_number2").value,
-                    Street: document.getElementById("route2").value,
-                    City: document.getElementById("locality2").value,
-                    Prov: document.getElementById("administrative_area_level_12").value,
-                    Postal: document.getElementById("postal_code2").value,
-                    Country: document.getElementById("country2").value,
+                    Category: document.getElementById('Category411').value,
+                    Phone411: document.getElementById("SelectPhone411").options[document.getElementById("SelectPhone411").selectedIndex].text,
+                    Suite: document.getElementById("Suite-411").value,
+                    StreetAddress: document.getElementById("GoogleAddress-411").value,
+                    Postal: document.getElementById("postal_code411").value,
+                    Country: document.getElementById("country411").value,
                 }
             } else {
                 data = {
                     CompanyName411: document.getElementById('CompanyName411').value,
-                    Category: document.getElementById('Category').value,
-                    Phone411: document.getElementById("SelectPhone").options[document.getElementById("SelectPhone").selectedIndex].text,
-                    address: document.getElementById("SelectAddress").options[document.getElementById("SelectAddress").selectedIndex].value
+                    Category: document.getElementById('Category411').value,
+                    Phone411: document.getElementById("SelectPhone411").options[document.getElementById("SelectPhone411").selectedIndex].text,
+                    address: document.getElementById("SelectAddress411").options[document.getElementById("SelectAddress411").selectedIndex].value
                 }
             }
         } else {
@@ -605,7 +582,7 @@ $(document).ready(function () {
 
         e.preventDefault();
         $.ajax({
-                url: '/forms/catch3',
+                url: '/forms/catch411',
                 data: data,
                 method: 'POST',
             })
@@ -617,15 +594,11 @@ $(document).ready(function () {
                     }
                     alert(output);
                 } else {
-                    getAddress("SelectAddress2", function (address) {
-                        getPhone("SelectPhone2", function (phone) {
-                            createRuleTable(phone, address);
-                            
-                        });
-                    });
 
-                    $(".step3").hide();
-                    $(".step4").show();
+                    $(".form411").hide();
+                    $(".formext").show();
+                    $(".formupload").show();
+                    $(".formconfirm").show();
                     getAddress('SelectAddress3', function(){
                         $('#SelectAddress3').on('change', PromptNewAddress('3'))
                     })
@@ -633,57 +606,27 @@ $(document).ready(function () {
             });
     });
 
-    //911 Info 
-    $(".step4").submit(function (e) {
 
-        data = merge_options(normalRules, ExceptionRules)
+    $(".Ext").submit(function (e) {
 
-        e.preventDefault();
-        $.ajax({
-                url: '/forms/catch4',
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                method: 'POST',
-            })
-            .done(function (data) {
-                if (data.status == "form-invalid") {
-                    var output = '';
-                    for (var property in data.formerrors) {
-                        output += data.formerrors[property] + '\n';
-                    }
-                    alert(output);
-                } else {
-                    $(".step4").hide();
-                    //addExt()
-                    $(".step5").show();
-                }
-            });
     });
 
-     
-    $(".step5").submit(function (e) {
+    var acc = document.getElementById("Ext");
+    console.log(acc)
 
-        data = merge_options(normalRules, ExceptionRules)
-
-        e.preventDefault();
-        $.ajax({
-                url: '/forms/catch4',
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                method: 'POST',
-            })
-            .done(function (data) {
-                if (data.status == "form-invalid") {
-                    var output = '';
-                    for (var property in data.formerrors) {
-                        output += data.formerrors[property] + '\n';
-                    }
-                    alert(output);
-                } else {
-                    $(".step5").hide();
-                }
-            });
+    acc.addEventListener("click", function() {
+        console.log("CLicked")
+        acc.classList.toggle("active");
+        var panel = document.getElementById("ExtContent");
+        if (panel.style.maxHeight){
+        panel.style.maxHeight = null;
+        panel.style.height = "0px"
+        } else {
+        panel.style.maxHeight = "700px";
+        panel.style.height = panel.style.maxHeight
+        }
     });
+   
 //-----------------------------------------------------------//
 
 });
