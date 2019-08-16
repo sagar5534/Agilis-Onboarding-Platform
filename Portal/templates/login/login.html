@@ -74,20 +74,19 @@
                                 <input type="email" class="email-field w-input" autofocus="true" maxlength="256" name="Email" data-name="Email" data-ix="new-interaction" id="Email-2" required="">
                                 <label for="Password" class="login-lbl">Password</label>
                                 <input type="password" class="password-field w-input" maxlength="256" name="Password" data-name="Password" id="Password" required="">
-                                <a href="#" class="forgot-password-btn">Forgot Password?</a>
+                                <a href="{% url 'password_reset' %}" class="forgot-password-btn">Forgot Password?</a>
                                 <input type="submit" value="Login" data-wait="Please wait..." class="login-btn w-button">
                             </form>
                             <div class="w-form-done">
                                 <div>Processing your Login Credentials</div>
                             </div>
                             {% if form.errors %}
-                            <div class="error-message w-form-fail" style="display: block;">
-                                <div>Oops! Incorrect Email or Password.
-                                    <br>Please Try Again
+                                <div class="error-message w-form-fail" style="display: block;">
+                                    <div>Oops! Incorrect Email or Password.
+                                        <br>Please Try Again
+                                    </div>
                                 </div>
-                            </div>
                             {% endif %}
-
                         </div>
                     </div>
                 </div>

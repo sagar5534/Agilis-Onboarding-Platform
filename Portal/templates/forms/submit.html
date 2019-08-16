@@ -54,6 +54,7 @@
     </script>
     <script src="{% static 'js/google.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/inits.js' %}"></script>
 
 </head>
 
@@ -184,7 +185,7 @@
                     </div>
                     <div class="w-form">
                         <form id="portingFormNext" name="email-form-8" data-name="Email Form 8">
-                            <a id="NumbersBack" href="#" class="form-back w-button">Back</a>
+                            <a id="NumbersBack" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." id="NumbersNext" class="form-next w-button">
                         </form>
                     </div>
@@ -258,16 +259,16 @@
                                 <label class="w-radio">
                                     <input type="radio" data-name="411 Directory" id="411Yes" name="411-Directory" value="Yes" required="" data-w-id="150fe67e-1a4e-9995-fb03-f48a99bddbc5" class="w-radio-input"><span for="Yes" class="w-form-label">Yes</span></label>
                                 <label class="radio-button-field w-radio">
-                                    <input checked type="radio" data-name="411 Directory" id="411No" name="411-Directory" value="No" data-w-id="39b0b00d-a354-2bd6-e824-7db1bfdd3862" class="w-radio-input"><span for="No" class="w-form-label">No</span></label>
+                                    <input type="radio" data-name="411 Directory" id="411No" name="411-Directory" value="No" data-w-id="39b0b00d-a354-2bd6-e824-7db1bfdd3862" class="w-radio-input"><span for="No" class="w-form-label">No</span></label>
                             </div>
-                            <div data-w-id="54b22c51-ca8d-7d74-d716-9ea8bb92b6ec" style="height:0PX;display:none;opacity:0" id="411Box">
+                            <div id="411Box">
                                 <label for="CompanyName-2" class="form-heading-8">Company Name to be listed</label>
                                 <input type="text" class="form-field w-input" maxlength="256" name="CompanyName" data-name="CompanyName" placeholder="Company Name" id="CompanyName411" required="">
-                                <label for="Category" class="form-heading-8">Category to be listed under
+                                <label for="Category" class="form-heading-8" style="display:none">Category to be listed under
                                 </label>
-                                <input type="text" class="form-field w-input" maxlength="256" name="Category" data-name="Category" placeholder="Category" id="Category411" required="">
+                                <input type="text" class="form-field w-input" maxlength="256" name="Category" data-name="Category" placeholder="Category" id="Category411" required="" >
                                 <div class="form-heading-8">Phone to be listed:</div>
-                                <select id="SelectPhone411" name="SelectPhone411" required="" data-name="SelectPhone411" class="form-select w-select">
+                                <select id="SelectPhone411" name="SelectPhone411" required="" data-name="SelectPhone411" class="form-select w-select" >
                                     <option value="">Select one...</option>
                                     <option value="First">First Choice</option>
                                 </select>
@@ -285,7 +286,7 @@
                                     </div>
                                     <input type="text" class="form-field w-input" maxlength="256" name="Suite-3" data-name="Suite-3" placeholder="Enter Suite # (If Needed)" id="Suite-411">
                                 </div>
-                            </div><a id="411Back" href="#" class="form-back w-button">Back</a>
+                            </div><a id="411Back" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." id="411Next" class="form-next w-button">
                         </form>
                     </div>
@@ -296,60 +297,17 @@
                     <p class="form-heading-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
                     <h4 class="heading-10">Your Extensions</h4>
                     <div class="w-form">
-                        <form id="email-form-6" name="email-form-6" data-name="Email Form 6">
+                        <form id="FormExtNext" name="email-form-6" data-name="Email Form 6">
                             <div class="accordian-wrapper" id="accordian-wrapper">
-                                <div class="accordian-item" id="Ext">
-                                    <div data-w-id="b0bea07e-42c7-1040-d18f-66f6ec874e03" class="accordian-trigger w-clearfix">
-                                        <h5 class="tigger-header"># 4566 - Sagar Patel<br></h5><a href="#" class="form-x-btn w-button">X</a>
-                                    </div>
-                                    <div style="height:0PX" class="accordian-content" id="ExtContent">
-                                        <div class="form-heading-8">Create a 4 Digit Extension Number</div>
-                                        <input type="number" class="form-field w-input" maxlength="256" name="ExtNumber" data-name="ExtNumber" placeholder="Extension Number" id="ExtNumber" required="">
-                                        <div class="div-block-33 ext">
-                                            <div>Error</div>
-                                        </div>
-                                        <div class="form-heading-8">User for this Extension Number</div>
-                                        <input type="text" class="form-field w-input" maxlength="256" name="ExtName" data-name="ExtName" placeholder="User&#x27;s Name" id="ExtName" required="">
-                                        <div class="form-heading-8">Caller ID Name</div>
-                                        <select id="ExtCallerID" name="ExtCallerID" data-name="ExtCallerID" required="" class="form-select w-select">
-                                            <option value="">Select one...</option>
-                                            <option value="First">Company Name</option>
-                                            <option value="custom">Custom Name</option>
-                                        </select>
-                                        <input type="text" class="form-field w-input" maxlength="256" name="CustomCallerID" data-name="CustomCallerID" placeholder="Caller ID Name" id="CustomCallerID" required="">
-                                        <div class="form-heading-8">Caller ID Phone Number</div>
-                                        <select id="ExtCallerNumber" name="ExtCallerNumber" data-name="ExtCallerNumber" class="form-select w-select">
-                                            <option value="">Select one...</option>
-                                            <option value="First">First Choice</option>
-                                            <option value="Second">Second Choice</option>
-                                        </select>
-                                        <input type="tel" class="form-field w-input" maxlength="256" name="CustomCallerNumber" data-name="CustomCallerNumber" placeholder="Caller ID Phone Number" id="CustomCallerNumber" required="">
-                                        <div class="form-heading-8">Would you like Voicemail for this Extension?</div>
-                                        <div class="div-block-23">
-                                            <label class="w-radio">
-                                                <input type="radio" data-name="ExtVoicemail" id="Yes" name="ExtVoicemail" value="Yes" required="" data-w-id="14e89844-9a87-ce92-3d00-5d3f58c3e8c2" class="w-radio-input"><span for="Yes" class="w-form-label">Yes</span></label>
-                                            <label class="radio-button-field-2 w-radio">
-                                                <input type="radio" data-name="ExtVoicemail" id="No" name="ExtVoicemail" value="No" data-w-id="e0a5d27c-e8c1-c3a9-0430-4b939c9bc02f" class="w-radio-input"><span for="No" class="w-form-label">No</span></label>
-                                        </div>
-                                        <div data-w-id="762d5bde-f86c-3acb-bf97-a700c63c9cb3" style="opacity:0;height:0PX" class="div-block-32">
-                                            <div class="form-heading-8">Type of Voicemail</div>
-                                            <div class="div-block-23">
-                                                <label class="w-radio">
-                                                    <input type="radio" data-name="ExtVoicemailEmail" id="Yes" name="ExtVoicemailEmail" value="Yes" required="" class="w-radio-input"><span for="Yes-2" class="w-form-label">Voicemail via Phone</span></label>
-                                                <label class="radio-button-field-2 w-radio">
-                                                    <input type="radio" data-name="ExtVoicemailEmail" id="No" name="ExtVoicemailEmail" value="No" class="w-radio-input"><span for="No-2" class="w-form-label">Voicemail via Email</span></label>
-                                            </div>
-                                            <input type="email" class="form-field w-input" maxlength="256" name="VoicemailEmail" data-name="VoicemailEmail" placeholder="Email for Voicemail" id="VoicemailEmail" required="">
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <div class="divider">
                                 <div class="divider-bar"></div>
                                 <a class="addext-btn w-button" id="addExt">Add an Extension</a>
                             </div>
-                            <a href="#" class="form-back w-button">Back</a>
-                            <input type="submit" value="Next" data-wait="Please wait..." class="form-next w-button">
+
+                            <a id="ExtBack" class="form-back w-button">Back</a>
+                            <input type="submit" value="Next" id="ExtNext" data-wait="Please wait..." class="form-next w-button">
                         </form>
                     </div>
                 </div>
@@ -359,9 +317,9 @@
                     <p class="form-heading-8">To process your application we need an PDF/Image of your most recent Phone Bill
                         <br>Please ensure the PDF/Image is legible</p>
                     <div class="w-form">
-                        <form id="email-form-5" name="email-form-5" data-name="Email Form 5">
+                        <form id="FormUploadNext" name="email-form-5" data-name="Email Form 5">
                             <div class="upload-box">
-                                <div id="upload" class="upload-inner-box"><img src="images/icons8-upload-to-cloud-100.png" alt="" class="upload-image">
+                                <div id="upload" class="upload-inner-box"><img src="{% static 'images/icons8-upload-to-cloud-100.png' %}" alt="" class="upload-image">
                                     <div class="upload-text"><a href="#" class="upload-link link">Choose a File </a>
                                         <div class="upload-link">or Drag it here.</div>
                                     </div>
@@ -372,12 +330,7 @@
                             </div><a id="UploadBack" href="#" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" data-wait="Please wait..." id="UploadNext" class="form-next w-button">
                         </form>
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -385,16 +338,12 @@
                     <h3 class="form-heading">Confirm</h3>
                     <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
                     <div class="w-form">
-                        <form id="email-form-9" name="email-form-9" data-name="Email Form 9"><a href="#" class="form-back w-button">Back</a>
-                            <input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button">
+                        <form id="FormConfirmNext" name="email-form-9" data-name="Email Form 9">
+                            <a href="#" id="ConfirmBack" class="form-back w-button">Back</a>
+                            <input type="submit" id="Confirm" value="Submit" data-wait="Please wait..." class="form-next w-button">
                         </form>
 
-                        <div class="w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
+                        
                     </div>
                 </div>
 

@@ -61,7 +61,6 @@ def loginProtocol(request):
     if request.method == 'POST':
 
         form = LoginForm(request.POST)
-        print(form)
 
         #Gets and cleans data 
         if form.is_valid():
@@ -79,8 +78,9 @@ def loginProtocol(request):
             form.add_error('Password', 'Incorrect Credentials')
     #If post data does not exist then send back empty page with Form ready for user creds.
     else:
-        form = LoginForm(request.POST)
+        form = LoginForm()
     
+    print(form.errors)
     #Sends this info to the HTML
     context = {
         'form' : form,

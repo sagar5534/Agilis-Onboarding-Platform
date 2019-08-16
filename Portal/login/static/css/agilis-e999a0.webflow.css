@@ -791,7 +791,7 @@
 .grid-entry {
   display: -ms-grid;
   display: grid;
-  width: 60%;
+  width: 85%;
   height: 48px;
   margin-bottom: 0px;
   padding: 5px;
@@ -820,7 +820,7 @@
 .heading-grid {
   display: -ms-grid;
   display: grid;
-  width: 60%;
+  width: 85%;
   grid-auto-columns: 1fr;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -1638,6 +1638,15 @@ html.w-mod-js *[data-ix="new-interaction"] {
     -ms-grid-column-span: 1;
     grid-column-end: span 1;
   }
+}
+
+#w-node-c1e48dd302d2-37815fb7 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+  -ms-grid-column-align: center;
+  justify-self: center;
 }
 
 @font-face {

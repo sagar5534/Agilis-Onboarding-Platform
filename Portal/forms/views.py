@@ -89,33 +89,23 @@ def getAddress(request):
         Company_id=company
     )
 
-    y = '{ "address": ['
+    list_values = []
+    for each in temp:
 
-    for idx, item in enumerate(temp):
-        temp2 = Address.objects.get(id=item.Address_id)
-
+        temp2 = Address.objects.get(id=each.Address_id)
         if temp2.Suite == "":
             suiteHandler = ""
         else:
-            suiteHandler = str(temp2.Suite) + " - "
+            suiteHandler = "Suite:" + str(temp2.Suite) + " -"
 
-        x = {
-            "address": suiteHandler
-            + temp2.StreetAddress
-            + ", "
-            + temp2.Postal,
+        list_values.append({
+            "address": suiteHandler + temp2.StreetAddress + ", " + temp2.Postal,
             "id": temp2.id,
-        }
+        })
 
-        if idx == 0:
-            y = y + json.dumps(x)
-        else:
-            y = y + "," + json.dumps(x)
+    y = json.dumps(list_values)
 
-    y = y + "]}"
-
-    
-    return HttpResponse(y, content_type="application/json")
+    return HttpResponse(y)
 
 
 @login_required
@@ -144,7 +134,6 @@ def getPhone(request):
     y = y + "]}"
 
     return HttpResponse(y, content_type="application/json")
-
 
 @login_required
 def setAddress(request):
@@ -198,6 +187,7 @@ def setAddress(request):
     y = y + ', "status": "form-valid"}'
 
     return HttpResponse(y, content_type="application/json")
+
 
 @login_required
 def catchCompany(request):
@@ -267,11 +257,45 @@ def catchPorting(request):
         return Http404
 
     if request.method == "POST":
+
         json_data = json.loads(request.body)
         try:
             port = json_data["port"]
             disc = json_data["disc"]
+            
+            #Delete at first for removed numbers
+            serverPort = Numbers.objects.filter(company_id=company, Type=1)
+            for serverEach in serverPort:
+                exists = False
+                for each in port:
+                    if (serverEach.number == each):
+                        exists = True
+                        break
+                if exists == False:
+                    #Delete
+                    x = Numbers.objects.get(
+                        number=serverEach.number, company_id=company, Type=1
+                    )
+                    x.delete()
 
+            
+            serverDisc = Numbers.objects.filter(company_id=company, Type=0)
+            for serverEach in serverDisc:
+                exists = False
+                for each in disc:
+                    if (serverEach.number == each):
+                        exists = True
+                        break
+                if exists == False:
+                    #Delete
+                    x = Numbers.objects.get(
+                        number=serverEach.number, company_id=company, Type=0
+                    )
+                    x.delete()
+
+
+
+            #Find any dupl and keep otherwise add
             for x in port:
                 try:
                     Numbers.objects.get(
@@ -318,6 +342,7 @@ def catch411(request):
     if request.method == "POST":
         if request.POST.get("ignore"):
             comp = Company.objects.get(pk=company)
+            comp.directory_listing = 0
             comp.listing_name = ""
             comp.category_listing = ""
             comp.listing_phone = ""
@@ -339,8 +364,6 @@ def catch411(request):
         CompanyName411 = form.cleaned_data["CompanyName411"]
         Category = form.cleaned_data["Category"]
         Phone411 = form.cleaned_data["Phone411"]
-
-        print(request.POST)
 
         if request.POST.get("Postal"):
             Suite = form.cleaned_data["Suite"]
@@ -387,7 +410,6 @@ def catch411(request):
 @login_required
 def catch911(request):
 
-    print(request)
     if request.session.get("company"):
         company = request.session.get("company")
     else:
@@ -414,4 +436,145 @@ def catch911(request):
 @login_required
 def catchExt(request):
 
+    return HttpResponse("Done")
+
+
+@login_required
+def initCompany(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+        print(company)
+    else:
+        raise Http404
+
+    if request.method == "POST":
+        
+        compData = Company.objects.get(id=company)
+        print(compData.site_address_id)
+
+        compAddress = Address.objects.get(id=compData.site_address_id)
+        print(compAddress)
+
+        if compData.company_name != "New Application":
+            x = {
+                "company_name": compData.company_name,
+                "type": compData.type,
+                "currentProvider": compData.currentProvider,
+                "StreetAddress": compAddress.StreetAddress,
+                "Postal": compAddress.Postal,
+                "Suite": compAddress.Suite,
+            }
+            y = json.dumps(x)
+            return HttpResponse(y)
+
+    else:
+        raise Http404
+
+    return HttpResponse("Done")
+  
+@login_required
+def initPort(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+        print(company)
+    else:
+        raise Http404
+
+    if request.method == "POST":
+        x = {}
+        portData = Numbers.objects.filter(company_id=company, Type=1)
+        
+        for each in portData:
+            print(each.number)
+            x[each.number] = 1
+        
+        discData = Numbers.objects.filter(company_id=company, Type=0)
+
+        for each in discData:
+            print(each.number)
+            x[each.number] = 0
+        
+        y = json.dumps(x)
+        return HttpResponse(y)
+
+    else:
+        raise Http404
+
+    return HttpResponse("Done")
+  
+@login_required
+def init911(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        raise Http404
+
+    if request.method == "POST":
+        numbers = Numbers.objects.filter(company_id=company, Type=1)
+        list_with_values = []
+
+        for each in numbers:
+            if each.Address_911_id != None:
+                add = Address.objects.get(id=each.Address_911_id)
+
+                list_with_values.append({
+                    "number": each.number,
+                    "address_id": add.id,
+                    "id": each.id,
+                    "address": add.StreetAddress
+                })
+
+        y = json.dumps(list_with_values)
+        return HttpResponse(y)
+
+    else:
+        raise Http404
+
+    return HttpResponse("Done")
+
+@login_required
+def init411(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        raise Http404
+
+    if request.method == "POST":
+        
+        compData = Company.objects.get(id=company)
+        if (compData.directory_listing == "0"):
+            #None Exists
+            return HttpResponse("No")
+        elif (compData.directory_listing == "1"):
+
+            #compAddress = Address.objects.get(id=compData.listing_address_id)
+            x = {
+                "listing_name": compData.listing_name,
+                "category_listing": compData.category_listing,
+                "listing_phone": compData.listing_phone,
+                "listing_address_id": compData.listing_address_id,
+            }
+            y = json.dumps(x)
+            return HttpResponse(y)
+        else:
+            return HttpResponse("None")
+    else:
+        raise Http404
+
+    return HttpResponse("Done")
+
+@login_required
+def initExt(request):
+
+    
+    return HttpResponse("Done")
+  
+@login_required
+def initUpload(request):
+
+    
     return HttpResponse("Done")
