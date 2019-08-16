@@ -516,14 +516,14 @@ $(document).ready(function () {
  //-----------------------------------------------------------//
  
     //Showing Screens
-    $(".formcompany").hide();
+    $(".formcompany").show();
     $(".formporting").hide();
     $(".form911").hide();
     $(".form411").hide();
 
     //getAddress("ExtCallerNumber", function (address) {});
 
-    $(".formext").show();
+    $(".formext").hide();
     $(".formupload").hide();
     $(".formconfirm").hide();
 
