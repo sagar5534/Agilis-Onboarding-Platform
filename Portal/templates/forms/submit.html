@@ -6,13 +6,16 @@
 
 <head>
     <meta charset="utf-8">
-    <title>HEY THERE</title>
+    <title>Agilis - Application</title>
     <meta content="Submit" property="og:title">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Webflow" name="generator">
     <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/webflow.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/agilis-e999a0.webflow.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -55,6 +58,7 @@
     <script src="{% static 'js/google.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/inits.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
 </head>
 
@@ -83,10 +87,10 @@
                     <div class="item-lbl">Porting</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
-                    <div id="911Circle" class="circle">
+                    <div id="PortingCircle" class="circle">
                         <div class="text-block-9">3</div>
                     </div>
-                    <div class="item-lbl">911 Info</div>
+                    <div class="item-lbl">1-800 Porting</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
                     <div id="411Circle" class="circle">
@@ -95,20 +99,26 @@
                     <div class="item-lbl">411 Info</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
-                    <div id="ExtensionCircle" class="circle">
+                    <div id="911Circle" class="circle">
                         <div class="text-block-9">5</div>
+                    </div>
+                    <div class="item-lbl">911 Info</div>
+                </a>
+                <a href="#" class="step-item w-inline-block">
+                    <div id="ExtensionCircle" class="circle">
+                        <div class="text-block-9">6</div>
                     </div>
                     <div class="item-lbl">Extensions</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
                     <div id="UploadCircle" class="circle">
-                        <div class="text-block-9">6</div>
+                        <div class="text-block-9">7</div>
                     </div>
                     <div class="item-lbl">Upload Bill</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
                     <div id="ConfirmCircle" class="circle">
-                        <div class="text-block-9">7</div>
+                        <div class="text-block-9">8</div>
                     </div>
                     <div class="item-lbl">Confirm</div>
                 </a>
@@ -189,6 +199,42 @@
                             <input type="submit" value="Next" data-wait="Please wait..." id="NumbersNext" class="form-next w-button">
                         </form>
                     </div>
+                </div>
+                
+                <div class="formtoll">
+                    <h3 class="form-heading">Port Toll Free Phone Numbers</h3>
+
+                    <div class="w-form">
+                        <form id="email-form-2" name="email-form-2">
+                            <div class="form-heading-8">Do you have any Toll Free numbers to port?</div>
+                            <div class="div-block-18">
+                                <label class="w-radio">
+                                    <input type="radio" data-name="1800 Choose" id="TollYes" name="1800-Choose" value="Yes" required="" class="w-radio-input TollYes"><span for="Yes-2" class="w-form-label">Yes</span></label>
+                                <label class="radio-button-field w-radio">
+                                    <input type="radio" data-name="1800 Choose" id="TollNo" name="1800-Choose" value="No" class="w-radio-input TollNo"><span for="No-2" class="w-form-label">No</span></label>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="downloadDiv">
+                        <div>Please Fill out this RESP Org form and submit it on this page</div>
+                        <a href="#">Download Resp Org Form</a>
+                    </div>
+
+                    <div class="w-form">
+                        <form id="portingTollNext" name="portingTollNext">
+                            <div id='downloadDiv2'>
+                                <div class="text-block-23" >Upload File Here</div>
+                                <input type="file" name="field" id="inputResp" required="">
+                                <div id="prevSubmittedToll">
+                                </div>
+                            </div>
+                            
+                            <a id="NumbersBack" href="#" class="form-back w-button">Back</a>
+                            <input type="submit" value="Next" id="NumbersNext" class="form-next w-button">
+                        </form>
+                    </div>
+
                 </div>
 
                 <div class="form911">
@@ -314,38 +360,48 @@
 
                 <div class="formupload">
                     <h3 class="form-heading">Upload Bill</h3>
-                    <p class="form-heading-8">To process your application we need an PDF/Image of your most recent Phone Bill
-                        <br>Please ensure the PDF/Image is legible</p>
+                    <p class="form-heading-8">To process your application we need an PDF/Image of your most recent Phone
+                        Bill<br>Please ensure the PDF/Image is legible</p>
                     <div class="w-form">
-                        <form id="FormUploadNext" name="email-form-5" data-name="Email Form 5">
+
+                        <form id="FormUploadNext" class="FormUploadNext" method="post" enctype="multipart/form-data" >
                             <div class="upload-box">
-                                <div id="upload" class="upload-inner-box"><img src="{% static 'images/icons8-upload-to-cloud-100.png' %}" alt="" class="upload-image">
-                                    <div class="upload-text"><a href="#" class="upload-link link">Choose a File </a>
-                                        <div class="upload-link">or Drag it here.</div>
+                                <div id="upload" class="upload-inner-box"><img
+                                        src="{% static 'images/icons8-upload-to-cloud-100.png' %}" alt="" class="upload-image">
+                                    <div class="upload-text">
+                                        <label for="fileUploadBtn" required>Select file</label>
+                                        <input type="file" id="fileUploadBtn"  style="display: none" value="" title="&nbsp;" name="filetoupload" class="button-12 w-button" multiple accept="image/*,.pdf">
                                     </div>
                                 </div>
                             </div>
-                            <div class="div-block-33 upload">
-                                <div>Error</div>
-                            </div><a id="UploadBack" href="#" class="form-back w-button">Back</a>
-                            <input type="submit" value="Next" data-wait="Please wait..." id="UploadNext" class="form-next w-button">
+                            <div class="numbersgroup" id="FileList">
+                                <h6 class="form-heading-8">Files to Upload</h6>
+                                
+                            </div>
+                            <div class="div-block-33 upload" id="uploadError">
+                                <div>Please Submit a File!</div>
+                            </div>
+                            <a id="UploadBack" href="#" class="form-back w-button">Back</a><input type="submit"
+                                value="Next" data-wait="Please wait..." id="UploadNext" class="form-next w-button">
                         </form>
-                        
                     </div>
                 </div>
 
-                <div class="formconfirm">
-                    <h3 class="form-heading">Confirm</h3>
-                    <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
-                    <div class="w-form">
-                        <form id="FormConfirmNext" name="email-form-9" data-name="Email Form 9">
-                            <a href="#" id="ConfirmBack" class="form-back w-button">Back</a>
-                            <input type="submit" id="Confirm" value="Submit" data-wait="Please wait..." class="form-next w-button">
-                        </form>
-
-                        
-                    </div>
+            <div class="formconfirm">
+                <h3 class="form-heading">Confirm</h3>
+                <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
+                <div id="sig-area" style="padding: 20px">
+                    <h1 id="signiture_text" style="font-family: 'Pacifico', cursive;"></h1>
                 </div>
+                <div class="w-form">
+                    <form id="FormConfirmNext" name="FormConfirmNext" data-name="FormConfirmNext">
+                        <input type="text" class="text-field-10 w-input" maxlength="256" name="field-2" data-name="Field 2" placeholder="Enter your name to create a Signiture" id="signiture-input" required="">
+                        <a href="#" id="ConfirmBack" class="form-back w-button">Back</a>
+                        <input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button">
+                    </form>
+                </div>
+            </div>
+
 
             </div>
         </div>

@@ -15,7 +15,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 class AddressChoiceField(forms.ModelChoiceField):
         def label_from_instance(self, obj):
-            return "Address {}".format( str(obj.id) + ": " + str(obj.StreetNum) + " " + obj.Street + " " + obj.City + "  ")
+            return "Address {}".format( str(obj.id) + ": " + obj.StreetAddress)
 
 class CompanyAdmin(admin.ModelAdmin):
 
@@ -64,8 +64,17 @@ class ExtentionsAdmin(admin.ModelAdmin):
     filter_horizontal = ()
 
 
+class UploadAdmin(admin.ModelAdmin):
+
+    list_display = ('company', 'document')
+    search_fields = ('document', )
+    ordering = ('company', )
+    filter_horizontal = ()
+
+
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(UserCompLink, UserCompLinkAdmin)
 admin.site.register(Numbers, NumbersAdmin)
 admin.site.register(Extention, ExtentionsAdmin)
+admin.site.register(Uploads, UploadAdmin)

@@ -2,6 +2,7 @@ from django.shortcuts import (
     get_object_or_404,
     render,
     redirect,
+    HttpResponseRedirect,
 )
 from django.http import HttpResponse
 from django.http import Http404
@@ -11,6 +12,13 @@ from .forms import *
 from django import forms
 from django.http import JsonResponse
 import json
+from django.core.files.storage import FileSystemStorage
+import os
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.core.files.storage import default_storage
+
 
 # Main page user hits once logged in
 @login_required
@@ -330,6 +338,48 @@ def catchPorting(request):
         content_type="application/json",
     )
 
+@login_required
+def catchToll(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+    
+    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(request.FILES['file']))
+    path = default_storage.save(save_path, request.FILES['file'])
+    toForm = os.path.join(str(company), str(request.FILES['file']))
+
+    tempComp = Company.objects.get(id=company)
+
+    try:
+        document = Uploads.objects.get(company=tempComp, type='toll')
+        document.delete()
+        document = Uploads.objects.create(document=toForm, company=tempComp, type='toll')
+    except Uploads.DoesNotExist:
+        document = Uploads.objects.create(document=toForm, company=tempComp, type='toll')
+
+    return JsonResponse({'document': document.id})
+
+
+@login_required
+def catchTollRemove(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+    
+    tempComp = Company.objects.get(id=company)
+
+    try:
+        document = Uploads.objects.get(company=tempComp, type='toll')
+        document.delete()
+    except Uploads.DoesNotExist:
+        return HttpResponse("Done")
+
+    return HttpResponse("Done")
+
 
 @login_required
 def catch411(request):
@@ -421,7 +471,6 @@ def catch911(request):
         for i in json_data:
             pid = json_data[i]['phoneID']
             aid = json_data[i]['addressID']
-            print(str(pid) + "- " + str(aid))
 
             
             tempNum = Numbers.objects.get(pk=pid)
@@ -436,7 +485,94 @@ def catch911(request):
 @login_required
 def catchExt(request):
 
+    #Handle the Extensions
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+
+    if request.method == "POST":
+        json_data = json.loads(request.body)
+        
+
+        if 'ignore' in json_data:
+            Extention.objects.filter(company_id=company).delete()
+        else:
+            Extention.objects.filter(company_id=company).delete()
+
+            for i in json_data:
+
+                ext = i['Ext']
+                name = i['ExtUser']
+                voicemail = i['voicemail']
+
+                tempExt = Extention.objects.create(ext=ext, name=name, company_id=company)
+
+                if (voicemail == True):
+                    tempExt.voicemail = True
+
+                    if (i["voicemail_type"] == "email"):
+                        email = i['email']
+                        tempExt.voicemail_toEmail = True
+                        tempExt.voicemail_email = email
+                    else:
+                        tempExt.voicemail_toEmail = False
+
+                else:
+                    tempExt.voicemail = False
+
+                if (i['caller_id'] == "custom"):
+                    tempExt.caller_id_name = i['callerIdCustom']
+                else:
+                    tempExt.caller_id_name = i['caller_id']
+
+                if (i['phone_id'] == "custom"):
+                    tempExt.caller_id_number = i['phoneCustom']
+                else:
+                    tempExt.caller_id_number = i['phone_id']
+
+                tempExt.save()
+
+
+    else:
+        return Http404
+    
     return HttpResponse("Done")
+
+    return HttpResponse("Done")
+
+# @login_required
+# def catchUpload(request):
+
+#     if request.method == 'GET':
+#         print("GOT HERE ")
+#         form = FileUploadForm(data=request.GET, files=request.FILES)
+#         if form.is_valid():
+#             return HttpResonse("Valid")
+#         else:
+#             print('invalid form')
+#             print(form.errors)
+
+#     return HttpResponse("Last")
+        
+
+@login_required
+@require_POST
+def catchUpload(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+    
+    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(request.FILES['file']))
+    path = default_storage.save(save_path, request.FILES['file'])
+    toForm = os.path.join(str(company), str(request.FILES['file']))
+
+    tempComp = Company.objects.get(id=company)
+
+    document = Uploads.objects.create(document=toForm, company=tempComp,  type='bill')
+    return JsonResponse({'document': document.id})
 
 
 @login_required
@@ -444,17 +580,14 @@ def initCompany(request):
 
     if request.session.get("company"):
         company = request.session.get("company")
-        print(company)
     else:
         raise Http404
 
     if request.method == "POST":
         
         compData = Company.objects.get(id=company)
-        print(compData.site_address_id)
 
         compAddress = Address.objects.get(id=compData.site_address_id)
-        print(compAddress)
 
         if compData.company_name != "New Application":
             x = {
@@ -478,7 +611,6 @@ def initPort(request):
 
     if request.session.get("company"):
         company = request.session.get("company")
-        print(company)
     else:
         raise Http404
 
@@ -487,13 +619,11 @@ def initPort(request):
         portData = Numbers.objects.filter(company_id=company, Type=1)
         
         for each in portData:
-            print(each.number)
             x[each.number] = 1
         
         discData = Numbers.objects.filter(company_id=company, Type=0)
 
         for each in discData:
-            print(each.number)
             x[each.number] = 0
         
         y = json.dumps(x)
@@ -504,6 +634,35 @@ def initPort(request):
 
     return HttpResponse("Done")
   
+
+@login_required
+def initTollPort(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        raise Http404
+
+    if request.method == "POST":
+        
+        try:
+            tempUpload = Uploads.objects.get(type='toll', company=company)
+            data = {
+                "name": tempUpload.document.name,
+                "url": tempUpload.document.url,
+            }
+            y = json.dumps(data)
+            return HttpResponse(y)
+
+        except Uploads.DoesNotExist:
+            data = {
+                "ignore": 1
+            }
+            y = json.dumps(data)
+            return HttpResponse(y)
+
+    return HttpResponse("Done")
+
 @login_required
 def init911(request):
 
@@ -570,9 +729,53 @@ def init411(request):
 @login_required
 def initExt(request):
 
-    
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        raise Http404
+
+    if request.method == "POST":
+        extData = Extention.objects.filter(company_id=company)
+        print(extData)
+        list_with_values = []
+
+        count = 0
+        for each in extData:
+            
+            list_with_values.append({
+                "Ext": each.ext,
+                "ExtName": each.name,
+                "voicemail": each.voicemail,
+                "voicemail_toEmail": each.voicemail_toEmail,
+                "voicemail_email": each.voicemail_email
+            })
+
+            compName = Company.objects.get(id=company)
+            if (each.caller_id_name == compName.company_name):
+                list_with_values[count]["caller_id"] = each.caller_id_name
+            else:
+                list_with_values[count]["caller_id"] = "custom"
+                list_with_values[count]["callerIdCustom"] = each.caller_id_name
+            
+            try:
+                compName = Numbers.objects.get(id=each.caller_id_number, company_id=company, Type=1)
+                list_with_values[count]["phone_id"] = each.caller_id_number
+            except Numbers.DoesNotExist:
+                list_with_values[count]["phone_id"] = "custom"
+                list_with_values[count]["phoneIdCustom"] = each.caller_id_number
+            
+            count = count + 1
+
+
+        y = json.dumps(list_with_values)
+        print(list_with_values)
+        return HttpResponse(y)
+
+    else:
+        raise Http404
+
     return HttpResponse("Done")
-  
+
 @login_required
 def initUpload(request):
 

@@ -144,3 +144,7 @@ EMAIL_PORT = 366
 EMAIL_HOST_USER = 'no-reply@agilismail.com'
 EMAIL_HOST_PASSWORD = 'lkgszsvf'
 EMAIL_USE_TLS = True
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'

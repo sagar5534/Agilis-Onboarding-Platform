@@ -1,5 +1,7 @@
 from django.db import models
 from login.models import MyUser
+from django.forms import ModelForm
+from django import forms
 
 
 class Address(models.Model):
@@ -70,7 +72,6 @@ class Numbers(models.Model):
     Address_911 = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, null=True)
     Type = models.BooleanField((""), blank=False, null=True)
 
-
 class Extention(models.Model):
 
     class Meta:
@@ -81,8 +82,22 @@ class Extention(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
     ext = models.IntegerField((""), blank=False, null=False)
     name = models.CharField((""), max_length=50, blank=False, null=False)
-    caller_id_name = models.CharField((""), max_length=50, blank=False, null=False)
-    called_id_number = models.CharField((""), max_length=16, blank=False, null=False)
-    voicemail = models.BooleanField((""), blank=False)
+    caller_id_name = models.CharField((""), max_length=50, blank=False, null=True)
+    caller_id_number = models.CharField((""), max_length=16, blank=False, null=True)
+    voicemail = models.BooleanField((""), blank=False, null=True)
     voicemail_toEmail = models.BooleanField((""), blank=False, null=True)
     voicemail_email = models.EmailField((""), max_length=254, blank=False, null=True)
+
+
+
+class Uploads(models.Model):
+
+    class Meta:
+        verbose_name_plural = "User Uploads"
+        verbose_name = "Upload"
+
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
+    document = models.FileField(upload_to='uploads/')
+    type = models.CharField((""), max_length=50, blank=False, null=True)
+
+

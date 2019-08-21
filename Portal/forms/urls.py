@@ -2,6 +2,9 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from . import views
 
 urlpatterns = [
@@ -12,9 +15,12 @@ urlpatterns = [
     #Catching Info -> Mysql to Site
     path('catchCompany', views.catchCompany, name='catchCompany'),
     path('catchPorting', views.catchPorting, name='catchPorting'),
+    path('catchToll', views.catchToll, name='catchToll'),
+    path('catchTollRemove', views.catchTollRemove, name='catchTollRemove'),
     path('catch411', views.catch411, name='catch411'),
     path('catch911', views.catch911, name='catch911'),
     path('catchExt', views.catchExt, name='catchExt'),
+    path('catchUpload', views.catchUpload, name='catchUpload'),
     path('getAddress', views.getAddress, name='getAddress'),
     path('getPhone', views.getPhone, name='getPhone'),
     path('setAddress', views.setAddress, name='setAddress'),
@@ -26,6 +32,7 @@ urlpatterns = [
     path('init411', views.init411, name='init411'),
     path('initExt', views.initExt, name='initExt'),
     path('initUpload', views.initUpload, name='initUpload'),
+    path('initTollPort', views.initTollPort, name='initTollPort'),
+
 
 ]
-   
