@@ -192,7 +192,7 @@ $(document).ready(function () {
 
     fill411(function(data) {
         
-        console.log(data)
+        //console.log(data)
         if (data == "No" || data == "None"){
             $("#411No").prop("checked", true).trigger("click");
             
@@ -220,13 +220,13 @@ $(document).ready(function () {
 
     fillExt(function(data) {
         
-        console.log(data)
+        //console.log(data)
 
     });
 
     fillUpload(function(data) {
         
-        console.log(data)
+        //console.log(data)
 
     });
 

@@ -97,7 +97,7 @@ class Uploads(models.Model):
         verbose_name = "Upload"
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
-    document = models.FileField(upload_to='uploads/')
+    document = models.FileField(upload_to='media/')
     type = models.CharField((""), max_length=50, blank=False, null=True)
 
 

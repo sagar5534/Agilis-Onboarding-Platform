@@ -21,6 +21,7 @@ urlpatterns = [
     path('catch911', views.catch911, name='catch911'),
     path('catchExt', views.catchExt, name='catchExt'),
     path('catchUpload', views.catchUpload, name='catchUpload'),
+    path('catchConfirm', views.catchConfirm, name='catchConfirm'),
     path('getAddress', views.getAddress, name='getAddress'),
     path('getPhone', views.getPhone, name='getPhone'),
     path('setAddress', views.setAddress, name='setAddress'),

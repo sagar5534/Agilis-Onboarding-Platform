@@ -34,11 +34,11 @@ $.ajaxSetup({
 function getAddress(element, callback) {
     $.ajax({
             url: '/forms/getAddress',
+            data: {},
             method: 'POST',
         })
         .done(function (data) {
             var obj = JSON.parse(data);
-            //console.log(obj)
 
             document.getElementById(element).innerHTML = ""
 
@@ -54,7 +54,7 @@ function getAddress(element, callback) {
 
             callback(obj);
         });
-};
+}
 
 //Function to getPhone
 function getPhone(element, callback) {
@@ -65,7 +65,7 @@ function getPhone(element, callback) {
             method: 'POST',
         })
         .done(function (data) {
-            console.log(element)
+            //console.log(element)
             document.getElementById(element).innerHTML = ""
             
             //RulePhone = data.phone
@@ -84,10 +84,6 @@ function getPhone(element, callback) {
             callback(data.phone);
         });
 }
-
-//-----------------------------------------------------------//
-
-
 
 //-----------------------------------------------------------//
 //Global Vars for Numbers - Form 
@@ -338,12 +334,12 @@ var newFileList = ""
 function removeFile(i){
 
     newFileList.splice(i,1);
-    console.log(newFileList)
+    //console.log(newFileList)
 
     var list = document.getElementById("FileList")
     list.innerHTML = "<h6 class='form-heading-8'>Files to Upload</h6>"
     for (i in newFileList){
-        console.log()
+        //console.log()
         list.innerHTML += "<div class='div-block-17 w-clearfix' id='file" + i + "'><div class='form-number'>" + newFileList[i].name + "</div><a onclick='removeFile(" + i + ")' class='form-x-btn w-button'>X</a></div>"
     }
 
@@ -437,7 +433,7 @@ $(document).ready(function () {
             document.getElementById('411Box').style.display = "Block";
 
         } else {
-            console.log("click")
+            //console.log("click")
             document.getElementById('411Box').disabled = true;
             document.getElementById('CompanyName411').disabled = true;
             document.getElementById('Category411').disabled = true;
@@ -457,7 +453,7 @@ $(document).ready(function () {
     $(document).on("click", "div.accordian-trigger" , function(e) {
         var panel = e.currentTarget.nextElementSibling;
         
-        console.log(panel.style.display)
+        //console.log(panel.style.display)
         if (panel.style.display == "block" ){
             panel.style.display = "none"
         }else{
@@ -466,31 +462,31 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "input.ExtVoicemailYes" , function(e) {
-        console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
         $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "Block"
         $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = false
     });
 
     $(document).on("click", "input.ExtVoicemailNo" , function(e) {
-        console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
         $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "none"
         $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = true
     });
 
     $(document).on("click", "input.ExtVoicemailPhone" , function(e) {
-        console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
         $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "none"
         $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = true
     });
 
     $(document).on("click", "input.ExtVoicemailEmail" , function(e) {
-        console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
         $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "Block"
         $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = false
     });
 
     $(document).on("change", "select.ExtCallerID" , function(e) {
-        console.log(e)
+        //console.log(e)
         if (e.currentTarget.value == "custom"){
             e.currentTarget.nextElementSibling.style.display = "Block"
             e.currentTarget.nextElementSibling.disabled = false
@@ -501,7 +497,7 @@ $(document).ready(function () {
     });
 
     $(document).on("change", "select.ExtCallerNumber" , function(e) {
-        console.log(e)
+        //console.log(e)
         if (e.currentTarget.value == "custom"){
             e.currentTarget.nextElementSibling.style.display = "Block"
             e.currentTarget.nextElementSibling.disabled = false
@@ -512,7 +508,7 @@ $(document).ready(function () {
     });
 
     $(document).on("change", "input.ExtNumber" , function(e) {
-        console.log(e)
+        //console.log(e)
         var str = $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML
 
         if (str == "#&nbsp;New Extention<br>"){
@@ -521,7 +517,7 @@ $(document).ready(function () {
             
         }else{
             var res = str.split(" - ");
-            console.log(res)
+            //console.log(res)
             $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML = "#" + e.currentTarget.value + " - " + res[1]
         }
 
@@ -536,7 +532,7 @@ $(document).ready(function () {
             
         }else{
             var res = str.split(" - ");
-            console.log(res)
+            //console.log(res)
             $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML =  res[0] + " - " + e.currentTarget.value
         }
     });
@@ -552,7 +548,7 @@ $(document).ready(function () {
 
         list.innerHTML = "<h6 class='form-heading-8'>Files to Upload</h6>"
         for (i = 0; i < e.currentTarget.files.length; i++){
-            console.log(e.currentTarget.files[i])
+            //console.log(e.currentTarget.files[i])
             list.innerHTML += "<div class='div-block-17 w-clearfix' id='file" + i + "'><div class='form-number'>" + e.currentTarget.files[i].name + "</div><a onclick='removeFile(" + i + ")' class='form-x-btn w-button'>X</a></div>"
         }
     });
@@ -771,7 +767,7 @@ $(document).ready(function () {
     $("#411FormNext").submit(function (e) {
         e.preventDefault();
 
-        console.log("Clicked 411")
+        //console.log("Clicked 411")
         if (document.getElementById('411Yes').checked == true) {
             if (document.getElementById("SelectAddress411").options[document.getElementById("SelectAddress411").selectedIndex].value == 0) {
                 data = {
@@ -834,7 +830,7 @@ $(document).ready(function () {
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
 
-                console.log(content.childNodes[13].childNodes[0].firstChild)
+                //console.log(content.childNodes[13].childNodes[0].firstChild)
 
                 if (content.childNodes[13].childNodes[0].firstChild.checked == true){
                     voicemail = true
@@ -890,7 +886,7 @@ $(document).ready(function () {
                 method: 'POST',
             })
         .done(function (data) {
-            console.log(data)
+            //console.log(data)
             if (data.status == "form-invalid") {
                 var output = '';
                 for (var property in data.formerrors) {
@@ -911,7 +907,7 @@ $(document).ready(function () {
         var formData = new FormData();
 
         for (i in newFileList){
-            console.log(newFileList[i])
+            //console.log(newFileList[i])
 
             formData.set("file", newFileList[i])
 
@@ -932,24 +928,33 @@ $(document).ready(function () {
         if (newFileList.length == 0 || newFileList == ""){
             document.getElementById("uploadError").style.display = "Block"
         }
-
     }
         
     $("#FormUploadNext").submit(upload);
 
     $("#FormConfirmNext").submit(function (e) {
-
+        e.preventDefault();
+        var image_data = ""
         var element = document.getElementById("sig-area");
         html2canvas(element, {
             onrendered: function (canvas) {
-                image_data = canvas.toDataURL();   
+                image_data = canvas.toDataURL()
+                //console.log(image_data)
+
+                $.ajax({
+                    url: '/forms/catchConfirm',
+                    type: 'POST',
+                    data: {
+                        "imgData": image_data
+                    },
+                    success: function(data) {
+                        document.location.href = '/'
+                    }
+                });
             }
         });
         
-        
 
-        $("formupload").hide();
-        $(".formconfirm").show();
     });
 
 //-----------------------------------------------------------//
@@ -960,8 +965,13 @@ $(document).ready(function () {
         $(".formporting").hide();
     });
 
-    $("#911Back").click(function (e) {
+    $("#TollBack").click(function (e) {
         $(".formporting").show();
+        $(".formtoll").hide();
+    });
+
+    $("#911Back").click(function (e) {
+        $(".formtoll").show();
         $(".form911").hide();
         
     });

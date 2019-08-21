@@ -65,7 +65,7 @@ function getPhone(element, callback) {
             method: 'POST',
         })
         .done(function (data) {
-            console.log(element)
+            //console.log(element)
             document.getElementById(element).innerHTML = ""
             
             //RulePhone = data.phone
@@ -325,7 +325,7 @@ function PromptNewAddress(id) {
 
 function removeExt(id) {
 
-    console.log("Reached")
+    //console.log("Reached")
     document.getElementById('Ext' + String(id)).remove()
 
 }
@@ -392,7 +392,7 @@ $(document).ready(function () {
             document.getElementById('411Box').style.display = "Block";
 
         } else {
-            console.log("click")
+            //console.log("click")
             document.getElementById('411Box').disabled = true;
             document.getElementById('CompanyName411').disabled = true;
             document.getElementById('Category411').disabled = true;
@@ -502,11 +502,11 @@ $(document).ready(function () {
         });
 
         document.getElementById("ExtVoicemailYes" + String(extId)).addEventListener("click", function() {
-            console.log("CLICKED")
+            //console.log("CLICKED")
         });
 
         document.getElementById("ExtVoicemailNo" + String(extId)).addEventListener("click", function() {
-            console.log("CLICKED")
+            //console.log("CLICKED")
         });
 
         
@@ -631,7 +631,7 @@ $(document).ready(function () {
     $("#411FormNext").submit(function (e) {
         e.preventDefault();
 
-        console.log("Clicked 411")
+        //console.log("Clicked 411")
         if (document.getElementById('411Yes').checked == true) {
             if (document.getElementById("SelectAddress411").options[document.getElementById("SelectAddress411").selectedIndex].value == 0) {
                 data = {
@@ -715,7 +715,7 @@ $(document).ready(function () {
     });
 
     $("#411Back").click(function (e) {
-        console.log("Back 411")
+        //console.log("Back 411")
         $(".form911").show();
         $(".form411").hide();
     });

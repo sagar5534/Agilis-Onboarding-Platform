@@ -80,7 +80,6 @@ def loginProtocol(request):
     else:
         form = LoginForm()
     
-    print(form.errors)
     #Sends this info to the HTML
     context = {
         'form' : form,

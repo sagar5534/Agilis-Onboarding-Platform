@@ -52,9 +52,8 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initMap" async defer></script>
 
-    <script>
-        //var company = {{ company }};
-    </script>
+    <script>var company = {{ company }};</script>
+
     <script src="{% static 'js/google.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/inits.js' %}"></script>
@@ -230,7 +229,7 @@
                                 </div>
                             </div>
                             
-                            <a id="NumbersBack" href="#" class="form-back w-button">Back</a>
+                            <a id="TollBack" href="#" class="form-back w-button">Back</a>
                             <input type="submit" value="Next" id="NumbersNext" class="form-next w-button">
                         </form>
                     </div>

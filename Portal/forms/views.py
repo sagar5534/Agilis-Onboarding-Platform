@@ -19,6 +19,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.core.files.storage import default_storage
 
+from io import StringIO
+import base64
+from django.core.files.base import ContentFile
+
 
 # Main page user hits once logged in
 @login_required
@@ -541,21 +545,6 @@ def catchExt(request):
 
     return HttpResponse("Done")
 
-# @login_required
-# def catchUpload(request):
-
-#     if request.method == 'GET':
-#         print("GOT HERE ")
-#         form = FileUploadForm(data=request.GET, files=request.FILES)
-#         if form.is_valid():
-#             return HttpResonse("Valid")
-#         else:
-#             print('invalid form')
-#             print(form.errors)
-
-#     return HttpResponse("Last")
-        
-
 @login_required
 @require_POST
 def catchUpload(request):
@@ -573,6 +562,37 @@ def catchUpload(request):
 
     document = Uploads.objects.create(document=toForm, company=tempComp,  type='bill')
     return JsonResponse({'document': document.id})
+
+
+@login_required
+@require_POST
+def catchConfirm(request):
+
+    if request.session.get("company"):
+        company = request.session.get("company")
+    else:
+        return Http404
+    data = request.POST['imgData'] # Getting the object from the post request
+    
+    format, imgstr = data.split(';base64,') 
+    ext = format.split('/')[-1] 
+
+    data = ContentFile(base64.b64decode(imgstr), name='signiture.' + ext)
+
+    save_path = os.path.join(settings.MEDIA_ROOT, str(company), data.name)
+    toForm = os.path.join(str(company), data.name)
+    path = default_storage.save(save_path, data)
+
+
+    tempComp = Company.objects.get(id=company)
+    document = Uploads.objects.create(document=toForm, company=tempComp,  type='signiture')
+
+    tempComp.completed = True
+    tempComp.save()
+
+    return JsonResponse({
+        "valid": 1,
+    });
 
 
 @login_required
@@ -736,7 +756,6 @@ def initExt(request):
 
     if request.method == "POST":
         extData = Extention.objects.filter(company_id=company)
-        print(extData)
         list_with_values = []
 
         count = 0
@@ -768,7 +787,6 @@ def initExt(request):
 
 
         y = json.dumps(list_with_values)
-        print(list_with_values)
         return HttpResponse(y)
 
     else:
