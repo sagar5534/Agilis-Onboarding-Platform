@@ -5,7 +5,7 @@ from django import forms
 
 class AddressAdmin(admin.ModelAdmin):
 
-    list_display = ('id', Address.__str__)
+    list_display = ('id', Address.__str__, 'Postal')
     
     search_fields = ('Street', 'City', 'Country')
     ordering = ('id',)
@@ -29,46 +29,61 @@ class CompanyAdmin(admin.ModelAdmin):
         ),
     )
 
-    search_fields = ('company_name', 'listing_name', '')
+    search_fields = ('company_name', 'listing_name', 'company__id', )
     ordering = ('id', 'company_name', )
     filter_horizontal = ()
 
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        
-        if db_field.name == 'site_address' or db_field.name == 'listing_address' :
+        if db_field.name == 'site_address' or db_field.name == 'listing_address':
             return AddressChoiceField(queryset=Address.objects.all())
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
     pass
 
 class UserCompLinkAdmin(admin.ModelAdmin):
 
-    list_display = ('id', 'user', 'company')
-    search_fields = ('user', 'company',)
-    ordering = ('id', 'user', )
+    list_display = ('user', 'company')
+    search_fields = ('user', 'company__id',)
+    ordering = ('user', )
     filter_horizontal = ()
 
 class NumbersAdmin(admin.ModelAdmin):
 
-    list_display = ('id', 'company', 'number', 'Address_911')
-    search_fields = ('company', 'number',)
-    ordering = ('company', )
+    list_display = ('company', 'number', 'Address_911', 'Type')
+    search_fields = ('company__id', 'number',)
+    ordering = ('company', 'Type' )
+    list_filter = ('Type',)
+
     filter_horizontal = ()
 
 
 class ExtentionsAdmin(admin.ModelAdmin):
 
-    list_display = ('id', 'company', 'ext')
-    search_fields = ('company', 'ext', 'name', )
+    list_display = ('company', 'ext', 'get_name', 'caller_id_name')
+    search_fields = ('company__id', 'ext', 'name', )
     ordering = ('company', )
     filter_horizontal = ()
+
+    def get_name(self, obj):
+        try:
+            x = Numbers.objects.get(id=obj.caller_id_number)
+            return x.number
+        except Numbers.DoesNotExist:
+            return obj.caller_id_number
+
+    get_name.admin_order_field  = 'author'  #Allows column order sorting
+    get_name.short_description = 'Caller ID Number'  #Renames column head
+        
 
 
 class UploadAdmin(admin.ModelAdmin):
 
-    list_display = ('company', 'document')
-    search_fields = ('document', )
-    ordering = ('company', )
+    list_display = ('company', 'document', 'type')
+    list_filter = ('type',)
+
+    search_fields = ('company__id', 'type', 'document', )
+    ordering = ('company', 'type')
+
     filter_horizontal = ()
 
 

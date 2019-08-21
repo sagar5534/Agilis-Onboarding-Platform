@@ -16,8 +16,8 @@ class Address(models.Model):
 
     id = models.AutoField(("ID:"), primary_key=True)
     Suite = models.CharField(("Suite"), max_length=50, null=True, blank=True)
-    StreetAddress = models.CharField(("Street Address"), max_length=250, blank=True, null=False)
-    Postal = models.CharField(("Postal Code"), max_length=7, blank=False, null=False)
+    StreetAddress = models.CharField(("Street Address"), max_length=250, blank=True, null=True)
+    Postal = models.CharField(("Postal Code"), max_length=7, blank=True, null=True)
 
 
 class Company(models.Model):
@@ -27,7 +27,7 @@ class Company(models.Model):
         verbose_name = "Company"
 
     def __str__(self):
-        return self.company_name
+        return str(self.id)
 
     id = models.AutoField(("ID"), primary_key=True)
     completed = models.BooleanField(("Completed"), default=False, null=False)
@@ -36,11 +36,12 @@ class Company(models.Model):
     type = models.CharField(("Type"), max_length=50, null=True)
     currentProvider = models.CharField(("Current Provider"), max_length=50, null=True)
     #411
-    directory_listing = models.CharField(("Directory Listing"), max_length=50, blank=False, null=True)
-    listing_name = models.CharField(("Listing Name"), max_length=50, blank=False, null=True)
-    category_listing = models.CharField(("Category Listing"), max_length=50, blank=False, null=True)
-    listing_phone = models.CharField(("Listing Phone Number"), max_length=16, blank=False, null=True)
-    listing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, related_name='listing_address', null=True)
+    directory_listing = models.BooleanField(("Directory Listing"), blank=False, null=True)
+    #directory_listing = models.CharField(("Directory Listing"), max_length=50, blank=True, null=True)
+    listing_name = models.CharField(("Listing Name"), max_length=50, blank=True, null=True)
+    category_listing = models.CharField(("Category Listing"), max_length=50, blank=True, null=True)
+    listing_phone = models.CharField(("Listing Phone Number"), max_length=16, blank=True, null=True)
+    listing_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, null=True, related_name='listing_address')
 
     #Inserting null into blanks for phones
     #def ...
@@ -68,9 +69,9 @@ class Numbers(models.Model):
     
     id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
-    number = models.CharField((""), max_length=16, blank=False, null=False)
+    number = models.CharField(("Number"), max_length=16, blank=False, null=False)
     Address_911 = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, null=True)
-    Type = models.BooleanField((""), blank=False, null=True)
+    Type = models.BooleanField(("To Be Ported"), blank=False, null=True)
 
 class Extention(models.Model):
 
@@ -80,13 +81,13 @@ class Extention(models.Model):
 
     id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
-    ext = models.IntegerField((""), blank=False, null=False)
-    name = models.CharField((""), max_length=50, blank=False, null=False)
-    caller_id_name = models.CharField((""), max_length=50, blank=False, null=True)
-    caller_id_number = models.CharField((""), max_length=16, blank=False, null=True)
-    voicemail = models.BooleanField((""), blank=False, null=True)
-    voicemail_toEmail = models.BooleanField((""), blank=False, null=True)
-    voicemail_email = models.EmailField((""), max_length=254, blank=False, null=True)
+    ext = models.IntegerField(("Extension"), blank=False, null=False)
+    name = models.CharField(("User Name"), max_length=50, blank=False, null=False)
+    caller_id_name = models.CharField(("Caller ID"), max_length=50, blank=False, null=True)
+    caller_id_number = models.CharField(("Caller ID Number"), max_length=16, blank=False, null=True)
+    voicemail = models.BooleanField(("Voicemail"), blank=False, null=True)
+    voicemail_toEmail = models.BooleanField(("Voicemail To Email"), blank=False, null=True)
+    voicemail_email = models.EmailField(("Email Address"), max_length=254, blank=True, null=True)
 
 
 
@@ -98,6 +99,6 @@ class Uploads(models.Model):
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)
     document = models.FileField(upload_to='media/')
-    type = models.CharField((""), max_length=50, blank=False, null=True)
+    type = models.CharField(("Type"), max_length=50, blank=False, null=True)
 
 
