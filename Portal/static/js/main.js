@@ -45,9 +45,9 @@ function getAddress(element, callback) {
             for (x in obj) {
                 document.getElementById(element).innerHTML += '<option value=' + obj[x].id + '>' + obj[x].address + '</option>'
             }
-            if (element == 'SelectAddress411' || element == 'SelectAddressExc911') {
-                document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
-            }
+            // if (element == 'SelectAddress411' || element == 'SelectAddressExc911') {
+            //     document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
+            // }
             if (element.includes("ExtCallerID")){
                 document.getElementById(element).innerHTML += '<option value="custom">Custom</option>'
             }
@@ -114,34 +114,61 @@ function removeDiscNumber(x) {
 //Functions to Add a Port Number
 function addPortNumber() {
 
-    //console.log("AddPortNumber")
     var x = document.getElementById("PortNumber").value
-    portId++;
-    $('#numbersPort').append("<div class='div-block-17 w-clearfix' id='portid" + portId + "'>"
-    + "<div class='text-block-14'>#</div>"
-    + "<div class='form-number'>" + x + "</div>"
-    + "<a class='form-x-btn w-button' onclick='removePortNumber(" + portId + ")'>X</a></div>")
-    
-    portNumbers[portId] = x
 
-    document.getElementById("PortNumber").value = ""
+    var exists = false; 
+    for (i in portNumbers){
+        if (portNumbers[i] == x){
+            exists = true;
+        }
+    }
+
+    if (x == ""){
+        exists = true;
+    }
+
+    if (exists == false){
+        portId++;
+        $('#numbersPort').append("<div class='div-block-17 w-clearfix' id='portid" + portId + "'>"
+        + "<div class='text-block-14'>#</div>"
+        + "<div class='form-number'>" + x + "</div>"
+        + "<a class='form-x-btn w-button' onclick='removePortNumber(" + portId + ")'>X</a></div>")
+        
+        portNumbers[portId] = x
+    
+        document.getElementById("PortNumber").value = ""
+    }
 
 }
 
 //Function to Add a Disconnect Number
 function addDiscNumber() {
 
-    //console.log("AddPortNumber")
     var x = document.getElementById("DiscNumber").value
-    discId++;    
-    $('#numbersDisc').append("<div class='div-block-17 w-clearfix' id='discid" + discId + "'>"
-    + "<div class='text-block-14'>#</div>"
-    + "<div class='form-number'>" + x + "</div>"
-    + "<a class='form-x-btn w-button' onclick='removeDiscNumber(" + discId + ")'>X</a></div>")
 
-    discNumbers[discId] = x
 
-    document.getElementById("DiscNumber").value = ""
+    var exists = false; 
+    for (i in discNumbers){
+        if (discNumbers[i] == x){
+            exists = true;
+        }
+    }
+
+    if (x == ""){
+        exists = true;
+    }
+
+    if (exists == false){
+        discId++;    
+        $('#numbersDisc').append("<div class='div-block-17 w-clearfix' id='discid" + discId + "'>"
+        + "<div class='text-block-14'>#</div>"
+        + "<div class='form-number'>" + x + "</div>"
+        + "<a class='form-x-btn w-button' onclick='removeDiscNumber(" + discId + ")'>X</a></div>")
+
+        discNumbers[discId] = x
+
+        document.getElementById("DiscNumber").value = ""
+    }
 }
 //-----------------------------------------------------------//
 
@@ -186,6 +213,8 @@ function createRuleTable(phone, address) {
     });
 
     //console.log(normalRules)
+    console.log(normalRules)
+    console.log(ExceptionRules)
 }
 //Adding a Rule into 911 Info - Forms
 function addRule() {
@@ -216,7 +245,11 @@ function addRule() {
             }
 
             delete normalRules[phoneID]
-            document.getElementById("rule" + phoneID).remove();
+
+            var myEle = document.getElementById("rule" + phoneID)
+            if(myEle){
+                myEle.remove();
+            }
 
             document.getElementById("SelectPhoneExc911").options[document.getElementById("SelectPhoneExc911").selectedIndex].disabled = true;
             document.getElementById("SelectPhoneExc911").selectedIndex = 0;
@@ -229,7 +262,24 @@ function addRule() {
                 // Country: document.getElementById("countryExc911").value,
             }
 
-            $.ajax({
+            if (data['StreetAddress'] == "") {
+                //$('postal_codeExc911').setCustomValidity(issues);
+                //$('postal_codeExc911').reportValidity();
+                document.getElementById("postal_codeExc911").setCustomValidity("Enter a Value");
+                document.getElementById("postal_codeExc911").reportValidity();
+                
+            } else if (data['Postal'] == ""){
+                document.getElementById("GoogleAddress-Exc911").setCustomValidity("Enter a Value");
+                document.getElementById("GoogleAddress-Exc911").reportValidity();
+
+            }else{
+                document.getElementById("GoogleAddress-Exc911").setCustomValidity("");
+                document.getElementById("GoogleAddress-Exc911").reportValidity();
+
+                document.getElementById("postal_codeExc911").setCustomValidity("");
+                document.getElementById("GoogleAddress-Exc911").reportValidity();
+
+                $.ajax({
                     url: '/forms/setAddress',
                     data: data,
                     method: 'POST',
@@ -250,8 +300,12 @@ function addRule() {
                         });
                     }
                 });
+            }
+
         }
     }
+    console.log(normalRules)
+    console.log(ExceptionRules)
 }
 //Removing an Exception from 911 Info - Forms
 function removeRule(id, location) {
@@ -272,9 +326,18 @@ function removeRule(id, location) {
     "</div>"
 
     delete ExceptionRules[id]
-    document.getElementById("SelectPhoneExc911").options[location].disabled = false;
-    document.getElementById("exception" + id).remove();
 
+    if (location != 'location'){
+        document.getElementById("SelectPhoneExc911").options[location].disabled = false;
+    }
+
+    var myEle = document.getElementById("exception" + id)
+    if(myEle){
+        myEle.remove();
+    }
+
+    console.log(normalRules)
+    console.log(ExceptionRules)
 }
 //To merge two objects into one - 911 Info 
 //Check if needed
@@ -303,7 +366,6 @@ function PromptNewAddress(id) {
 
         //Enable
         document.getElementById("postal_code" + id).disabled = false;
-        // document.getElementById("country" + id).disabled = false;
         document.getElementById("Suite-" + id).disabled = false;
         document.getElementById("GoogleAddress-" + id).disabled = false;
         //Show
@@ -314,7 +376,6 @@ function PromptNewAddress(id) {
         document.getElementById('NewAddress' + id).style.display = "none"
         //Enable
         document.getElementById("postal_code" + id).disabled = true;
-        // document.getElementById("country" + id).disabled = true;
         document.getElementById("Suite-" + id).disabled = true;
         document.getElementById("GoogleAddress-" + id).disabled = true;
     }
@@ -400,7 +461,7 @@ $(document).ready(function () {
                 addressID: document.getElementById("SelectAddress911").options[document.getElementById("SelectAddress911").selectedIndex].value
             }
 
-            document.getElementById('RulesTable').innerHTML += "<div class='grid-entry'>" + 
+            document.getElementById('RulesTable').innerHTML += "<div class='grid-entry' id='rule" + normalRules[key].phoneID + "'>" +
             "<div id='w-node-7ad72b18e096-37815fb7' class='form-grid-entry'>" + normalRules[key].phone + "</div>" +
             "<div class='form-grid-entry'>" + normalRules[key].address + "</div>" +
             "</div>"
@@ -507,12 +568,42 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("change", "input.ExtNumber" , function(e) {
-        //console.log(e)
+    $(document).on("keyup", "input.ExtNumber" , function(e) {
+        console.log(e)
+        e.preventDefault()
+
+        var input = e.currentTarget
+        var issues = ""
+        var userValidation = true
+        //Rules for Extensions
+        //Catching 3 Letter or Less
+        if (input.value.length < 3){
+            issues += "Must be larger then 2 Digits"
+            userValidation = false
+        }
+        if (input.value.length == 3 && input.value.endsWith("11")){
+            issues += "Cannot end with *11"
+            userValidation = false
+        }
+        if (input.value.length > 6){
+            issues += "Must be less then 6 Digits"
+            userValidation = false
+        }
+
+
+        //validate if the pattern match
+        if (userValidation) {
+            e.currentTarget.setCustomValidity("");
+            var isValid = e.currentTarget.reportValidity();
+
+        } else {
+            e.currentTarget.setCustomValidity(issues);
+            var isValid = e.currentTarget.reportValidity();
+        }
+
         var str = $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML
-
         if (str == "#&nbsp;New Extention<br>"){
-
+ 
             $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML = "#" + e.currentTarget.value + " - "
             
         }else{
@@ -557,6 +648,8 @@ $(document).ready(function () {
         document.getElementById("signiture_text").innerHTML = e.currentTarget.value
     });
 
+
+
     $("#addExt").click(function () {
         extCount++
         extId++
@@ -567,8 +660,8 @@ $(document).ready(function () {
         +    "<a class='form-x-btn w-button' onclick='removeExt(" + extId +")'>X</a>"
         + "</div>" 
         + "<div class='accordian-content' id='accordian-content" + extId + "'>"
-        +  "<div class='form-heading-8'>Create a 4 Digit Extension Number</div>"
-        +  "<input type='number' class='form-field w-input ExtNumber' maxlength='256' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
+        +  "<div class='form-heading-8'>Create an Extension Number</div>"
+        +  "<input type='number' class='form-field w-input ExtNumber' maxlength='6' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
         +  " <div class='div-block-33 ext'>"
         +       "<div>Error</div>"
         +   "</div>"
@@ -586,7 +679,7 @@ $(document).ready(function () {
         +       "<option value='First'>First Choice</option>"
         +       "<option value='Second'>Second Choice</option>"
         +   "</select>"
-        +   "<input type='tel' class='form-field w-input' maxlength='256' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
+        +   "<input type='tel' class='form-field w-input' minlength='10' maxlength='10' pattern='[0-9]{3}[0-9]{3}[0-9]{4}' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number - XXXXXXXXXX' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
         +   "<div class='form-heading-8'>Would you like Voicemail for this Extension?</div>"
         +   "<div class='div-block-23'>"
         +       "<label class='w-radio'>"
@@ -619,12 +712,11 @@ $(document).ready(function () {
  //-----------------------------------------------------------//
  
     //Showing Screens
-    $(".formcompany").show();
+    $(".formcompany").show();   
     $(".formporting").hide();
     $(".formtoll").hide();
     $(".form911").hide();
     $(".form411").hide();
-    //getAddress("ExtCallerNumber", function (address) {});
     $(".formext").hide();
     $(".formupload").hide();
     $(".formconfirm").hide();
@@ -650,10 +742,10 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } else {
                     //If valid form
-                    fillPort(function(){
-                        $(".formcompany").hide();
-                        $(".formporting").show();
-                    })
+                    
+                    $(".formcompany").hide();
+                    $(".formporting").show();
+                
                     
                 }
             });
@@ -687,6 +779,7 @@ $(document).ready(function () {
                 } 
                 else {
                     fillTollPort( function() {
+                        fill911(function(){});
                         $(".formporting").hide();
                         $(".formtoll").show();
                     })
@@ -714,14 +807,18 @@ $(document).ready(function () {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        $(".formtoll").hide();
-                        $(".form911").show();
+                        fill911(function(data){
+                            $(".formtoll").hide();
+                            $(".form911").show();
+                        });
                     }
                 });
             //If file is being used from Prev
             }else{
-                $(".formtoll").hide();
-                $(".form911").show();
+                fill911(function(data){
+                    $(".formtoll").hide();
+                    $(".form911").show();
+                });
             }
 
         }else{
@@ -730,8 +827,10 @@ $(document).ready(function () {
                 url: '/forms/catchTollRemove',
                 type: 'POST',
                 success: function(data) {
-                    $(".formtoll").hide();
-                    $(".form911").show();
+                    fill911(function(data){
+                        $(".formtoll").hide();
+                        $(".form911").show();
+                    });
                 }
             });
         }
@@ -772,7 +871,6 @@ $(document).ready(function () {
     $("#411FormNext").submit(function (e) {
         e.preventDefault();
 
-        //console.log("Clicked 411")
         if (document.getElementById('411Yes').checked == true) {
             if (document.getElementById("SelectAddress411").options[document.getElementById("SelectAddress411").selectedIndex].value == 0) {
                 data = {
@@ -812,10 +910,11 @@ $(document).ready(function () {
                     }
                     alert(output);
                 } else {
-
-                    $(".form411").hide();
-                    $(".formext").show();  
-
+                    fillExt(function(data) {
+                        console.log(data)
+                        $(".form411").hide();
+                        $(".formext").show(); 
+                    });
                 }
             });
     });
@@ -831,58 +930,55 @@ $(document).ready(function () {
             data = []
             var tableFields = document.getElementById("accordian-wrapper")
             var children = tableFields.children;
+            console.log(children)
+
             for (var i = 0; i < children.length; i++) {
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
 
-                //console.log(content.childNodes[13].childNodes[0].firstChild)
+                console.log(content.childNodes)
+
+                data.push({
+                    "Ext": content.childNodes[1].value,
+                    "ExtUser": content.childNodes[5].value,
+                });
+
+                //Caller ID Handler
+                var callerId = content.childNodes[7].options[content.childNodes[7].selectedIndex].value
+                data[i].caller_id = content.childNodes[7].options[content.childNodes[7].selectedIndex].text
+                if (callerId == "custom"){
+                   data[i].caller_id = callerId
+                   data[i].callerIdCustom = content.childNodes[8].value
+                }
+
+                //Phone ID Handler
+                var phoneId = content.childNodes[10].options[content.childNodes[10].selectedIndex].value
+                data[i].phone_id = phoneId
+                if (phoneId == "custom"){
+                    data[i].phoneCustom = content.childNodes[11].value
+                }
+
 
                 if (content.childNodes[13].childNodes[0].firstChild.checked == true){
                     voicemail = true
 
                     if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
-                        data.push({
-                            "Ext": content.childNodes[1].value,
-                            "ExtUser": content.childNodes[5].value,
-                            "voicemail": voicemail,
-                            "voicemail_type": "phone",
-                        });
+                        data[i].voicemail = voicemail
+                        data[i].voicemail_type = "phone"
                     }else{
-                        data.push({
-                            "Ext": content.childNodes[1].value,
-                            "ExtUser": content.childNodes[5].value,
-                            "voicemail": voicemail,
-                            "voicemail_type": "email",
-                            "email": content.childNodes[14].childNodes[2].value
-                        })
-
+                        data[i].voicemail = voicemail
+                        data[i].voicemail_type = "email"
+                        data[i].email = content.childNodes[14].childNodes[2].value
                     }
+
                 }else{
                     voicemail = false
-                    data.push({
-                        "Ext": content.childNodes[1].value,
-                        "ExtUser": content.childNodes[5].value,
-                        "voicemail": voicemail,
-                    })
+                    data[i].voicemail = voicemail
                 }
-
-                 //Caller ID Handler
-                 var callerId = content.childNodes[7].options[content.childNodes[7].selectedIndex].value
-                 data[i].caller_id = content.childNodes[7].options[content.childNodes[7].selectedIndex].Text
-                 if (callerId == "custom"){
-                    data[i].caller_id = callerId
-                    data[i].callerIdCustom = content.childNodes[8].value
-                 }
- 
-                 //Phone ID Handler
-                 var phoneId = content.childNodes[10].options[content.childNodes[10].selectedIndex].value
-                 data[i].phone_id = phoneId
-                 if (phoneId == "custom"){
-                     data[i].phoneCustom = content.childNodes[11].value
-                 }
             }
         }
 
+        console.log(data)
         e.preventDefault();
         $.ajax({
                 url: '/forms/catchExt',
@@ -971,22 +1067,23 @@ $(document).ready(function () {
     });
 
     $("#TollBack").click(function (e) {
-        fillPort(function(){
             $(".formporting").show();
             $(".formtoll").hide();
-        })
     });
 
     $("#911Back").click(function (e) {
-        fillTollPort( function() {
+        fillTollPort(function(data) {
+            console.log("did back")
             $(".formtoll").show();
             $(".form911").hide();
-        })
+        });
     });
 
     $("#411Back").click(function (e) {
-        $(".form911").show();
-        $(".form411").hide();
+        fill911(function(data){
+            $(".form911").show();
+            $(".form411").hide();
+        });
     });
 
 
@@ -996,8 +1093,8 @@ $(document).ready(function () {
     });
 
     $("#UploadBack").click(function (e) {
-        $(".formext").show();
-        $(".formupload").hide();
+            $(".formext").show();
+            $(".formupload").hide();
     });
 
     $("#ConfirmBack").click(function (e) {
