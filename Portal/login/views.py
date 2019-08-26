@@ -24,6 +24,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect, QueryDict
 from django.shortcuts import resolve_url
 from django.urls import reverse_lazy
+
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
