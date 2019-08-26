@@ -45,9 +45,9 @@ function getAddress(element, callback) {
             for (x in obj) {
                 document.getElementById(element).innerHTML += '<option value=' + obj[x].id + '>' + obj[x].address + '</option>'
             }
-            // if (element == 'SelectAddress411' || element == 'SelectAddressExc911') {
-            //     document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
-            // }
+            if (element == 'SelectAddressExc911') {
+                document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
+            }
             if (element.includes("ExtCallerID")){
                 document.getElementById(element).innerHTML += '<option value="custom">Custom</option>'
             }
