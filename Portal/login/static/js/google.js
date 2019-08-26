@@ -15,7 +15,7 @@ function initAutocomplete() {
   // Create the autocomplete object, restricting the search predictions to
   // geographical location types.
   var input = document.getElementById('GoogleAddress')
-  var input911 = document.getElementById('GoogleAddress-Exc911')
+  var inputExc911 = document.getElementById('GoogleAddress-Exc911')
 
 
   var options = {
@@ -24,17 +24,17 @@ function initAutocomplete() {
   };
 
   autocomplete = new google.maps.places.Autocomplete(input, options);
-  autocomplete911 = new google.maps.places.Autocomplete(input911, options);
+  autocompleteExc911 = new google.maps.places.Autocomplete(inputExc911, options);
 
   // Avoid paying for data that you don't need by restricting the set of
   // place fields that are returned to just the address components.
   autocomplete.setFields(['address_component']);
-  autocomplete911.setFields(['address_component']);
+  autocompleteExc911.setFields(['address_component']);
 
   // When the user selects an address from the drop-down, populate the
   // address fields in the form.
   autocomplete.addListener('place_changed', fillInAddress);
-  autocomplete911.addListener('place_changed', fillInAddress911);
+  autocompleteExc911.addListener('place_changed', fillInAddressExc911);
 }
 
 
@@ -60,11 +60,11 @@ function fillInAddress(place) {
   
 }
 
-function fillInAddress911() {
+function fillInAddressExc911() {
   // Get the place details from the autocomplete object.
-  var place = autocomplete911.getPlace();
+  var place = autocompleteExc911.getPlace();
 
-  for (var component in componentForm911) {
+  for (var component in componentFormExc911) {
     document.getElementById(component).value = '';
     document.getElementById(component).disabled = false;
   }
@@ -73,8 +73,8 @@ function fillInAddress911() {
   // and fill the corresponding field on the form.
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
-    if (componentForm911[addressType + "Exc911"]) {
-      var val = place.address_components[i][componentForm911[addressType + "Exc911"]];
+    if (componentFormExc911[addressType + "Exc911"]) {
+      var val = place.address_components[i][componentFormExc911[addressType + "Exc911"]];
           document.getElementById(addressType + "Exc911").value = val;
     }
   }
