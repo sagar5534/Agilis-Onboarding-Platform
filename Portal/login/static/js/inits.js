@@ -138,8 +138,6 @@ function fill911(callback){
                     getAddress("SelectAddressExc911")
                     PromptNewAddress('Exc911')
 
-                    console.log("Starting")
-                    console.log(document.getElementById("SelectPhoneExc911"))
                     var phoneList = document.getElementById("SelectPhoneExc911")
 
                     for (x in obj){
@@ -147,9 +145,7 @@ function fill911(callback){
                         var test = 0
 
                         for (i = 1; i < phoneList.childNodes.length; i++){
-                            console.log(i)
                             if (phoneList[i].innerHTML == obj[x].number){
-                                console.log(phoneList[i].innerHTML + " - " + obj[x].number)
                                 test = i
                             }
                         }
@@ -233,13 +229,14 @@ function fillExt(callback){
             
             var tableFields = document.getElementById("accordian-wrapper")
             var children = tableFields.children;
-    
+            console.log(children)
+
             for (var i = 0; i < children.length; i++) {
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
     
-                //console.log(content.childNodes)
-                //console.log(obj[i])
+                console.log(content.childNodes)
+                console.log(obj)
     
                 //Ext and Name
                 content.childNodes[1].value = obj[i].Ext
@@ -257,7 +254,7 @@ function fillExt(callback){
     
                     content.childNodes[8].value = obj[i].callerIdCustom
                 }else{
-                    content.childNodes[7].value = obj[i].caller_id
+                    content.childNodes[7].value = 1
                 }
     
                 var changeTo = ""
@@ -345,9 +342,9 @@ $(document).ready(function () {
 
     fill411(function(data){});
 
-    fillExt(function(data) {});
+    //fillExt(function(data) {});
 
-    fillUpload(function(data) {});
+    //fillUpload(function(data) {});
 
 });
 

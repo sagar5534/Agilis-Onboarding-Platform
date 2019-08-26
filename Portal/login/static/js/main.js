@@ -45,9 +45,9 @@ function getAddress(element, callback) {
             for (x in obj) {
                 document.getElementById(element).innerHTML += '<option value=' + obj[x].id + '>' + obj[x].address + '</option>'
             }
-            if (element == 'SelectAddress411' || element == 'SelectAddressExc911') {
-                document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
-            }
+            // if (element == 'SelectAddress411' || element == 'SelectAddressExc911') {
+            //     document.getElementById(element).innerHTML += '<option value=0>Add a new Address</option>'
+            // }
             if (element.includes("ExtCallerID")){
                 document.getElementById(element).innerHTML += '<option value="custom">Custom</option>'
             }
@@ -262,7 +262,24 @@ function addRule() {
                 // Country: document.getElementById("countryExc911").value,
             }
 
-            $.ajax({
+            if (data['StreetAddress'] == "") {
+                //$('postal_codeExc911').setCustomValidity(issues);
+                //$('postal_codeExc911').reportValidity();
+                document.getElementById("postal_codeExc911").setCustomValidity("Enter a Value");
+                document.getElementById("postal_codeExc911").reportValidity();
+                
+            } else if (data['Postal'] == ""){
+                document.getElementById("GoogleAddress-Exc911").setCustomValidity("Enter a Value");
+                document.getElementById("GoogleAddress-Exc911").reportValidity();
+
+            }else{
+                document.getElementById("GoogleAddress-Exc911").setCustomValidity("");
+                document.getElementById("GoogleAddress-Exc911").reportValidity();
+
+                document.getElementById("postal_codeExc911").setCustomValidity("");
+                document.getElementById("GoogleAddress-Exc911").reportValidity();
+
+                $.ajax({
                     url: '/forms/setAddress',
                     data: data,
                     method: 'POST',
@@ -283,6 +300,8 @@ function addRule() {
                         });
                     }
                 });
+            }
+
         }
     }
     console.log(normalRules)
@@ -347,7 +366,6 @@ function PromptNewAddress(id) {
 
         //Enable
         document.getElementById("postal_code" + id).disabled = false;
-        // document.getElementById("country" + id).disabled = false;
         document.getElementById("Suite-" + id).disabled = false;
         document.getElementById("GoogleAddress-" + id).disabled = false;
         //Show
@@ -358,7 +376,6 @@ function PromptNewAddress(id) {
         document.getElementById('NewAddress' + id).style.display = "none"
         //Enable
         document.getElementById("postal_code" + id).disabled = true;
-        // document.getElementById("country" + id).disabled = true;
         document.getElementById("Suite-" + id).disabled = true;
         document.getElementById("GoogleAddress-" + id).disabled = true;
     }
@@ -551,7 +568,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("change", "input.ExtNumber" , function(e) {
+    $(document).on("keyup", "input.ExtNumber" , function(e) {
         console.log(e)
         e.preventDefault()
 
@@ -662,7 +679,7 @@ $(document).ready(function () {
         +       "<option value='First'>First Choice</option>"
         +       "<option value='Second'>Second Choice</option>"
         +   "</select>"
-        +   "<input type='tel' class='form-field w-input' maxlength='256' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
+        +   "<input type='tel' class='form-field w-input' minlength='10' maxlength='10' pattern='[0-9]{3}[0-9]{3}[0-9]{4}' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number - XXXXXXXXXX' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
         +   "<div class='form-heading-8'>Would you like Voicemail for this Extension?</div>"
         +   "<div class='div-block-23'>"
         +       "<label class='w-radio'>"
@@ -700,7 +717,6 @@ $(document).ready(function () {
     $(".formtoll").hide();
     $(".form911").hide();
     $(".form411").hide();
-    //getAddress("ExtCallerNumber", function (address) {});
     $(".formext").hide();
     $(".formupload").hide();
     $(".formconfirm").hide();
@@ -791,14 +807,18 @@ $(document).ready(function () {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        $(".formtoll").hide();
-                        $(".form911").show();
+                        fill911(function(data){
+                            $(".formtoll").hide();
+                            $(".form911").show();
+                        });
                     }
                 });
             //If file is being used from Prev
             }else{
-                $(".formtoll").hide();
-                $(".form911").show();
+                fill911(function(data){
+                    $(".formtoll").hide();
+                    $(".form911").show();
+                });
             }
 
         }else{
@@ -807,8 +827,10 @@ $(document).ready(function () {
                 url: '/forms/catchTollRemove',
                 type: 'POST',
                 success: function(data) {
-                    $(".formtoll").hide();
-                    $(".form911").show();
+                    fill911(function(data){
+                        $(".formtoll").hide();
+                        $(".form911").show();
+                    });
                 }
             });
         }
@@ -888,10 +910,11 @@ $(document).ready(function () {
                     }
                     alert(output);
                 } else {
-
-                    $(".form411").hide();
-                    $(".formext").show();  
-
+                    fillExt(function(data) {
+                        console.log(data)
+                        $(".form411").hide();
+                        $(".formext").show(); 
+                    });
                 }
             });
     });
@@ -907,56 +930,55 @@ $(document).ready(function () {
             data = []
             var tableFields = document.getElementById("accordian-wrapper")
             var children = tableFields.children;
+            console.log(children)
+
             for (var i = 0; i < children.length; i++) {
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
+
+                console.log(content.childNodes)
+
+                data.push({
+                    "Ext": content.childNodes[1].value,
+                    "ExtUser": content.childNodes[5].value,
+                });
+
+                //Caller ID Handler
+                var callerId = content.childNodes[7].options[content.childNodes[7].selectedIndex].value
+                data[i].caller_id = content.childNodes[7].options[content.childNodes[7].selectedIndex].text
+                if (callerId == "custom"){
+                   data[i].caller_id = callerId
+                   data[i].callerIdCustom = content.childNodes[8].value
+                }
+
+                //Phone ID Handler
+                var phoneId = content.childNodes[10].options[content.childNodes[10].selectedIndex].value
+                data[i].phone_id = phoneId
+                if (phoneId == "custom"){
+                    data[i].phoneCustom = content.childNodes[11].value
+                }
+
 
                 if (content.childNodes[13].childNodes[0].firstChild.checked == true){
                     voicemail = true
 
                     if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
-                        data.push({
-                            "Ext": content.childNodes[1].value,
-                            "ExtUser": content.childNodes[5].value,
-                            "voicemail": voicemail,
-                            "voicemail_type": "phone",
-                        });
+                        data[i].voicemail = voicemail
+                        data[i].voicemail_type = "phone"
                     }else{
-                        data.push({
-                            "Ext": content.childNodes[1].value,
-                            "ExtUser": content.childNodes[5].value,
-                            "voicemail": voicemail,
-                            "voicemail_type": "email",
-                            "email": content.childNodes[14].childNodes[2].value
-                        })
-
+                        data[i].voicemail = voicemail
+                        data[i].voicemail_type = "email"
+                        data[i].email = content.childNodes[14].childNodes[2].value
                     }
+
                 }else{
                     voicemail = false
-                    data.push({
-                        "Ext": content.childNodes[1].value,
-                        "ExtUser": content.childNodes[5].value,
-                        "voicemail": voicemail,
-                    })
+                    data[i].voicemail = voicemail
                 }
-
-                 //Caller ID Handler
-                 var callerId = content.childNodes[7].options[content.childNodes[7].selectedIndex].value
-                 data[i].caller_id = content.childNodes[7].options[content.childNodes[7].selectedIndex].Text
-                 if (callerId == "custom"){
-                    data[i].caller_id = callerId
-                    data[i].callerIdCustom = content.childNodes[8].value
-                 }
- 
-                 //Phone ID Handler
-                 var phoneId = content.childNodes[10].options[content.childNodes[10].selectedIndex].value
-                 data[i].phone_id = phoneId
-                 if (phoneId == "custom"){
-                     data[i].phoneCustom = content.childNodes[11].value
-                 }
             }
         }
 
+        console.log(data)
         e.preventDefault();
         $.ajax({
                 url: '/forms/catchExt',
