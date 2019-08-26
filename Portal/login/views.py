@@ -32,7 +32,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
-
+from forms.models import *
 from django.core.mail import send_mail
 
 
@@ -102,6 +102,52 @@ def logoutProtocol(request):
     #Otherwise send to main page
     return redirect('/')
 
+import re
+
+@login_required
+def register_user(request):
+
+    if not request.user.is_superuser:
+       return HttpResponse('This user does not have access!')
+
+    if request.method == 'POST':
+            register = MyUser()
+            register.email = request.POST['Email']
+            compId = request.POST['ID']
+
+            print(request.POST)
+            print(register)
+            
+            #Testing
+            pattern = re.compile("^ORD-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$")
+            if (pattern.match(compId)):
+                try:
+
+                    if (MyUser.objects.get(email=register.email)):
+                        return HttpResponse("Error - User with email already exists")
+                except MyUser.DoesNotExist:
+                    print()
+                
+                try:
+                    if (Company.objects.get(order=compId)):
+                        return HttpResponse("Error - Company with that Order Number exists")
+                except Company.DoesNotExist:
+                    print()
+                
+
+                user = register.save()
+                user = MyUser.objects.get(email=register.email)
+                x = Company.objects.create(order=compId, completed=0, company_name='New Application')
+                UserCompLink.objects.create(company_id=x.id, user_id=user.id)
+                
+            else:
+                return HttpResponse("Error - ORD Number Incorrect")
+            
+            return HttpResponse('Finished')
+           
+    else:
+        return render(request, "login/add-user.html", {})
+
 
 
 INTERNAL_RESET_URL_TOKEN = 'set-password'
@@ -162,7 +208,7 @@ class PasswordResetConfirmView(PasswordContextMixin, FormView):
     post_reset_login = False
     post_reset_login_backend = None
     success_url = reverse_lazy('password_reset_complete')
-    template_name = 'registration/password_reset_confirm.html'
+    template_name = 'login/set-password.html'
     title = _('Enter new password')
     token_generator = default_token_generator
 

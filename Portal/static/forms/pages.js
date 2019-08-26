@@ -27,7 +27,7 @@ $(document).ready(function () {
                     City: document.getElementById("locality").value,
                     Prov: document.getElementById("administrative_area_level_1").value,
                     Postal: document.getElementById("postal_code").value,
-                    Country: document.getElementById("country").value,
+                    // Country: document.getElementById("country").value,
                 },
                 method: 'POST',
             })

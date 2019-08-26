@@ -52,7 +52,7 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA02Z2fu0Ln8WjkpzQjrYwI6FRmoxDtN-o&libraries=places&callback=initMap" async defer></script>
 
-    <script>var company = {{ company }};</script>
+    <script>var company = {{ company }}</script>
 
     <script src="{% static 'js/google.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
@@ -89,19 +89,19 @@
                     <div id="PortingCircle" class="circle">
                         <div class="text-block-9">3</div>
                     </div>
-                    <div class="item-lbl">1-800 Porting</div>
-                </a>
-                <a href="#" class="step-item w-inline-block">
-                    <div id="411Circle" class="circle">
-                        <div class="text-block-9">4</div>
-                    </div>
-                    <div class="item-lbl">411 Info</div>
+                    <div class="item-lbl">Toll Number Porting</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
                     <div id="911Circle" class="circle">
-                        <div class="text-block-9">5</div>
+                        <div class="text-block-9"></div>
                     </div>
                     <div class="item-lbl">911 Info</div>
+                </a>
+                <a href="#" class="step-item w-inline-block">
+                    <div id="411Circle" class="circle">
+                        <div class="text-block-9">5</div>
+                    </div>
+                    <div class="item-lbl">411 Info</div>
                 </a>
                 <a href="#" class="step-item w-inline-block">
                     <div id="ExtensionCircle" class="circle">
@@ -144,8 +144,8 @@
                                 <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress" onFocus="geolocate()" type="text" required="">
                                 <div class="div-block-30">
                                     <input type="text" class="form-field w-input" maxlength="256" name="postal_code" data-name="PostalCode" placeholder="Postal Code" id="postal_code" required="">
-                                    <div class="div-block-31"></div>
-                                    <input type="text" class="form-field w-input" maxlength="256" name="country" data-name="Country" placeholder="Country" id="country" required="">
+                                    {% comment %} <div class="div-block-31"></div> {% endcomment %}
+                                    {% comment %} <input type="text" class="form-field w-input" maxlength="256" name="country" data-name="Country" placeholder="Country" id="country" required=""> {% endcomment %}
                                 </div>
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite" data-name="Suite" placeholder="Enter Suite # (If Needed)" id="Suite">
                             </div>
@@ -161,9 +161,10 @@
                     <h3 class="form-heading">Port Phone Numbers</h3>
                     <div class="w-form">
                         <form id="PortNumbers" name="PortNumbers" data-name="PortNumbers" onsubmit="addPortNumber()">
+                            <label for="name-2" class="field-label">*Exclude Toll Free Numbers*</label>
                             <label for="name-2" class="field-label">Numbers to be Ported</label>
                             <div class="div-block-15">
-                                <input type="tel" class="form-field phone w-input" maxlength="10" name="PortNumber" data-name="PortNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="PortNumber">
+                                <input type="tel" class="form-field phone w-input" maxlength="10" name="PortNumber" data-name="PortNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX - Ex. 7058889999" minlength="10" id="PortNumber">
                                 <input type="submit" class="form-add w-button" name="+" value="+">
                             </div>
                             <div class="div-block-33 port">
@@ -180,7 +181,7 @@
                         <form id="email-form-7" name="email-form-7" data-name="Email Form 7" onsubmit="addDiscNumber()">
                             <label for="email" class="field-label">Numbers to be Disconnected</label>
                             <div class="div-block-15">
-                                <input type="text" class="form-field phone w-input" maxlength="10" name="DiscNumber" data-name="DiscNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX" minlength="10" id="DiscNumber">
+                                <input type="text" class="form-field phone w-input" maxlength="10" name="DiscNumber" data-name="DiscNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX - Ex. 7058889999" minlength="10" id="DiscNumber">
                                 <input type="submit" value="+" data-wait="Please wait..." class="form-add w-button">
                             </div>
                             <div class="div-block-33 disc">
@@ -270,8 +271,8 @@
                                 <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress-Exc911" required="">
                                 <div class="div-block-30">
                                     <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-2" data-name="Postal Code 2" placeholder="Postal Code" id="postal_codeExc911" required="">
-                                    <div class="div-block-31"></div>
-                                    <input type="text" class="form-field w-input" maxlength="256" name="Country-2" data-name="Country 2" placeholder="Country" id="countryExc911" required="">
+                                    {% comment %} <div class="div-block-31"></div> {% endcomment %}
+                                    {% comment %} <input type="text" class="form-field w-input" maxlength="256" name="Country-2" data-name="Country 2" placeholder="Country" id="countryExc911" required=""> {% endcomment %}
                                 </div>
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite-2" data-name="Suite 2" placeholder="Enter Suite # (If Needed)" id="Suite-Exc911">
                             </div>
@@ -326,8 +327,8 @@
                                     <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress-411" required="" onFocus="geolocate()">
                                     <div class="div-block-30">
                                         <input type="text" class="form-field w-input" maxlength="256" name="postal_code411" data-name="postal_code411" placeholder="Postal Code" id="postal_code411" required="">
-                                        <div class="div-block-31"></div>
-                                        <input type="text" class="form-field w-input" maxlength="256" name="country411" data-name="country411" placeholder="Country" id="country411" required="">
+                                        {% comment %} <div class="div-block-31"></div> {% endcomment %}
+                                        {% comment %} <input type="text" class="form-field w-input" maxlength="256" name="country411" data-name="country411" placeholder="Country" id="country411" required=""> {% endcomment %}
                                     </div>
                                     <input type="text" class="form-field w-input" maxlength="256" name="Suite-3" data-name="Suite-3" placeholder="Enter Suite # (If Needed)" id="Suite-411">
                                 </div>
@@ -390,7 +391,7 @@
                 <h3 class="form-heading">Confirm</h3>
                 <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
                 <div id="sig-area" style="padding: 20px">
-                    <h1 id="signiture_text" style="font-family: 'Pacifico', cursive;"></h1>
+                    <h1 id="signiture_text" style="font-family: 'Pacifico', cursive; color:blue"></h1>
                 </div>
                 <div class="w-form">
                     <form id="FormConfirmNext" name="FormConfirmNext" data-name="FormConfirmNext">

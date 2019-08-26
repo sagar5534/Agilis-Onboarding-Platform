@@ -5,9 +5,9 @@ from django import forms
 
 class AddressAdmin(admin.ModelAdmin):
 
-    list_display = ('id', Address.__str__, 'Postal')
+    list_display = (Address.__str__, 'Postal')
     
-    search_fields = ('Street', 'City', 'Country')
+    search_fields = ('StreetAddress', "Postal", )
     ordering = ('id',)
     filter_horizontal = ()
 

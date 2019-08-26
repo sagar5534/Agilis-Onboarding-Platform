@@ -2,16 +2,16 @@ var placeSearch, autocomplete;
 
 var componentForm = {
   postal_code: 'short_name',
-  country: 'long_name'
+  // country: 'long_name'
 };
 
 var componentForm411 = {
-  country411: 'long_name',
+  // country411: 'long_name',
   postal_code411: 'short_name'
 };
 
 var componentFormExc911 = {
-  countryExc911: 'long_name',
+  // countryExc911: 'long_name',
   postal_codeExc911: 'short_name'
 };
 

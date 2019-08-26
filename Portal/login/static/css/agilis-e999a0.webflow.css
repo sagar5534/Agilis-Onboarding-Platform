@@ -610,6 +610,7 @@
 
 .form-heading {
   margin-bottom: 15px;
+  padding-top: 20px;
 }
 
 .form-next {
@@ -1243,7 +1244,7 @@
 }
 
 .div-block-33.upload {
-  display: none;
+  display: block;
   width: 60%;
   margin-top: 15px;
 }
@@ -1281,6 +1282,41 @@
 }
 
 .text-field-10 {
+  margin-top: 20px;
+}
+
+.container-7 {
+  position: relative;
+  display: block;
+  margin-top: -50px;
+  padding: 35px 47px 60px;
+  background-color: #fff;
+}
+
+.body-5 {
+  background-color: #efefef;
+}
+
+.field-label-9 {
+  padding-top: 20px;
+}
+
+.submit-button-8 {
+  margin-top: 25px;
+}
+
+.body-6 {
+  background-color: #efefef;
+}
+
+.container-8 {
+  position: relative;
+  margin-top: -50px;
+  padding: 35px 47px;
+  background-color: #fff;
+}
+
+.field-label-10 {
   margin-top: 20px;
 }
 

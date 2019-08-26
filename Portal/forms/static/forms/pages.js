@@ -27,7 +27,7 @@ $(document).ready(function () {
                     City: document.getElementById("locality").value,
                     Prov: document.getElementById("administrative_area_level_1").value,
                     Postal: document.getElementById("postal_code").value,
-                    Country: document.getElementById("country").value,
+                    // Country: document.getElementById("country").value,
                 },
                 method: 'POST',
             })
@@ -130,7 +130,7 @@ $(document).ready(function () {
                     City: document.getElementById("locality2").value,
                     Prov: document.getElementById("administrative_area_level_12").value,
                     Postal: document.getElementById("postal_code2").value,
-                    Country: document.getElementById("country2").value,
+                    // Country: document.getElementById("country2").value,
                 }
             } else {
                 data = {

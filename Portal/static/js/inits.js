@@ -56,6 +56,20 @@ function fillPort(callback){
 
 }
 
+function fillTollPort(callback){
+
+    $.ajax({
+            url: '/forms/initTollPort',
+            method: 'POST',
+        })
+        .done(function (data) {
+
+            callback(data);
+
+        });
+
+}
+
 function fill911(callback){
 
     $.ajax({
@@ -115,12 +129,14 @@ $(document).ready(function () {
 
         var obj = JSON.parse(data);
 
-        document.getElementById("Provider").value = obj.currentProvider
-        document.getElementById("CompanyName").value = obj.company_name
-        document.getElementById("Type").value = obj.type
-        document.getElementById("GoogleAddress").value = obj.StreetAddress
-        document.getElementById("postal_code").value = obj.Postal
-        document.getElementById("Suite").value = obj.Suite
+        if (obj["ignore"] != 1){
+            document.getElementById("Provider").value = obj.currentProvider
+            document.getElementById("CompanyName").value = obj.company_name
+            document.getElementById("Type").value = obj.type
+            document.getElementById("GoogleAddress").value = obj.StreetAddress
+            document.getElementById("postal_code").value = obj.Postal
+            document.getElementById("Suite").value = obj.Suite
+        }
 
     });
 
@@ -152,6 +168,29 @@ $(document).ready(function () {
             }
 
         } 
+    });
+
+    fillTollPort(function(data) {
+        console.log("Started")
+
+        var obj = JSON.parse(data);
+        console.log(obj)
+
+        if (obj['ignore'] == 1){
+            $(".TollNo").trigger("click")
+            var prev = document.getElementById("prevSubmittedToll")
+            prev.innerHTML = ""
+            
+        }else{
+
+            $(".TollYes").trigger("click")
+            var prev = document.getElementById("prevSubmittedToll")
+            prev.innerHTML = "<p><br><br>Previously Submitted File: </p><a target='_blank' href='" + obj['url'] + "' >" + obj['name'] + "</a>" 
+            console.log(prev)
+            $("#inputResp").prop('required',false);
+        }
+
+
     });
 
     fill911(function(data) {
@@ -220,13 +259,86 @@ $(document).ready(function () {
 
     fillExt(function(data) {
         
-        //console.log(data)
+        var obj = JSON.parse(data);
+        //console.log(obj)
+
+        for (each in obj){
+            $("#addExt").click()
+        }
+        
+        var tableFields = document.getElementById("accordian-wrapper")
+        var children = tableFields.children;
+
+        for (var i = 0; i < children.length; i++) {
+            var content = children[i].childNodes[1];
+            var voicemail = true; 
+
+            //console.log(content.childNodes)
+            //console.log(obj[i])
+
+            //Ext and Name
+            content.childNodes[1].value = obj[i].Ext
+            content.childNodes[5].value = obj[i].ExtName
+
+            $(content.childNodes[1]).trigger("change")
+            $(content.childNodes[5]).trigger("change")
+
+            //Caller ID Setting
+            if (obj[i].caller_id == "custom"){
+                content.childNodes[7].value = 'custom'
+
+                content.childNodes[7].nextElementSibling.style.display = "Block"
+                content.childNodes[7].nextElementSibling.disabled = false
+
+                content.childNodes[8].value = obj[i].callerIdCustom
+            }else{
+                content.childNodes[7].value = obj[i].caller_id
+            }
+
+            var changeTo = ""
+
+            if (obj[i].phone_id == "custom"){
+
+                changeTo = 'custom'
+                content.childNodes[10].nextElementSibling.style.display = "Block"
+                content.childNodes[10].nextElementSibling.disabled = false
+
+                content.childNodes[11].value = obj[i].phoneIdCustom
+            }else{
+                changeTo = obj[i].phone_id
+            }
+
+            //cons
+            getPhone(content.childNodes[10].id, function(){
+                $(content.childNodes[10]).val(changeTo).change();
+            });
+
+            if (obj[i].voicemail == true){
+                $(content.childNodes[13].childNodes[0].firstChild).trigger('click');
+            }else{
+                $(content.childNodes[13].childNodes[1].firstChild).trigger('click');
+            }
+
+            //Phone
+            if (obj[i].voicemail_toEmail == true){
+                $(content.childNodes[14].childNodes[1].lastChild).trigger('click');
+                content.childNodes[14].childNodes[2].style.display = "Block"
+                content.childNodes[14].childNodes[2].disabled = false
+                content.childNodes[14].childNodes[2].value = obj[i].voicemail_email
+            }else{
+                $(content.childNodes[14].childNodes[1].firstChild).trigger('click');
+                content.childNodes[14].childNodes[2].style.display = "none"
+                content.childNodes[14].childNodes[2].disabled = true
+            }
+
+        }
 
     });
 
     fillUpload(function(data) {
         
         //console.log(data)
+
 
     });
 

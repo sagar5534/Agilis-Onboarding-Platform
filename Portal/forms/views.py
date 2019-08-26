@@ -4,6 +4,7 @@ from django.shortcuts import (
     redirect,
     HttpResponseRedirect,
 )
+import random
 from django.http import HttpResponse
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -22,6 +23,7 @@ from django.core.files.storage import default_storage
 from io import StringIO
 import base64
 from django.core.files.base import ContentFile
+from django.core.mail import *
 
 
 # Main page user hits once logged in
@@ -67,7 +69,7 @@ def detail(request, company):
 def MainForm(request):
     # Work with company session
     comps = request.session.get("company")
-    context = {"companies": comps, 
+    context = {"company": comps, 
                'user': request.user.email}
 
     return render(request, "forms/submit.html", context)
@@ -164,7 +166,7 @@ def setAddress(request):
             Suite = form.cleaned_data["Suite"]
             StreetAddress = form.cleaned_data["StreetAddress"]
             Postal = form.cleaned_data["Postal"]
-            Country = form.cleaned_data["Country"]
+            # Country = form.cleaned_data["Country"]
     else:
         return form_response(form)
 
@@ -423,7 +425,7 @@ def catch411(request):
             Suite = form.cleaned_data["Suite"]
             StreetAddress = form.cleaned_data["StreetAddress"]
             Postal = form.cleaned_data["Postal"]
-            Country = form.cleaned_data["Country"]
+            # Country = form.cleaned_data["Country"]
         else:
             address = get_object_or_404(
                 Address, pk=form.cleaned_data["address"]
@@ -456,6 +458,8 @@ def catch411(request):
     comp.category_listing = Category
     comp.listing_phone = Phone411
     comp.listing_address_id = address
+    comp.directory_listing = 1
+
     comp.save()
 
     return form_response(form)
@@ -553,13 +557,29 @@ def catchUpload(request):
         company = request.session.get("company")
     else:
         return Http404
-    
-    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(request.FILES['file']))
-    path = default_storage.save(save_path, request.FILES['file'])
-    toForm = os.path.join(str(company), str(request.FILES['file']))
+
+    #os.path.exists(f.path)\
+    rand = random.randint(10000000,99999999)
+
+    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(rand) + str(request.FILES['file']))
+    toForm = os.path.join(str(company), str(rand) + str(request.FILES['file']))
 
     tempComp = Company.objects.get(id=company)
 
+    #Check if File Exists
+    try:
+        document = Uploads.objects.filter(company=tempComp,  type='bill')
+
+        for i in document:
+            i.delete()
+            if (os.path.exists(i.document.path)):
+                default_storage.delete(i.document.path)
+        
+
+    except Uploads.DoesNotExist:
+        print("")
+
+    path = default_storage.save(save_path, request.FILES['file'])
     document = Uploads.objects.create(document=toForm, company=tempComp,  type='bill')
     return JsonResponse({'document': document.id})
 
@@ -590,6 +610,9 @@ def catchConfirm(request):
     tempComp.completed = True
     tempComp.save()
 
+    #Sending Confirmation Email on Application Completed
+    send_mail('Application Completed - ' + tempComp.order, '', 'no-reply@agilismail.com', ['s.72427patel@gmail.com',])
+
     return JsonResponse({
         "valid": 1,
     });
@@ -603,13 +626,19 @@ def initCompany(request):
     else:
         raise Http404
 
+    x = {
+        "ignore" : 1
+    }
+
     if request.method == "POST":
         
         compData = Company.objects.get(id=company)
 
-        compAddress = Address.objects.get(id=compData.site_address_id)
+        
 
         if compData.company_name != "New Application":
+
+            compAddress = Address.objects.get(id=compData.site_address_id)
             x = {
                 "company_name": compData.company_name,
                 "type": compData.type,
@@ -624,7 +653,8 @@ def initCompany(request):
     else:
         raise Http404
 
-    return HttpResponse("Done")
+    y = json.dumps(x)
+    return HttpResponse(y)
   
 @login_required
 def initPort(request):
@@ -698,12 +728,16 @@ def init911(request):
         for each in numbers:
             if each.Address_911_id != None:
                 add = Address.objects.get(id=each.Address_911_id)
+                
+                suiteHandler = ""
+                if (add.Suite != ""):
+                    suiteHandler = "Suite: " + add.Suite + "-"
 
                 list_with_values.append({
                     "number": each.number,
                     "address_id": add.id,
                     "id": each.id,
-                    "address": add.StreetAddress
+                    "address": suiteHandler + add.StreetAddress + ", " + add.Postal
                 })
 
         y = json.dumps(list_with_values)
@@ -725,6 +759,7 @@ def init411(request):
     if request.method == "POST":
         
         compData = Company.objects.get(id=company)
+        #print(compData.directory_listing)
         if (compData.directory_listing == "0"):
             #None Exists
             return HttpResponse("No")

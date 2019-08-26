@@ -30,6 +30,8 @@ class Company(models.Model):
         return str(self.id)
 
     id = models.AutoField(("ID"), primary_key=True)
+
+    order = models.CharField(("Order"), max_length=50, blank=False, null=True)
     completed = models.BooleanField(("Completed"), default=False, null=False)
     company_name = models.CharField(("Company Name"), max_length=50, blank=False, null=True)
     site_address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=False, related_name='site_address', null=True)

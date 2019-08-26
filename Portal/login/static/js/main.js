@@ -114,34 +114,61 @@ function removeDiscNumber(x) {
 //Functions to Add a Port Number
 function addPortNumber() {
 
-    //console.log("AddPortNumber")
     var x = document.getElementById("PortNumber").value
-    portId++;
-    $('#numbersPort').append("<div class='div-block-17 w-clearfix' id='portid" + portId + "'>"
-    + "<div class='text-block-14'>#</div>"
-    + "<div class='form-number'>" + x + "</div>"
-    + "<a class='form-x-btn w-button' onclick='removePortNumber(" + portId + ")'>X</a></div>")
-    
-    portNumbers[portId] = x
 
-    document.getElementById("PortNumber").value = ""
+    var exists = false; 
+    for (i in portNumbers){
+        if (portNumbers[i] == x){
+            exists = true;
+        }
+    }
+
+    if (x == ""){
+        exists = true;
+    }
+
+    if (exists == false){
+        portId++;
+        $('#numbersPort').append("<div class='div-block-17 w-clearfix' id='portid" + portId + "'>"
+        + "<div class='text-block-14'>#</div>"
+        + "<div class='form-number'>" + x + "</div>"
+        + "<a class='form-x-btn w-button' onclick='removePortNumber(" + portId + ")'>X</a></div>")
+        
+        portNumbers[portId] = x
+    
+        document.getElementById("PortNumber").value = ""
+    }
 
 }
 
 //Function to Add a Disconnect Number
 function addDiscNumber() {
 
-    //console.log("AddPortNumber")
     var x = document.getElementById("DiscNumber").value
-    discId++;    
-    $('#numbersDisc').append("<div class='div-block-17 w-clearfix' id='discid" + discId + "'>"
-    + "<div class='text-block-14'>#</div>"
-    + "<div class='form-number'>" + x + "</div>"
-    + "<a class='form-x-btn w-button' onclick='removeDiscNumber(" + discId + ")'>X</a></div>")
 
-    discNumbers[discId] = x
 
-    document.getElementById("DiscNumber").value = ""
+    var exists = false; 
+    for (i in discNumbers){
+        if (discNumbers[i] == x){
+            exists = true;
+        }
+    }
+
+    if (x == ""){
+        exists = true;
+    }
+
+    if (exists == false){
+        discId++;    
+        $('#numbersDisc').append("<div class='div-block-17 w-clearfix' id='discid" + discId + "'>"
+        + "<div class='text-block-14'>#</div>"
+        + "<div class='form-number'>" + x + "</div>"
+        + "<a class='form-x-btn w-button' onclick='removeDiscNumber(" + discId + ")'>X</a></div>")
+
+        discNumbers[discId] = x
+
+        document.getElementById("DiscNumber").value = ""
+    }
 }
 //-----------------------------------------------------------//
 
@@ -186,6 +213,8 @@ function createRuleTable(phone, address) {
     });
 
     //console.log(normalRules)
+    console.log(normalRules)
+    console.log(ExceptionRules)
 }
 //Adding a Rule into 911 Info - Forms
 function addRule() {
@@ -216,7 +245,11 @@ function addRule() {
             }
 
             delete normalRules[phoneID]
-            document.getElementById("rule" + phoneID).remove();
+
+            var myEle = document.getElementById("rule" + phoneID)
+            if(myEle){
+                myEle.remove();
+            }
 
             document.getElementById("SelectPhoneExc911").options[document.getElementById("SelectPhoneExc911").selectedIndex].disabled = true;
             document.getElementById("SelectPhoneExc911").selectedIndex = 0;
@@ -226,7 +259,7 @@ function addRule() {
                 Suite: document.getElementById("Suite-Exc911").value,
                 StreetAddress: document.getElementById("GoogleAddress-Exc911").value,
                 Postal: document.getElementById("postal_codeExc911").value,
-                Country: document.getElementById("countryExc911").value,
+                // Country: document.getElementById("countryExc911").value,
             }
 
             $.ajax({
@@ -252,6 +285,8 @@ function addRule() {
                 });
         }
     }
+    console.log(normalRules)
+    console.log(ExceptionRules)
 }
 //Removing an Exception from 911 Info - Forms
 function removeRule(id, location) {
@@ -272,9 +307,18 @@ function removeRule(id, location) {
     "</div>"
 
     delete ExceptionRules[id]
-    document.getElementById("SelectPhoneExc911").options[location].disabled = false;
-    document.getElementById("exception" + id).remove();
 
+    if (location != 'location'){
+        document.getElementById("SelectPhoneExc911").options[location].disabled = false;
+    }
+
+    var myEle = document.getElementById("exception" + id)
+    if(myEle){
+        myEle.remove();
+    }
+
+    console.log(normalRules)
+    console.log(ExceptionRules)
 }
 //To merge two objects into one - 911 Info 
 //Check if needed
@@ -297,13 +341,13 @@ function PromptNewAddress(id) {
     if (address == "0") {
         //Clear
         document.getElementById("postal_code" + id).value = ""
-        document.getElementById("country" + id).value = ""
+        // document.getElementById("country" + id).value = ""
         document.getElementById("Suite-" + id).value = ""
         document.getElementById("GoogleAddress-" + id).value = ""
 
         //Enable
         document.getElementById("postal_code" + id).disabled = false;
-        document.getElementById("country" + id).disabled = false;
+        // document.getElementById("country" + id).disabled = false;
         document.getElementById("Suite-" + id).disabled = false;
         document.getElementById("GoogleAddress-" + id).disabled = false;
         //Show
@@ -314,7 +358,7 @@ function PromptNewAddress(id) {
         document.getElementById('NewAddress' + id).style.display = "none"
         //Enable
         document.getElementById("postal_code" + id).disabled = true;
-        document.getElementById("country" + id).disabled = true;
+        // document.getElementById("country" + id).disabled = true;
         document.getElementById("Suite-" + id).disabled = true;
         document.getElementById("GoogleAddress-" + id).disabled = true;
     }
@@ -400,7 +444,7 @@ $(document).ready(function () {
                 addressID: document.getElementById("SelectAddress911").options[document.getElementById("SelectAddress911").selectedIndex].value
             }
 
-            document.getElementById('RulesTable').innerHTML += "<div class='grid-entry'>" + 
+            document.getElementById('RulesTable').innerHTML += "<div class='grid-entry' id='rule" + normalRules[key].phoneID + "'>" +
             "<div id='w-node-7ad72b18e096-37815fb7' class='form-grid-entry'>" + normalRules[key].phone + "</div>" +
             "<div class='form-grid-entry'>" + normalRules[key].address + "</div>" +
             "</div>"
@@ -428,7 +472,7 @@ $(document).ready(function () {
             document.getElementById("Suite-411").disabled = false;
             document.getElementById("GoogleAddress-411").disabled = false;
             document.getElementById("postal_code411").disabled = false;
-            document.getElementById("country411").disabled = true;
+            // document.getElementById("country411").disabled = true;
             PromptNewAddress("411")
             document.getElementById('411Box').style.display = "Block";
 
@@ -442,7 +486,7 @@ $(document).ready(function () {
             document.getElementById("Suite-411").disabled = true;
             document.getElementById("GoogleAddress-411").disabled = true;
             document.getElementById("postal_code411").disabled = true;
-            document.getElementById("country411").disabled = true;
+            // document.getElementById("country411").disabled = true;
             document.getElementById('411Box').style.display = "none";
 
         }
@@ -508,11 +552,41 @@ $(document).ready(function () {
     });
 
     $(document).on("change", "input.ExtNumber" , function(e) {
-        //console.log(e)
+        console.log(e)
+        e.preventDefault()
+
+        var input = e.currentTarget
+        var issues = ""
+        var userValidation = true
+        //Rules for Extensions
+        //Catching 3 Letter or Less
+        if (input.value.length < 3){
+            issues += "Must be larger then 2 Digits"
+            userValidation = false
+        }
+        if (input.value.length == 3 && input.value.endsWith("11")){
+            issues += "Cannot end with *11"
+            userValidation = false
+        }
+        if (input.value.length > 6){
+            issues += "Must be less then 6 Digits"
+            userValidation = false
+        }
+
+
+        //validate if the pattern match
+        if (userValidation) {
+            e.currentTarget.setCustomValidity("");
+            var isValid = e.currentTarget.reportValidity();
+
+        } else {
+            e.currentTarget.setCustomValidity(issues);
+            var isValid = e.currentTarget.reportValidity();
+        }
+
         var str = $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML
-
         if (str == "#&nbsp;New Extention<br>"){
-
+ 
             $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML = "#" + e.currentTarget.value + " - "
             
         }else{
@@ -557,6 +631,8 @@ $(document).ready(function () {
         document.getElementById("signiture_text").innerHTML = e.currentTarget.value
     });
 
+
+
     $("#addExt").click(function () {
         extCount++
         extId++
@@ -567,8 +643,8 @@ $(document).ready(function () {
         +    "<a class='form-x-btn w-button' onclick='removeExt(" + extId +")'>X</a>"
         + "</div>" 
         + "<div class='accordian-content' id='accordian-content" + extId + "'>"
-        +  "<div class='form-heading-8'>Create a 4 Digit Extension Number</div>"
-        +  "<input type='number' class='form-field w-input ExtNumber' maxlength='256' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
+        +  "<div class='form-heading-8'>Create an Extension Number</div>"
+        +  "<input type='number' class='form-field w-input ExtNumber' maxlength='6' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
         +  " <div class='div-block-33 ext'>"
         +       "<div>Error</div>"
         +   "</div>"
@@ -619,7 +695,7 @@ $(document).ready(function () {
  //-----------------------------------------------------------//
  
     //Showing Screens
-    $(".formcompany").hide();
+    $(".formcompany").show();   
     $(".formporting").hide();
     $(".formtoll").hide();
     $(".form911").hide();
@@ -627,7 +703,7 @@ $(document).ready(function () {
     //getAddress("ExtCallerNumber", function (address) {});
     $(".formext").hide();
     $(".formupload").hide();
-    $(".formconfirm").show();
+    $(".formconfirm").hide();
 
 //-----------------------------------------------------------//
     //Company Info
@@ -650,8 +726,11 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } else {
                     //If valid form
+                    
                     $(".formcompany").hide();
                     $(".formporting").show();
+                
+                    
                 }
             });
     });
@@ -683,8 +762,11 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } 
                 else {
-                    $(".formporting").hide();
-                    $(".formtoll").show();
+                    fillTollPort( function() {
+                        fill911(function(){});
+                        $(".formporting").hide();
+                        $(".formtoll").show();
+                    })
                 }
             });
     });
@@ -767,7 +849,6 @@ $(document).ready(function () {
     $("#411FormNext").submit(function (e) {
         e.preventDefault();
 
-        //console.log("Clicked 411")
         if (document.getElementById('411Yes').checked == true) {
             if (document.getElementById("SelectAddress411").options[document.getElementById("SelectAddress411").selectedIndex].value == 0) {
                 data = {
@@ -777,7 +858,7 @@ $(document).ready(function () {
                     Suite: document.getElementById("Suite-411").value,
                     StreetAddress: document.getElementById("GoogleAddress-411").value,
                     Postal: document.getElementById("postal_code411").value,
-                    Country: document.getElementById("country411").value,
+                    // Country: document.getElementById("country411").value,
                 }
             } else {
                 data = {
@@ -829,8 +910,6 @@ $(document).ready(function () {
             for (var i = 0; i < children.length; i++) {
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
-
-                //console.log(content.childNodes[13].childNodes[0].firstChild)
 
                 if (content.childNodes[13].childNodes[0].firstChild.checked == true){
                     voicemail = true
@@ -966,19 +1045,23 @@ $(document).ready(function () {
     });
 
     $("#TollBack").click(function (e) {
-        $(".formporting").show();
-        $(".formtoll").hide();
+            $(".formporting").show();
+            $(".formtoll").hide();
     });
 
     $("#911Back").click(function (e) {
-        $(".formtoll").show();
-        $(".form911").hide();
-        
+        fillTollPort(function(data) {
+            console.log("did back")
+            $(".formtoll").show();
+            $(".form911").hide();
+        });
     });
 
     $("#411Back").click(function (e) {
-        $(".form911").show();
-        $(".form411").hide();
+        fill911(function(data){
+            $(".form911").show();
+            $(".form411").hide();
+        });
     });
 
 
@@ -988,8 +1071,8 @@ $(document).ready(function () {
     });
 
     $("#UploadBack").click(function (e) {
-        $(".formext").show();
-        $(".formupload").hide();
+            $(".formext").show();
+            $(".formupload").hide();
     });
 
     $("#ConfirmBack").click(function (e) {

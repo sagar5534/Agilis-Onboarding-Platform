@@ -14,6 +14,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from forms.models import *
+
 
 admin.site.site_header = "Agilis Admin"
 admin.site.site_title = "Agilis"
@@ -51,7 +53,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ('email',)
+        fields = ("email",)
 
 
     def save(self, commit=True):

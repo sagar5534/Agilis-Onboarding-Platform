@@ -1,5 +1,0 @@
-django
-openpyxl
-pylint
-psycopg2
-mysqlclient

@@ -34,11 +34,11 @@ $.ajaxSetup({
 function getAddress(element, callback) {
     $.ajax({
             url: '/forms/getAddress',
+            data: {},
             method: 'POST',
         })
         .done(function (data) {
             var obj = JSON.parse(data);
-            //console.log(obj)
 
             document.getElementById(element).innerHTML = ""
 
@@ -54,7 +54,7 @@ function getAddress(element, callback) {
 
             callback(obj);
         });
-};
+}
 
 //Function to getPhone
 function getPhone(element, callback) {
@@ -71,8 +71,8 @@ function getPhone(element, callback) {
             //RulePhone = data.phone
             if (element == "SelectPhoneExc911") {
                 document.getElementById(element).innerHTML += '<option value="0">---------</option>'
-
             }
+
             for (x in data.phone) {
                 document.getElementById(element).innerHTML += '<option value=' + data.phone[x].id + '>' + data.phone[x].phone + '</option>'
             }
@@ -86,14 +86,11 @@ function getPhone(element, callback) {
 }
 
 //-----------------------------------------------------------//
-
-
-
-//-----------------------------------------------------------//
 //Global Vars for Numbers - Form 
 let portId = 0;
 let discId = 0;
 let extId = 0;
+let extCount = 0;
 
 //Both Functions are for Numbers - Forms 
 //Functions to remove Port Number
@@ -229,7 +226,7 @@ function addRule() {
                 Suite: document.getElementById("Suite-Exc911").value,
                 StreetAddress: document.getElementById("GoogleAddress-Exc911").value,
                 Postal: document.getElementById("postal_codeExc911").value,
-                Country: document.getElementById("countryExc911").value,
+                // Country: document.getElementById("countryExc911").value,
             }
 
             $.ajax({
@@ -300,13 +297,13 @@ function PromptNewAddress(id) {
     if (address == "0") {
         //Clear
         document.getElementById("postal_code" + id).value = ""
-        document.getElementById("country" + id).value = ""
+        // document.getElementById("country" + id).value = ""
         document.getElementById("Suite-" + id).value = ""
         document.getElementById("GoogleAddress-" + id).value = ""
 
         //Enable
         document.getElementById("postal_code" + id).disabled = false;
-        document.getElementById("country" + id).disabled = false;
+        // document.getElementById("country" + id).disabled = false;
         document.getElementById("Suite-" + id).disabled = false;
         document.getElementById("GoogleAddress-" + id).disabled = false;
         //Show
@@ -317,7 +314,7 @@ function PromptNewAddress(id) {
         document.getElementById('NewAddress' + id).style.display = "none"
         //Enable
         document.getElementById("postal_code" + id).disabled = true;
-        document.getElementById("country" + id).disabled = true;
+        // document.getElementById("country" + id).disabled = true;
         document.getElementById("Suite-" + id).disabled = true;
         document.getElementById("GoogleAddress-" + id).disabled = true;
     }
@@ -325,19 +322,63 @@ function PromptNewAddress(id) {
 
 function removeExt(id) {
 
-    //console.log("Reached")
     document.getElementById('Ext' + String(id)).remove()
+    if (extCount != 0){
+        extCount--; 
+    }
 
 }
+
+var newFileList = ""
+
+function removeFile(i){
+
+    newFileList.splice(i,1);
+    //console.log(newFileList)
+
+    var list = document.getElementById("FileList")
+    list.innerHTML = "<h6 class='form-heading-8'>Files to Upload</h6>"
+    for (i in newFileList){
+        //console.log()
+        list.innerHTML += "<div class='div-block-17 w-clearfix' id='file" + i + "'><div class='form-number'>" + newFileList[i].name + "</div><a onclick='removeFile(" + i + ")' class='form-x-btn w-button'>X</a></div>"
+    }
+
+
+}
+
 
 //-----------------------------------------------------------//
  
 //Instructions that occur once document is ready
 $(document).ready(function () {
 
+    
 
-//-----------------------------------------------------------//
-//911 and 411 Selects
+    $(document).on("click", "input.TollYes" , function(e) {
+        var x = document.getElementById("downloadDiv")
+        x.style.display = "Block"
+        x.disabled = false
+        var x = document.getElementById("downloadDiv2")
+        x.style.display = "Block"
+        x.disabled = false
+        var x = document.getElementById("inputResp")
+        x.disabled = false
+    });
+
+
+    $(document).on("click", "input.TollNo" , function(e) {
+        var x = document.getElementById("inputResp")
+        x.disabled = true
+        var x = document.getElementById("downloadDiv")
+        x.style.display = "none"
+        x.disabled = true
+        var x = document.getElementById("downloadDiv2")
+        x.style.display = "none"
+        x.disabled = true
+    
+    });
+
+    //911 and 411 Selects
     $('#SelectAddress411').change(function () {
         PromptNewAddress('411')
     }); 
@@ -345,7 +386,7 @@ $(document).ready(function () {
     $('#SelectAddressExc911').change(function () {
         PromptNewAddress('Exc911')
     }); 
-
+    
     //A main site is changed on 911 Info - Form
     $("#SelectAddress911").change( function(e){
         e.preventDefault();
@@ -387,7 +428,7 @@ $(document).ready(function () {
             document.getElementById("Suite-411").disabled = false;
             document.getElementById("GoogleAddress-411").disabled = false;
             document.getElementById("postal_code411").disabled = false;
-            document.getElementById("country411").disabled = true;
+            // document.getElementById("country411").disabled = true;
             PromptNewAddress("411")
             document.getElementById('411Box').style.display = "Block";
 
@@ -401,129 +442,190 @@ $(document).ready(function () {
             document.getElementById("Suite-411").disabled = true;
             document.getElementById("GoogleAddress-411").disabled = true;
             document.getElementById("postal_code411").disabled = true;
-            document.getElementById("country411").disabled = true;
+            // document.getElementById("country411").disabled = true;
             document.getElementById('411Box').style.display = "none";
 
         }
     });
 
+    //-----------------------------------------------------------//
+
+    $(document).on("click", "div.accordian-trigger" , function(e) {
+        var panel = e.currentTarget.nextElementSibling;
+        
+        //console.log(panel.style.display)
+        if (panel.style.display == "block" ){
+            panel.style.display = "none"
+        }else{
+            panel.style.display = "block"
+        }
+    });
+
+    $(document).on("click", "input.ExtVoicemailYes" , function(e) {
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "Block"
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = false
+    });
+
+    $(document).on("click", "input.ExtVoicemailNo" , function(e) {
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "none"
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = true
+    });
+
+    $(document).on("click", "input.ExtVoicemailPhone" , function(e) {
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "none"
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = true
+    });
+
+    $(document).on("click", "input.ExtVoicemailEmail" , function(e) {
+        //console.log($(e.currentTarget).parent().parent()[0].nextElementSibling)
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.style.display = "Block"
+        $(e.currentTarget).parent().parent()[0].nextElementSibling.disabled = false
+    });
+
+    $(document).on("change", "select.ExtCallerID" , function(e) {
+        //console.log(e)
+        if (e.currentTarget.value == "custom"){
+            e.currentTarget.nextElementSibling.style.display = "Block"
+            e.currentTarget.nextElementSibling.disabled = false
+        }else{
+            e.currentTarget.nextElementSibling.style.display = "none"
+            e.currentTarget.nextElementSibling.disabled = true
+        }
+    });
+
+    $(document).on("change", "select.ExtCallerNumber" , function(e) {
+        //console.log(e)
+        if (e.currentTarget.value == "custom"){
+            e.currentTarget.nextElementSibling.style.display = "Block"
+            e.currentTarget.nextElementSibling.disabled = false
+        }else{
+            e.currentTarget.nextElementSibling.style.display = "none"
+            e.currentTarget.nextElementSibling.disabled = true
+        }
+    });
+
+    $(document).on("change", "input.ExtNumber" , function(e) {
+        //console.log(e)
+        var str = $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML
+
+        if (str == "#&nbsp;New Extention<br>"){
+
+            $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML = "#" + e.currentTarget.value + " - "
+            
+        }else{
+            var res = str.split(" - ");
+            //console.log(res)
+            $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML = "#" + e.currentTarget.value + " - " + res[1]
+        }
+
+    });
+
+    $(document).on("change", "input.ExtName" , function(e) {
+        var str = $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML
+
+        if (str == "#&nbsp;New Extention<br>"){
+
+            $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML = "#" + " - " + e.currentTarget.value
+            
+        }else{
+            var res = str.split(" - ");
+            //console.log(res)
+            $(e.currentTarget).parent().parent()[0].firstChild.firstChild.innerHTML =  res[0] + " - " + e.currentTarget.value
+        }
+    });
+    
+    $(document).on("change", "#fileUploadBtn" , function(e) {
+        var list = document.getElementById("FileList")
+        
+        document.getElementById("uploadError").style.display = "none"
+
+        //Send to Array
+        var oldList = document.getElementById("fileUploadBtn")
+        newFileList = Array.from(oldList.files);
+
+        list.innerHTML = "<h6 class='form-heading-8'>Files to Upload</h6>"
+        for (i = 0; i < e.currentTarget.files.length; i++){
+            //console.log(e.currentTarget.files[i])
+            list.innerHTML += "<div class='div-block-17 w-clearfix' id='file" + i + "'><div class='form-number'>" + e.currentTarget.files[i].name + "</div><a onclick='removeFile(" + i + ")' class='form-x-btn w-button'>X</a></div>"
+        }
+    });
+
+    $(document).on("keyup", "#signiture-input" , function(e) {
+        document.getElementById("signiture_text").innerHTML = e.currentTarget.value
+    });
+
     $("#addExt").click(function () {
+        extCount++
         extId++
 
-             x = "<div class='accordian-item' id='Ext" + extId + "'>"
-                + "<button type='button' class='accordian-trigger w-clearfix' id='accordian-trigger" + extId + "'>"
-                +    "<h5 class='tigger-header'># New Extention<br></h5><a onclick='removeExt(" + extId + ")' class='form-x-btn w-button'>X</a>"
-                +"</button>" 
-                +"<div style='height:0PX' class='accordian-content' id='accordian-content" + extId + "'>"
-                +  "<div class='form-heading-8'>Create a 4 Digit Extension Number</div>"
-                +  "<input type='number' class='form-field w-input' maxlength='256' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
-                +  " <div class='div-block-33 ext'>"
-                +       "<div>Error</div>"
-                +   "</div>"
-                +   "<div class='form-heading-8'>User for this Extension Number</div>"
-                +   "<input type='text' class='form-field w-input' maxlength='256' name='ExtName' data-name='ExtName' placeholder='User&#x27;s Name' id='ExtName' required=''>"
-                +   "<div class='form-heading-8'>Caller ID Name</div>"
-                +   "<select id='ExtCallerID" + extId + "' name='ExtCallerID' data-name='ExtCallerID' required='' class='form-select w-select'>"
-                +       "<option value=''>Select one...</option>"
-                +       "<option value='First'>Company Name</option>"
-                +       "<option value='custom'>Custom Name</option>"
-                +   "</select>"
-                +   "<input type='text' class='form-field w-input' maxlength='256' name='CustomCallerID' data-name='CustomCallerID' placeholder='Caller ID Name' id='CustomCallerID" + extId + "' required='' style='display:none'>"
-                +   "<div class='form-heading-8'>Caller ID Phone Number</div>"
-                +   "<select id='ExtCallerNumber" + extId + "' name='ExtCallerNumber' data-name='ExtCallerNumber' class='form-select w-select'>"
-                +       "<option value=''>Select one...</option>"
-                +       "<option value='First'>First Choice</option>"
-                +       "<option value='Second'>Second Choice</option>"
-                +   "</select>"
-                +   "<input type='tel' class='form-field w-input' maxlength='256' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number' id='CustomCallerNumber" + extId + "' required='' style='display:none'>"
-                +   "<div class='form-heading-8'>Would you like Voicemail for this Extension?</div>"
-                +   "<div class='div-block-23'>"
-                +      "<label class='w-radio'>"
-                +          "<input type='radio' data-name='ExtVoicemail' id='ExtVoicemailYes" + extId + "' name='ExtVoicemail' value='Yes' required='' class='w-radio-input'><span for='Yes' class='w-form-label'>Yes</span></label>"
-                +       "<label class='radio-button-field-2 w-radio'>"
-                +          "<input type='radio' data-name='ExtVoicemail' id='ExtVoicemailNo" + extId + "' name='ExtVoicemail' value='No' class='w-radio-input'><span for='No' class='w-form-label'>No</span></label>"
-                +   "</div>"
-                +   "<div data-w-id='762d5bde-f86c-3acb-bf97-a700c63c9cb3' class='div-block-32'>"
-                +      "<div class='form-heading-8'>Type of Voicemail</div>"
-                +       "<div class='div-block-23'>"
-                +           "<label class='w-radio'>"
-                +               "<input type='radio' data-name='ExtVoicemailEmail' id='Yes' name='ExtVoicemailEmail' value='Yes' required='' class='w-radio-input'><span for='Yes-2' class='w-form-label'>Voicemail via Phone</span></label>"
-                +           "<label class='radio-button-field-2 w-radio'>"
-                +              " <input type='radio' data-name='ExtVoicemailEmail' id='No' name='ExtVoicemailEmail' value='No' class='w-radio-input'><span for='No-2' class='w-form-label'>Voicemail via Email</span></label>"
-                +      "</div>"
-                +       "<input type='email' class='form-field w-input' maxlength='256' name='VoicemailEmail' data-name='VoicemailEmail' placeholder='Email for Voicemail' id='VoicemailEmail' required=''>"
-                +   "</div>"
-                +"</div>"
-                +"</div>"
+        x = "<div class='accordian-item' id='Ext" + extId + "'>"
+        + "<div class='accordian-trigger w-clearfix' id='accordian-trigger" + extId + "' disabled=''>"
+        +    "<h5 disabled='' class='tigger-header'># New Extention<br></h5>"
+        +    "<a class='form-x-btn w-button' onclick='removeExt(" + extId +")'>X</a>"
+        + "</div>" 
+        + "<div class='accordian-content' id='accordian-content" + extId + "'>"
+        +  "<div class='form-heading-8'>Create a 4 Digit Extension Number</div>"
+        +  "<input type='number' class='form-field w-input ExtNumber' maxlength='256' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
+        +  " <div class='div-block-33 ext'>"
+        +       "<div>Error</div>"
+        +   "</div>"
+        +   "<div class='form-heading-8'>User for this Extension Number</div>"
+        +   "<input type='text' class='form-field w-input ExtName' maxlength='256' name='ExtName' data-name='ExtName' placeholder='User&#x27;s Name' id='ExtName' required=''>"
+        +   "<div class='form-heading-8'>Caller ID Name</div>"
+        +   "<select id='ExtCallerID" + extId + "' name='ExtCallerID' data-name='ExtCallerID' required='' class='form-select w-select ExtCallerID'>"
+        +       "<option value='1'>" + document.getElementById("CompanyName").value + "</option>"
+        +       "<option value='custom'>Custom Name</option>"
+        +   "</select>"
+        +   "<input type='text' class='form-field w-input' maxlength='256' name='CustomCallerID' data-name='CustomCallerID' placeholder='Caller ID Name' id='CustomCallerID" + extId + "' required='' style='display:none' disabled=''>"
+        +   "<div class='form-heading-8'>Caller ID Phone Number</div>"
+        +   "<select id='ExtCallerNumber" + extId + "' name='ExtCallerNumber' data-name='ExtCallerNumber' class='form-select w-select ExtCallerNumber'>"
+        +       "<option value=''>Select one...</option>"
+        +       "<option value='First'>First Choice</option>"
+        +       "<option value='Second'>Second Choice</option>"
+        +   "</select>"
+        +   "<input type='tel' class='form-field w-input' maxlength='256' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
+        +   "<div class='form-heading-8'>Would you like Voicemail for this Extension?</div>"
+        +   "<div class='div-block-23'>"
+        +       "<label class='w-radio'>"
+        +       "<input type='radio' id='ExtVoicemailYes" + extId + "' name='ExtVoicemail" + extId + "' value='Yes' required='' class='w-radio-input ExtVoicemailYes'><span for='Yes' class='w-form-label'>Yes</span></label>"
+        +       "<label class='radio-button-field-2 w-radio'>"
+        +       "<input type='radio' id='ExtVoicemailNo" + extId + "' name='ExtVoicemail" + extId + "' value='No' class='w-radio-input ExtVoicemailNo'><span for='No' class='w-form-label'>No</span></label>"
+        +   "</div>"
+        +   "<div class='div-block-32' id='ExtVoicemailBox" + extId + "'>"
+        +      "<div class='form-heading-8'>Type of Voicemail</div>"
+        +       "<div class='div-block-23'>"
+        +           "<label class='w-radio'>"
+        +               "<input type='radio' id='ExtVoicemailEmailYes" + extId + "' name='ExtVoicemailEmail" + extId + "' value='Yes' required='' class='w-radio-input ExtVoicemailPhone'><span for='Yes-2' class='w-form-label'>Voicemail via Phone</span></label>"
+        +           "<label class='radio-button-field-2 w-radio'>"
+        +              " <input type='radio' id='ExtVoicemailEmailNo" + extId + "' name='ExtVoicemailEmail" + extId + "' value='No' class='w-radio-input ExtVoicemailEmail'><span for='No-2' class='w-form-label'>Voicemail via Email</span></label>"
+        +      "</div>"
+        +       "<input type='email' class='form-field w-input' maxlength='256' name='VoicemailEmail' data-name='VoicemailEmail' placeholder='Email for Voicemail' id='VoicemailEmail" + extId + "' required=''>"
+        +   "</div>"
+        +"</div>"
+        +"</div>"
 
         document.getElementById('accordian-wrapper').insertAdjacentHTML("beforeend", x)
 
         getPhone("ExtCallerNumber" + String(extId), function(){});
-        getAddress("ExtCallerID" + String(extId), function(){});
-
-        document.getElementById("accordian-trigger" + String(extId)).addEventListener("click", function() {
-
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight){
-                panel.style.maxHeight = null;
-                panel.style.height = "0px"
-            } else {
-                panel.style.maxHeight = "700px";
-                panel.style.height = panel.style.maxHeight
-            }
-        });
-
-        document.getElementById("ExtCallerNumber" + String(extId)).addEventListener("change", function() {
-
-            x = document.getElementById("ExtCallerNumber" + String(extId)).options[document.getElementById("ExtCallerNumber" + String(extId)).selectedIndex].text
-
-            if (x == "Custom"){
-                document.getElementById("CustomCallerNumber" + String(extId)).style.display = "Block"
-                document.getElementById("CustomCallerNumber" + String(extId)).disabled = false
-            }else{
-                document.getElementById("CustomCallerNumber" + String(extId)).style.display = "none"
-                document.getElementById("CustomCallerNumber" + String(extId)).disabled = true
-            }
-
-        });
-
-        document.getElementById("ExtCallerID" + String(extId)).addEventListener("change", function() {
-
-            x = document.getElementById("ExtCallerID" + String(extId)).options[document.getElementById("ExtCallerID" + String(extId)).selectedIndex].text
-
-            if (x == "Custom"){
-                document.getElementById("CustomCallerID" + String(extId)).style.display = "Block"
-                document.getElementById("CustomCallerID" + String(extId)).disabled = false
-            }else{
-                document.getElementById("CustomCallerID" + String(extId)).style.display = "none"
-                document.getElementById("CustomCallerID" + String(extId)).disabled = true
-            }
-
-        });
-
-        document.getElementById("ExtVoicemailYes" + String(extId)).addEventListener("click", function() {
-            //console.log("CLICKED")
-        });
-
-        document.getElementById("ExtVoicemailNo" + String(extId)).addEventListener("click", function() {
-            //console.log("CLICKED")
-        });
-
+        $("#ExtVoicemailYes"  + String(extId)).prop("checked", true);
+        $("#ExtVoicemailEmailNo"  + String(extId)).prop("checked", true);
         
-
     });
 
+    
  //-----------------------------------------------------------//
  
     //Showing Screens
-    $(".formcompany").hide();
+    $(".formcompany").show();
     $(".formporting").hide();
+    $(".formtoll").hide();
     $(".form911").hide();
     $(".form411").hide();
-
     //getAddress("ExtCallerNumber", function (address) {});
-
-    $(".formext").show();
+    $(".formext").hide();
     $(".formupload").hide();
     $(".formconfirm").hide();
 
@@ -548,8 +650,11 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } else {
                     //If valid form
-                    $(".formcompany").hide();
-                    $(".formporting").show();
+                    fillPort(function(){
+                        $(".formcompany").hide();
+                        $(".formporting").show();
+                    })
+                    
                 }
             });
     });
@@ -581,20 +686,56 @@ $(document).ready(function () {
                     alert(data.formerrors.Phone411)
                 } 
                 else {
+                    fillTollPort( function() {
+                        $(".formporting").hide();
+                        $(".formtoll").show();
+                    })
+                }
+            });
+    });
 
-                    //Moved to Inits 911
-                    // getAddress("SelectAddress911", function (address) {
-                    //     getPhone("SelectPhoneExc911", function (phone) {
-                    //         createRuleTable(phone, address);
-                    //     });
-                    // });
-                    // getAddress("SelectAddressExc911")
-                    // PromptNewAddress('Exc911')
 
-                    $(".formporting").hide();
+    $("#portingTollNext").submit(function (e) {
+        e.preventDefault();
+
+        var formData = new FormData();
+
+        if (document.getElementById("TollYes").checked == true){
+            //Enter a File
+            //If File is there
+            if (e.currentTarget[0].files.length > 0){
+
+                formData.set("file", e.currentTarget[0].files[0])
+                $.ajax({
+                    url: '/forms/catchToll',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        $(".formtoll").hide();
+                        $(".form911").show();
+                    }
+                });
+            //If file is being used from Prev
+            }else{
+                $(".formtoll").hide();
+                $(".form911").show();
+            }
+
+        }else{
+            //No File
+            $.ajax({
+                url: '/forms/catchTollRemove',
+                type: 'POST',
+                success: function(data) {
+                    $(".formtoll").hide();
                     $(".form911").show();
                 }
             });
+        }
+
     });
 
     //911 Info
@@ -641,7 +782,7 @@ $(document).ready(function () {
                     Suite: document.getElementById("Suite-411").value,
                     StreetAddress: document.getElementById("GoogleAddress-411").value,
                     Postal: document.getElementById("postal_code411").value,
-                    Country: document.getElementById("country411").value,
+                    // Country: document.getElementById("country411").value,
                 }
             } else {
                 data = {
@@ -681,25 +822,146 @@ $(document).ready(function () {
 
 
     $("#FormExtNext").submit(function (e) {
-        $(".formext").hide();  
-        $(".formupload").show();
+
+        if (extCount == 0){
+            data = {
+                ignore: 1
+            }
+        }else{
+            data = []
+            var tableFields = document.getElementById("accordian-wrapper")
+            var children = tableFields.children;
+            for (var i = 0; i < children.length; i++) {
+                var content = children[i].childNodes[1];
+                var voicemail = true; 
+
+                //console.log(content.childNodes[13].childNodes[0].firstChild)
+
+                if (content.childNodes[13].childNodes[0].firstChild.checked == true){
+                    voicemail = true
+
+                    if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
+                        data.push({
+                            "Ext": content.childNodes[1].value,
+                            "ExtUser": content.childNodes[5].value,
+                            "voicemail": voicemail,
+                            "voicemail_type": "phone",
+                        });
+                    }else{
+                        data.push({
+                            "Ext": content.childNodes[1].value,
+                            "ExtUser": content.childNodes[5].value,
+                            "voicemail": voicemail,
+                            "voicemail_type": "email",
+                            "email": content.childNodes[14].childNodes[2].value
+                        })
+
+                    }
+                }else{
+                    voicemail = false
+                    data.push({
+                        "Ext": content.childNodes[1].value,
+                        "ExtUser": content.childNodes[5].value,
+                        "voicemail": voicemail,
+                    })
+                }
+
+                 //Caller ID Handler
+                 var callerId = content.childNodes[7].options[content.childNodes[7].selectedIndex].value
+                 data[i].caller_id = content.childNodes[7].options[content.childNodes[7].selectedIndex].Text
+                 if (callerId == "custom"){
+                    data[i].caller_id = callerId
+                    data[i].callerIdCustom = content.childNodes[8].value
+                 }
+ 
+                 //Phone ID Handler
+                 var phoneId = content.childNodes[10].options[content.childNodes[10].selectedIndex].value
+                 data[i].phone_id = phoneId
+                 if (phoneId == "custom"){
+                     data[i].phoneCustom = content.childNodes[11].value
+                 }
+            }
+        }
+
+        e.preventDefault();
+        $.ajax({
+                url: '/forms/catchExt',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                method: 'POST',
+            })
+        .done(function (data) {
+            //console.log(data)
+            if (data.status == "form-invalid") {
+                var output = '';
+                for (var property in data.formerrors) {
+                    output += data.formerrors[property] + '\n';
+                }
+                alert(output);
+            } else {
+                $(".formext").hide();  
+                $(".formupload").show();
+            }
+        });
+
     });
 
-    $("#FormUploadNext").submit(function (e) {
-        $(".formupload").hide();  
-        $(".formconfirm").show();
-    });
+    function upload(event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+
+        for (i in newFileList){
+            //console.log(newFileList[i])
+
+            formData.set("file", newFileList[i])
+
+            $.ajax({
+                url: '/forms/catchUpload',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    $(".formupload").hide();
+                    $(".formconfirm").show();
+                }
+            });
+        }
+
+        if (newFileList.length == 0 || newFileList == ""){
+            document.getElementById("uploadError").style.display = "Block"
+        }
+    }
+        
+    $("#FormUploadNext").submit(upload);
 
     $("#FormConfirmNext").submit(function (e) {
-        $("formupload").hide();
-        $(".formconfirm").hide();
-    });
+        e.preventDefault();
+        var image_data = ""
+        var element = document.getElementById("sig-area");
+        html2canvas(element, {
+            onrendered: function (canvas) {
+                image_data = canvas.toDataURL()
+                //console.log(image_data)
 
+                $.ajax({
+                    url: '/forms/catchConfirm',
+                    type: 'POST',
+                    data: {
+                        "imgData": image_data
+                    },
+                    success: function(data) {
+                        document.location.href = '/'
+                    }
+                });
+            }
+        });
         
 
+    });
 
-    
-   
 //-----------------------------------------------------------//
 //Back Buttons
 
@@ -708,14 +970,21 @@ $(document).ready(function () {
         $(".formporting").hide();
     });
 
+    $("#TollBack").click(function (e) {
+        fillPort(function(){
+            $(".formporting").show();
+            $(".formtoll").hide();
+        })
+    });
+
     $("#911Back").click(function (e) {
-        $(".formporting").show();
-        $(".form911").hide();
-        
+        fillTollPort( function() {
+            $(".formtoll").show();
+            $(".form911").hide();
+        })
     });
 
     $("#411Back").click(function (e) {
-        //console.log("Back 411")
         $(".form911").show();
         $(".form411").hide();
     });

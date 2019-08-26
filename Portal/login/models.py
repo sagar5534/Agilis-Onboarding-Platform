@@ -53,6 +53,8 @@ class MyUser(AbstractBaseUser):
     first_name = models.CharField(('First Name'), max_length=30, blank=True)
     last_name = models.CharField(('Last Name'), max_length=150, blank=True)
 
+    #order_id = models.CharField(('First Name'), max_length=30, blank=True)
+
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
