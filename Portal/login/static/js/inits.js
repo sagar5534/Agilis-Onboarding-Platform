@@ -220,6 +220,10 @@ function fillExt(callback){
         })
         .done(function (data) {
 
+            extCount = 0
+            extId = 0
+            document.getElementById('accordian-wrapper').innerHTML = ""
+            
             var obj = JSON.parse(data);
             console.log(obj)
     
