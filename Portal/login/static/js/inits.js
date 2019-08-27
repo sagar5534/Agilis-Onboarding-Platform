@@ -223,7 +223,7 @@ function fillExt(callback){
             extCount = 0
             extId = 0
             document.getElementById('accordian-wrapper').innerHTML = ""
-            
+
             var obj = JSON.parse(data);
             console.log(obj)
     
@@ -247,7 +247,7 @@ function fillExt(callback){
                 content.childNodes[1].value = obj[i].Ext
                 content.childNodes[5].value = obj[i].ExtName
     
-                $(content.childNodes[1]).trigger("change")
+                $(content.childNodes[1]).trigger("keyup")
                 $(content.childNodes[5]).trigger("change")
     
                 //Caller ID Setting
