@@ -185,7 +185,7 @@ function fill411(callback){
         })
         .done(function (data) {
 
-            //console.log(data)
+            console.log(data)
             if (data == "No" || data == "None"){
                 $("#411No").prop("checked", true).trigger("click");
                 
@@ -225,7 +225,7 @@ function fillExt(callback){
             document.getElementById('accordian-wrapper').innerHTML = ""
 
             var obj = JSON.parse(data);
-            console.log(obj)
+            //console.log(obj)
     
             for (each in obj){
                 $("#addExt").click()
@@ -233,15 +233,14 @@ function fillExt(callback){
             
             var tableFields = document.getElementById("accordian-wrapper")
             var children = tableFields.children;
-            console.log(children)
+            //console.log(children)
 
             for (var i = 0; i < children.length; i++) {
-		console.log(i)
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
     
-                console.log(content.childNodes)
-                console.log(obj)
+                //console.log(content.childNodes)
+                //console.log(obj)
     
                 //Ext and Name
                 content.childNodes[1].value = obj[i].Ext
