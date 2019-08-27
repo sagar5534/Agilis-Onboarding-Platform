@@ -1036,7 +1036,7 @@ $(document).ready(function () {
     $("#FormConfirmNext").submit(function (e) {
         document.getElementById("confirmBtnLast").disabled = true
         document.getElementById("ConfirmBack").disabled = true
-
+        
         e.preventDefault();
         var image_data = ""
         var element = document.getElementById("sig-area");
