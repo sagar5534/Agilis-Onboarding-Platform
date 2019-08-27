@@ -1033,11 +1033,11 @@ $(document).ready(function () {
         
     $("#FormUploadNext").submit(upload);
 
+
     $("#FormConfirmNext").submit(function (e) {
-        document.getElementById("confirmBtnLast").disabled = true
-        document.getElementById("ConfirmBack").disabled = true
-        
         e.preventDefault();
+        document.getElementById("loader").style.display = "Block"
+
         var image_data = ""
         var element = document.getElementById("sig-area");
         html2canvas(element, {

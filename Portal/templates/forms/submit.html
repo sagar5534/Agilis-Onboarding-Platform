@@ -383,7 +383,6 @@
                 </div>
 
             <div class="formconfirm">
-                <div class="loader"></div>
                 <h3 class="form-heading">Confirm</h3>
                 <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
                 <div id="sig-area" style="padding: 20px">
@@ -392,6 +391,9 @@
                 <div class="w-form">
                     <form id="FormConfirmNext" name="FormConfirmNext" data-name="FormConfirmNext">
                         <input type="text" class="text-field-10 w-input" maxlength="256" name="field-2" data-name="Field 2" placeholder="Enter your name to create a Signiture" id="signiture-input" required="">
+                        
+                        <div class="loader" id="loader" style="display: none"></div>
+
                         <a href="#" id="ConfirmBack" class="form-back w-button">Back</a>
                         <input type="submit" value="Submit" data-wait="Please wait..." class="form-next w-button" id="confirmBtnLast">
                     </form>
