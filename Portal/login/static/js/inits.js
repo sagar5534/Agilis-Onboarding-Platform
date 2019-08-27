@@ -232,6 +232,7 @@ function fillExt(callback){
             console.log(children)
 
             for (var i = 0; i < children.length; i++) {
+		console.log(i)
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
     
