@@ -760,10 +760,10 @@ def init411(request):
         
         compData = Company.objects.get(id=company)
         #print(compData.directory_listing)
-        if (compData.directory_listing == "0"):
+        if (compData.directory_listing == False):
             #None Exists
             return HttpResponse("No")
-        elif (compData.directory_listing == "1"):
+        elif (compData.directory_listing == True):
 
             #compAddress = Address.objects.get(id=compData.listing_address_id)
             x = {
