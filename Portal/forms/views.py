@@ -611,7 +611,7 @@ def catchConfirm(request):
     tempComp.save()
 
     #Sending Confirmation Email on Application Completed
-    send_mail('Application Completed - ' + tempComp.order, '', 'no-reply@agilismail.com', ['s.72427patel@gmail.com',])
+    send_mail('Application Completed - ' + tempComp.order, '', 'no-reply@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'])
 
     return JsonResponse({
         "valid": 1,
