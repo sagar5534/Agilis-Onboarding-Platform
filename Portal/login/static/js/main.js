@@ -665,6 +665,18 @@ $(document).ready(function () {
 
 
     $("#addExt").click(function () {
+
+        var tableFields = document.getElementById("accordian-wrapper")
+        var children = tableFields.children;
+        console.log(children)
+
+        for (var i = 0; i < children.length; i++) {
+            var content = children[i].childNodes[1];
+            if (content.style.display == "Block"){
+                children[i].childNodes[0].trigger("click")
+            }
+        }
+
         extCount++
         extId++
 
@@ -717,9 +729,6 @@ $(document).ready(function () {
         document.getElementById('accordian-wrapper').insertAdjacentHTML("beforeend", x)
 
         getPhone("ExtCallerNumber" + String(extId), function(){});
-        // $("#ExtVoicemailYes"  + String(extId)).prop("checked", true);
-        // $("#ExtVoicemailEmailNo"  + String(extId)).prop("checked", true);
-
         $('#ExtVoicemailNo' + String(extId)).trigger("click")
         $("#ExtVoicemailEmailYes"  + String(extId)).trigger("click");
 
