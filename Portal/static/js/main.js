@@ -77,9 +77,9 @@ function getPhone(element, callback) {
                 document.getElementById(element).innerHTML += '<option value=' + data.phone[x].id + '>' + data.phone[x].phone + '</option>'
             }
 
-            if (element.includes("ExtCallerNumber")){
-                document.getElementById(element).innerHTML += '<option value="custom">Custom</option>'
-            }
+            // if (element.includes("ExtCallerNumber")){
+            //     document.getElementById(element).innerHTML += '<option value="custom">Custom</option>'
+            // }
 
             callback(data.phone);
         });
