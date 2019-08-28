@@ -141,8 +141,8 @@ AUTH_USER_MODEL = 'login.MyUser'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'agilismail.com'
 EMAIL_PORT = 366
-EMAIL_HOST_USER = 'no-reply@agilismail.com'
-EMAIL_HOST_PASSWORD = 'lkgszsvf'
+EMAIL_HOST_USER = 'support@agilismail.com'
+EMAIL_HOST_PASSWORD = 'ywccxwwd'
 EMAIL_USE_TLS = True
 
 

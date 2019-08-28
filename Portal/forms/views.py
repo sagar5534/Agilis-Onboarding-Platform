@@ -110,7 +110,7 @@ def getAddress(request):
         if temp2.Suite == "":
             suiteHandler = ""
         else:
-            suiteHandler = "Suite:" + str(temp2.Suite) + " -"
+            suiteHandler = str(temp2.Suite) + " - "
 
         list_values.append({
             "address": suiteHandler + temp2.StreetAddress + ", " + temp2.Postal,
@@ -243,7 +243,7 @@ def catchCompany(request):
             Address_id=tempAddress.pk, Company_id=company
         )
         tempLink.save()
-        
+
     except Address.DoesNotExist:
         tempAddress = Address.objects.create(
             Suite=Suite,
@@ -616,7 +616,7 @@ def catchConfirm(request):
     tempComp.save()
 
     #Sending Confirmation Email on Application Completed
-    send_mail('Application Completed - ' + tempComp.order, '', 'no-reply@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'])
+    send_mail('Application Completed - ' + tempComp.order, '', 'support@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'])
 
     return JsonResponse({
         "valid": 1,
@@ -736,7 +736,7 @@ def init911(request):
                 
                 suiteHandler = ""
                 if (add.Suite != ""):
-                    suiteHandler = "Suite: " + add.Suite + "-"
+                    suiteHandler = add.Suite + " - "
 
                 list_with_values.append({
                     "number": each.number,

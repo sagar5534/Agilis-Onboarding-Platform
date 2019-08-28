@@ -39,7 +39,7 @@ def send_email(user):
         form.save(
             request= request,
             use_https=False,
-            from_email="no-reply@agilismail.com", 
+            from_email="support@agilismail.com", 
             email_template_name='registration/set_password.html',
             subject_template_name='registration/set_password_subject.txt',
         )

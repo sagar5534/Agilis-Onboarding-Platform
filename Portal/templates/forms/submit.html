@@ -157,7 +157,7 @@
                     <div class="w-form">
                         <form id="PortNumbers" name="PortNumbers" data-name="PortNumbers" onsubmit="addPortNumber()">
                             <label for="name-2" class="field-label">*Exclude Toll Free Numbers*</label>
-                            <label for="name-2" class="field-label">Numbers to be Ported</label>
+                            <label for="name-2" class="field-label">Phone Numbers to be Ported</label>
                             <div class="div-block-15">
                                 <input type="tel" class="form-field phone w-input" maxlength="10" name="PortNumber" data-name="PortNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX - Ex. 7058889999" minlength="10" id="PortNumber">
                                 <input type="submit" class="form-add w-button" name="+" value="+">
@@ -166,7 +166,7 @@
                                 <div>Error</div>
                             </div>
                             <div class="numbersgroup" id="numbersPort">
-                                <h6 class="form-heading-8">Porting Numbers</h6>
+                                <h6 class="form-heading-8">You will be porting these numbers:</h6>
 
                             </div>
                         </form>
@@ -174,7 +174,7 @@
                     </div>
                     <div class="w-form">
                         <form id="email-form-7" name="email-form-7" data-name="Email Form 7" onsubmit="addDiscNumber()">
-                            <label for="email" class="field-label">Numbers to be Disconnected</label>
+                            <label for="email" class="field-label">Phone Numbers to be Disconnected</label>
                             <div class="div-block-15">
                                 <input type="text" class="form-field phone w-input" maxlength="10" name="DiscNumber" data-name="DiscNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="XXXXXXXXXX - Ex. 7058889999" minlength="10" id="DiscNumber">
                                 <input type="submit" value="+" data-wait="Please wait..." class="form-add w-button">
@@ -183,7 +183,7 @@
                                 <div>Error</div>
                             </div>
                             <div class="numbersgroup" id="numbersDisc">
-                                <h6 class="form-heading-8">Disconnect Numbers</h6>
+                                <h6 class="form-heading-8">You will be disconnecting these numbers:</h6>
                             </div>
                         </form>
 
@@ -197,11 +197,11 @@
                 </div>
                 
                 <div class="formtoll">
-                    <h3 class="form-heading">Port Toll Free Phone Numbers</h3>
+                    <h3 class="form-heading">Toll Free Numbers to be Ported</h3>
 
                     <div class="w-form">
                         <form id="email-form-2" name="email-form-2">
-                            <div class="form-heading-8">Do you have any Toll Free numbers to port?</div>
+                            <div class="form-heading-8">Do you have any Toll Free Numbers to Port?</div>
                             <div class="div-block-18">
                                 <label class="w-radio">
                                     <input type="radio" data-name="1800 Choose" id="TollYes" name="1800-Choose" value="Yes" required="" class="w-radio-input TollYes"><span for="Yes-2" class="w-form-label">Yes</span></label>
@@ -336,7 +336,7 @@
 
                 <div id="FormExtensions" class="formext">
                     <h3 class="form-heading">Extensions</h3>
-                    <p class="form-heading-8">Have an Extentions you want to create of bring over? Add an Extensions and enter the following information to create an Extension for your phone line</p>
+                    <p class="form-heading-8">Please add each extension with the pertinent user information</p>
                     <h4 class="heading-10">Your Extensions</h4>
                     <div class="w-form">
                         <form id="FormExtNext" name="email-form-6" data-name="Email Form 6">
@@ -347,9 +347,10 @@
                                 <div class="divider-bar"></div>
                                 <a class="addext-btn w-button" id="addExt">Add an Extension</a>
                             </div>
-
+                            <br>
+                            <br>
                             <a id="ExtBack" class="form-back w-button">Back</a>
-                            <input type="submit" value="Next" id="ExtNext" data-wait="Please wait..." class="form-next w-button">
+                            <input type="submit" value="Finished Adding Extensions" id="ExtNext" data-wait="Please wait..." class="form-next w-button">
                         </form>
                     </div>
                 </div>
@@ -384,8 +385,9 @@
                 </div>
 
             <div class="formconfirm">
-                <h3 class="form-heading">Confirm</h3>
-                <h5 class="form-heading-8">Your application is completed. Confirm below to send us your application or go back and submit another time. </h5>
+                <h3 class="form-heading">Confirmation</h3>
+                <h5 class="form-heading-8">Thank you for filling out the forms in our on-boarding site!  To complete the on-boarding process, enter your name to create a signature then submit to complete the on-boarding process!</h5>
+                <h5 class="form-heading-8">Once completed, one of our technicians will be in touch in the coming days to setup your Hosted PBX and choose a port date that accommodates your schedule. <br>This will go a long way to help us make your move as seamless as possible.</h5>
                 <div id="sig-area" style="padding: 20px">
                     <h1 id="signiture_text" style="font-family: 'Pacifico', cursive; color:blue"></h1>
                 </div>

@@ -34,10 +34,14 @@
         <div class="w-form">
           <form id="email-form" name="email-form" data-name="Email Form" method="POST" action="">
             {% csrf_token %}
-            <label for="Email-2">Users Email</label>
-            <input type="email" class="w-input" maxlength="256" name="Email" data-name="Email" placeholder="Enter the Users Email" id="EmailAdd" required="">
-            <label for="Order" class="field-label-9">Order Number</label>
-            <input type="text" class="w-input" maxlength="256" name="ID" data-name="ID" placeholder="ORD-XXXX-XXXX" id="IDAdd" required="">
+            <label>User's First Name</label>
+            <input type="text" class="w-input" maxlength="256" name="FName" data-name="FName" placeholder="Enter the User's First Name" id="FNameAdd" required="">
+            <label>User's Last Name</label>
+            <input type="text" class="w-input" maxlength="256" name="LName" data-name="LName" placeholder="Enter the User's Last Name" id="LNameAdd" required="">
+            <label for="Email-2">User's Email</label>
+            <input type="email" class="w-input" maxlength="256" name="Email" data-name="Email" placeholder="Enter the User's Email" id="EmailAdd" required="">
+            <label for="Order" class="field-label-9">Order Number (CRM)</label>
+            <input type="text" class="w-input" maxlength="256" name="ID" data-name="ID" placeholder="ORD-XXXX-XXXX" id="IDAdd" required="" style="text-transform: uppercase;">
               <div class="div-block-33 upload" style="display: none">
                 <div>Error</div>
               </div><input type="submit" value="Add User" data-wait="Please wait..." class="submit-button-8 w-button">

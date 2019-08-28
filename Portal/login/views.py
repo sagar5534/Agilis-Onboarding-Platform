@@ -114,12 +114,10 @@ def register_user(request):
     if request.method == 'POST':
             register = MyUser()
             register.email = request.POST['Email']
+            register.first_name = request.POST['FName']
+            register.last_name = request.POST['LName']
             compId = request.POST['ID']
 
-            print(request.POST)
-            print(register)
-            
-            #Testing
             pattern = re.compile("^ORD-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$")
             if (pattern.match(compId)):
                 try:
@@ -144,7 +142,7 @@ def register_user(request):
             else:
                 return HttpResponse("Error - ORD Number Incorrect")
             
-            return HttpResponse('Finished')
+            return redirect("/")
            
     else:
         return render(request, "login/add-user.html", {})
