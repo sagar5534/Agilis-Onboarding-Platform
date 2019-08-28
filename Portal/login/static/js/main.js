@@ -593,10 +593,12 @@ $(document).ready(function () {
         var tableFields = document.getElementById("accordian-wrapper")
         var children = tableFields.children;
 
+        counter = 0
         for (var i = 0; i < children.length; i++) {
-            var content = children[i].childNodes[1];
-
-            if (input.value == content.childNodes[1].value){
+            if (input.value == children[i].childNodes[1].childNodes[1].value){
+                counter++;
+            }
+            if (counter > 1){
                 issues += "Extension number already exists"
                 userValidation = false
                 break
