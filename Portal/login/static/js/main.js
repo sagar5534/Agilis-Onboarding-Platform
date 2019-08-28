@@ -785,7 +785,15 @@ $(document).ready(function () {
             disc: filtereddisc
         }
 
-        $.ajax({
+        if (filteredport.length == 0){
+
+            document.getElementById("PortError").style.display = "Block"
+
+        }else{
+
+            document.getElementById("PortError").style.display = "None"
+
+            $.ajax({
                 url: '/forms/catchPorting',
                 data: JSON.stringify(Data),
                 contentType: "application/json",
@@ -803,6 +811,10 @@ $(document).ready(function () {
                     })
                 }
             });
+        }
+        
+
+       
     });
 
 
