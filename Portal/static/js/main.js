@@ -960,7 +960,11 @@ $(document).ready(function () {
             });
     });
 
-
+    
+    $(document).on("click", "#FormExtNext" , function(e) {
+        console.log("Worked")
+    });
+    
     $("#FormExtNext").submit(function (e) {
 
         if (extCount == 0){
