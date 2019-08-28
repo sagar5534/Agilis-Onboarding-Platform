@@ -117,6 +117,7 @@ def register_user(request):
             register.first_name = request.POST['FName']
             register.last_name = request.POST['LName']
             compId = request.POST['ID']
+            compId = compId.upper()
 
             pattern = re.compile("^ORD-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$")
             if (pattern.match(compId)):
