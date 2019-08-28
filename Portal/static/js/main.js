@@ -961,7 +961,7 @@ $(document).ready(function () {
     });
 
     
-    $(document).on("click", "#FormExtNext" , function(e) {
+    $(document).on("click", "#ExtNext" , function(e) {
         console.log("Worked")
         var tableFields = document.getElementById("accordian-wrapper")
         var children = tableFields.children;
@@ -973,20 +973,19 @@ $(document).ready(function () {
             console.log(content.childNodes)
 
             if (content.childNodes[1].value == "" || content.childNodes[5].value == "" || content.childNodes[7].selectedIndex == -1 || content.childNodes[10].selectedIndex == -1){
-                console.log("Error")
+                $("#"+children[i].childNodes[0].id).trigger("click")
+                $(children[i].childNodes[0]).trigger("click")
             }
             else if (content.childNodes[13].childNodes[0].firstChild.checked == true){
                 if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
                     
                 }else{
                     if (content.childNodes[14].childNodes[2].value == ""){
-                        console.log("Error")
-
+                        $("#"+children[i].childNodes[0].id).trigger("click")
+                        $(children[i].childNodes[0]).trigger("click")
                     }
                 }
             }
-
-
 
         }
 
