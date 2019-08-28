@@ -131,6 +131,8 @@ function fill911(callback){
         .done(function (data) {
 
             var obj = JSON.parse(data);
+
+            console.log(obj)
       
             getAddress("SelectAddress911", function (address) {
                 getPhone("SelectPhoneExc911", function (phone) {
