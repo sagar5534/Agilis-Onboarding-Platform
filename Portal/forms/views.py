@@ -221,6 +221,7 @@ def setAddress(request):
         "status": "form-valid",
         'address': tempAddress.pk
     }
+    y = json.dumps(y)
 
     return HttpResponse(y, content_type="application/json")
 
