@@ -131,6 +131,8 @@ function fill911(callback){
         .done(function (data) {
 
             var obj = JSON.parse(data);
+
+            console.log(obj)
       
             getAddress("SelectAddress911", function (address) {
                 getPhone("SelectPhoneExc911", function (phone) {
@@ -185,7 +187,7 @@ function fill411(callback){
         })
         .done(function (data) {
 
-            console.log(data)
+            //console.log(data)
             if (data == "No" || data == "None"){
                 $("#411No").prop("checked", true).trigger("click");
                 
@@ -225,6 +227,7 @@ function fillExt(callback){
             document.getElementById('accordian-wrapper').innerHTML = ""
 
             var obj = JSON.parse(data);
+            //console.log(obj)
     
             for (each in obj){
                 $("#addExt").click()
@@ -237,6 +240,10 @@ function fillExt(callback){
             for (var i = 0; i < children.length; i++) {
                 var content = children[i].childNodes[1];
                 var voicemail = true; 
+    
+                //console.log(content.childNodes)
+                //console.log(obj)
+    
                 //Ext and Name
                 content.childNodes[1].value = obj[i].Ext
                 content.childNodes[5].value = obj[i].ExtName
