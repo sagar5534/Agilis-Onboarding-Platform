@@ -673,7 +673,9 @@ $(document).ready(function () {
         for (var i = 0; i < children.length; i++) {
             var content = children[i].childNodes[1];
             if (content.childHeight != 0){
-                children[i].childNodes[0].trigger("click")
+                //children[i].childNodes[0] .trigger("click")
+                $("#"+children[i].childNodes[0].id).trigger("click")
+                $(children[i].childNodes[0]).trigger("click")
             }
         }
 
