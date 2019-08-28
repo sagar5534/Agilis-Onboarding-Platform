@@ -972,17 +972,19 @@ $(document).ready(function () {
 
             console.log(content.childNodes)
 
-            if (content.childNodes[1].value == "" || content.childNodes[5].value == "" || content.childNodes[7].selectedIndex == -1 || content.childNodes[10].selectedIndex == -1){
-                $("#"+children[i].childNodes[0].id).trigger("click")
-                $(children[i].childNodes[0]).trigger("click")
+            if (content.childNodes[1].value == "" || content.childNodes[5].value == "" || content.childNodes[7].selectedIndex == 0 || content.childNodes[10].selectedIndex == 0){
+                if (content.childHeight != 0){
+                    $(children[i].childNodes[0]).trigger("click")
+                }
             }
             else if (content.childNodes[13].childNodes[0].firstChild.checked == true){
                 if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
                     
                 }else{
                     if (content.childNodes[14].childNodes[2].value == ""){
-                        $("#"+children[i].childNodes[0].id).trigger("click")
-                        $(children[i].childNodes[0]).trigger("click")
+                        if (content.childHeight != 0){
+                            $(children[i].childNodes[0]).trigger("click")
+                        }
                     }
                 }
             }
