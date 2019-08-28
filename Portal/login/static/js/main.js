@@ -973,7 +973,7 @@ $(document).ready(function () {
             console.log(content.childNodes)
 
             if (content.childNodes[1].value == "" || content.childNodes[5].value == "" || content.childNodes[7].selectedIndex == 0 || content.childNodes[10].selectedIndex == 0){
-                if (content.childHeight != 0){
+                if (content.childHeight == 0){
                     $(children[i].childNodes[0]).trigger("click")
                 }
             }
@@ -982,7 +982,7 @@ $(document).ready(function () {
                     
                 }else{
                     if (content.childNodes[14].childNodes[2].value == ""){
-                        if (content.childHeight != 0){
+                        if (content.childHeight == 0){
                             $(children[i].childNodes[0]).trigger("click")
                         }
                     }
