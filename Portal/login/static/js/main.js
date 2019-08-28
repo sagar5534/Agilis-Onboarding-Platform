@@ -959,37 +959,6 @@ $(document).ready(function () {
                 }
             });
     });
-
-    
-    function testValid() {
-        console.log("Worked")
-        var tableFields = document.getElementById("accordian-wrapper")
-        var children = tableFields.children;
-        console.log(children)
-
-        for (var i = 0; i < children.length; i++) {
-            var content = children[i].childNodes[1];
-
-            console.log(content.childNodes)
-
-            if (content.childNodes[1].value == "" || content.childNodes[5].value == "" || content.childNodes[7].selectedIndex == 0 || content.childNodes[10].selectedIndex == 0){
-                if (content.childHeight == 0){
-                    $(children[i].childNodes[0]).trigger("click")
-                }
-            }
-            else if (content.childNodes[13].childNodes[0].firstChild.checked == true){
-                if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
-                    
-                }else{
-                    if (content.childNodes[14].childNodes[2].value == ""){
-                        if (content.childHeight == 0){
-                            $(children[i].childNodes[0]).trigger("click")
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     $("#FormExtNext").submit(function (e) {
 
