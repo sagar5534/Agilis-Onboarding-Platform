@@ -961,7 +961,7 @@ $(document).ready(function () {
     });
 
     
-    $(document).on("click", "#ExtNext" , function(e) {
+    function testValid() {
         console.log("Worked")
         var tableFields = document.getElementById("accordian-wrapper")
         var children = tableFields.children;
@@ -988,10 +988,8 @@ $(document).ready(function () {
                     }
                 }
             }
-
         }
-
-    });
+    }
     
     $("#FormExtNext").submit(function (e) {
 
