@@ -131,6 +131,9 @@ function fill911(callback){
         .done(function (data) {
 
             var obj = JSON.parse(data);
+            
+            normalRules = []
+            ExceptionRules = []
 
             console.log(obj)
       

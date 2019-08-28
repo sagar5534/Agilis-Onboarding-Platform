@@ -233,16 +233,17 @@
 
                 <div class="form911">
                     <h3 class="form-heading">911 Information</h3>
-                    <p class="form-heading-8">Please select the location of each Ported Phone Line. Create Exceptions below if any Phone Lines are not located in the Main Site Address</p>
+                    <p class="form-heading-8">All ported numbers are connected to the Company's Main Address. Create an expection if a number does not reside at the shown address</p>
                     <div class="w-form">
                         <form id="Exc911FormNext" name="Form911Next" data-name="Form911Next">
-                            <label for="SelectAddress" class="form-heading-8">Main Site Address</label>
+                            <label for="SelectAddress" class="form-heading-8">Company's Main Address</label>
                             <select id="SelectAddress911" name="SelectAddress911" data-name="SelectAddress911" required="" class="form-select w-select">
                                 <option value="">Select one...</option>
                                 <option value="First">First Choice</option>
                                 <option value="Second">Second Choice</option>
                                 <option value="Third">Third Choice</option>
                             </select>
+                            <br>
                             <label for="email" class="form-heading-8">Create an Exception</label>
                             <div class="div-block-19">
                                 <div class="field-label _911 first">Phone</div>
@@ -266,23 +267,16 @@
                                 <input type="text" class="form-field w-input" maxlength="256" name="Address" data-name="Address" placeholder="Enter Address" id="GoogleAddress-Exc911" required="">
                                 <div class="div-block-30">
                                     <input type="text" class="form-field w-input" maxlength="256" name="Postal-Code-2" data-name="Postal Code 2" placeholder="Postal Code" id="postal_codeExc911" required="">
-                                    {% comment %} <div class="div-block-31"></div> {% endcomment %}
-                                    {% comment %} <input type="text" class="form-field w-input" maxlength="256" name="Country-2" data-name="Country 2" placeholder="Country" id="countryExc911" required=""> {% endcomment %}
                                 </div>
                                 <input type="text" class="form-field w-input" maxlength="256" name="Suite-2" data-name="Suite 2" placeholder="Enter Suite # (If Needed)" id="Suite-Exc911">
                             </div>
                             <div>
-                                <h4 class="form-heading-8">Rules</h4>
+                                <h4 class="form-heading-8">911 Addresses</h4>
                                 <div class="heading-grid">
-                                    <div class="form-grid-heading">Phone</div>
-                                    <div class="form-grid-heading">Address</div>
+                                    <div class="form-grid-heading">Phone:</div>
+                                    <div class="form-grid-heading">Resides At:</div>
                                 </div>
                                 <div id="RulesTable">
-                                    <div class="grid-entry">
-                                        <div id="w-node-7ad72b18e096-37815fb7" class="form-grid-entry">647-629-8391</div>
-                                        <div class="form-grid-entry">89 Bleasdale Ave, Brampton, ON</div>
-                                        <a href="#" class="w-button">X</a>
-                                    </div>
                                 </div>
 
                             </div><a id="911Back" href="#" class="form-back w-button">Back</a>

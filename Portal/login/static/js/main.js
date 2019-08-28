@@ -113,7 +113,7 @@ function removeDiscNumber(x) {
 
 //Functions to Add a Port Number
 function addPortNumber() {
-
+    document.getElementById("PortError").style.display = "None"
     var x = document.getElementById("PortNumber").value
 
     var exists = false; 
