@@ -589,6 +589,19 @@ $(document).ready(function () {
             userValidation = false
         }
 
+        //Existing
+        var tableFields = document.getElementById("accordian-wrapper")
+        var children = tableFields.children;
+
+        for (var i = 0; i < children.length; i++) {
+            var content = children[i].childNodes[1];
+
+            if (input.value == content.childNodes[1].value){
+                issues += "Extension number already exists"
+                userValidation = false
+                break
+            }
+        }
 
         //validate if the pattern match
         if (userValidation) {
