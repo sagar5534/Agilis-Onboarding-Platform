@@ -263,14 +263,13 @@ function addRule() {
             }
 
             if (data['StreetAddress'] == "") {
-                //$('postal_codeExc911').setCustomValidity(issues);
-                //$('postal_codeExc911').reportValidity();
-                document.getElementById("postal_codeExc911").setCustomValidity("Enter a Value");
-                document.getElementById("postal_codeExc911").reportValidity();
-                
-            } else if (data['Postal'] == ""){
                 document.getElementById("GoogleAddress-Exc911").setCustomValidity("Enter a Value");
                 document.getElementById("GoogleAddress-Exc911").reportValidity();
+                
+                
+            } else if (data['Postal'] == ""){
+                document.getElementById("postal_codeExc911").setCustomValidity("Enter a Value");
+                document.getElementById("postal_codeExc911").reportValidity();
 
             }else{
                 document.getElementById("GoogleAddress-Exc911").setCustomValidity("");
@@ -292,9 +291,9 @@ function addRule() {
                         }
                         alert(output);
                     } else {
-                        //console.log("done")
                         getAddress('SelectAddressExc911', function (address) {
-                            document.getElementById("SelectAddressExc911").selectedIndex = address.length - 1;
+                            $('#SelectAddressExc911').val(data.address);
+                            // document.getElementById("SelectAddressExc911").selectedIndex = address.length - 1;
                             addRule()
                             document.getElementById('NewAddressExc911').style.display = "none"
                         });
