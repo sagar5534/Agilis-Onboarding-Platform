@@ -659,12 +659,12 @@ $(document).ready(function () {
         +    "<a class='form-x-btn w-button' onclick='removeExt(" + extId +")'>X</a>"
         + "</div>" 
         + "<div class='accordian-content' id='accordian-content" + extId + "'>"
-        +  "<div class='form-heading-8'>Create an Extension Number</div>"
+        +  "<div class='form-heading-8'>Extension Number</div>"
         +  "<input type='number' class='form-field w-input ExtNumber' maxlength='6' name='ExtNumber' data-name='ExtNumber' placeholder='Extension Number' id='ExtNumber' required=''>"
         +  " <div class='div-block-33 ext'>"
         +       "<div>Error</div>"
         +   "</div>"
-        +   "<div class='form-heading-8'>User for this Extension Number</div>"
+        +   "<div class='form-heading-8'>Full name of the user for this extension</div>"
         +   "<input type='text' class='form-field w-input ExtName' maxlength='256' name='ExtName' data-name='ExtName' placeholder='User&#x27;s Name' id='ExtName' required=''>"
         +   "<div class='form-heading-8'>Caller ID Name</div>"
         +   "<select id='ExtCallerID" + extId + "' name='ExtCallerID' data-name='ExtCallerID' required='' class='form-select w-select ExtCallerID'>"
@@ -702,8 +702,12 @@ $(document).ready(function () {
         document.getElementById('accordian-wrapper').insertAdjacentHTML("beforeend", x)
 
         getPhone("ExtCallerNumber" + String(extId), function(){});
-        $("#ExtVoicemailYes"  + String(extId)).prop("checked", true);
-        $("#ExtVoicemailEmailNo"  + String(extId)).prop("checked", true);
+        // $("#ExtVoicemailYes"  + String(extId)).prop("checked", true);
+        // $("#ExtVoicemailEmailNo"  + String(extId)).prop("checked", true);
+
+        $('#ExtVoicemailNo' + String(extId)).trigger("click")
+        $("#ExtVoicemailEmailYes"  + String(extId)).trigger("click");
+
         
     });
 
