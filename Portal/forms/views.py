@@ -170,16 +170,33 @@ def setAddress(request):
     else:
         return form_response(form)
 
-    tempAddress = Address.objects.create(
+    try:
+        tempAddress = Address.objects.get(
             Suite=Suite,
             StreetAddress=StreetAddress,
             Postal=Postal,
-    )
-    tempAddress.save()
-    tempLink = CompanyAddressLink.objects.create(
-        Address_id=tempAddress.pk, Company_id=company
-    )
-    tempLink.save()
+        )
+        try:
+            tempLink = CompanyAddressLink.objects.get(
+                Address_id=tempAddress.pk, Company_id=company
+            )
+        except CompanyAddressLink.DoesNotExist:
+            tempLink = CompanyAddressLink.objects.create(
+                Address_id=tempAddress.pk, Company_id=company
+            )
+            tempLink.save()
+
+    except Address.DoesNotExist:
+        tempAddress = Address.objects.create(
+                Suite=Suite,
+                StreetAddress=StreetAddress,
+                Postal=Postal,
+        )
+        tempAddress.save()
+        tempLink = CompanyAddressLink.objects.create(
+            Address_id=tempAddress.pk, Company_id=company
+        )
+        tempLink.save()
 
     y = '{ "address": ['
 
