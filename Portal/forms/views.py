@@ -198,24 +198,29 @@ def setAddress(request):
         )
         tempLink.save()
 
-    y = '{ "address": ['
+    # y = '{ "address": ['
 
-    if tempAddress.Suite == "":
-        suiteHandler = ""
-    else:
-        suiteHandler = str(tempAddress.Suite) + " - "
+    # if tempAddress.Suite == "":
+    #     suiteHandler = ""
+    # else:
+    #     suiteHandler = str(tempAddress.Suite) + " - "
     
-    x = {
-        "address": suiteHandler
-        + str(tempAddress.StreetAddress)
-        + ", "
-        + tempAddress.Postal,
-        "id": tempAddress.id,
-    }
+    # x = {
+    #     "address": suiteHandler
+    #     + str(tempAddress.StreetAddress)
+    #     + ", "
+    #     + tempAddress.Postal,
+    #     "id": tempAddress.id,
+    # }
 
-    y = y + json.dumps(x)
-    y = y + "]"
-    y = y + ', "status": "form-valid"}'
+    # y = y + json.dumps(x)
+    # y = y + "]"
+    # y = y + ', "status": "form-valid"}'
+
+    y = {
+        "status": "form-valid",
+        'address': tempAddress.pk
+    }
 
     return HttpResponse(y, content_type="application/json")
 
