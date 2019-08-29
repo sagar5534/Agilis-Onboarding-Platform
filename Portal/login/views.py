@@ -121,16 +121,34 @@ def register_user(request):
 
             pattern = re.compile("^ORD-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$")
             if (pattern.match(compId)):
-                try:
+                try:   
+                    tempUser = MyUser.objects.get(email=register.email)
+                    if (tempUser):
+                        try:   
+                            tempComp = Company.objects.get(order=compId)
+                            if (tempComp):
+                                x = UserCompLink.objects.create(company_id=tempComp.id, user_id=tempUser.id)
+                                x.save()
+                                return HttpResponse("User has been connected to pre-existing company")
 
-                    if (MyUser.objects.get(email=register.email)):
-                        return HttpResponse("Error - User with email already exists")
+                        except Company.DoesNotExist:
+                            user = MyUser.objects.get(email=register.email)
+                            x = Company.objects.create(order=compId, completed=0, company_name='New Application')
+                            UserCompLink.objects.create(company_id=x.id, user_id=user.id)
+
+                            #Send Email
+                        return HttpResponse("User could not be ")
+
                 except MyUser.DoesNotExist:
                     print()
                 
                 try:
-                    if (Company.objects.get(order=compId)):
-                        return HttpResponse("Error - Company with that Order Number exists")
+                    tempComp = Company.objects.get(order=compId)
+                    if (tempComp):
+                        user = register.save()
+                        user = MyUser.objects.get(email=register.email)
+                        UserCompLink.objects.create(company_id=tempComp.id, user_id=user.id)
+                    return HttpResponse("New User has been connected to Pre-existing Company")
                 except Company.DoesNotExist:
                     print()
                 
