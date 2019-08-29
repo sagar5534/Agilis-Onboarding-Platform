@@ -8,5 +8,8 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('', views.CreateExtensionsForm, name='CreateExtensionsForm'),
+    path('Ext', views.CreateExtensionsForm, name='CreateExtensionsForm'),
+    path('PBX', views.CreatePBXForm, name='CreatePBXForm'),
+    path('Port', views.CreatePortingForm, name='CreatePortingForm'),
+
 ]

@@ -23,9 +23,13 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
 
-from openpyxl import load_workbook
+from openpyxl import *
+import openpyxl
+from openpyxl.drawing.image import Image
 import csv
-from .models import * 
+from .models import *
+
+from shutil import copyfile
 
 # Create your views here.
 
@@ -43,15 +47,9 @@ def CreateExtensionsForm(request):
     except Extention.DoesNotExist:
         raise Http404
 
-    # #Create file
-    # save_path = os.path.join(settings.MEDIA_ROOT, str(company), "Extensions.csv")
-    # toForm = os.path.join(str(company), "Extensions.csv")
-    # path = default_storage.save(save_path, "Extensions.csv")
-    # # document = Uploads.objects.create(document=toForm, company=tempComp,  type='bill')
-    
-
-    save_path = os.path.join(settings.MEDIA_ROOT, "Reports", "Extensions.csv")
-    toForm = os.path.join("Reports", "Extensions.csv")
+    tempComp = Company.objects.get(id=company)
+    save_path = os.path.join(settings.MEDIA_ROOT, "Reports", str(tempComp.order) + "_Extensions.csv")
+    toForm = os.path.join("Reports", str(tempComp.order) + "_Extensions.csv")
 
     with open(save_path, 'w', newline='') as csvfile:
 
@@ -112,8 +110,6 @@ def CreateExtensionsForm(request):
                 'Extension Active': ExtActive
                 })
 
-    tempComp = Company.objects.get(id=company)
-
     x = Reports.objects.create(company=tempComp, document=toForm, type="Extensions")
     x.save()
     return HttpResponse("Done Report" + str(company))
@@ -122,11 +118,148 @@ def CreateExtensionsForm(request):
 @login_required
 def CreatePortingForm(request):
 
+    if request.session.get("company"):
+        company = request.session.get("company")
+        print(company)
+    else:
+        raise Http404
+
+    template = os.path.join(settings.MEDIA_ROOT, "Reports", "Template_Porting.xlsx")
+
+    tempComp = Company.objects.get(id=company)
+    save_path = os.path.join(settings.MEDIA_ROOT, "Reports", str(tempComp.order) + "_Porting.xlsx")
+    toForm = os.path.join("Reports", str(tempComp.order) + "_Porting.xlsx")
+
+    copyfile(template, save_path)
+
+    wb = load_workbook(save_path)
+    ws = wb.active
+
+    #First Part
+    ws['E9'] = tempComp.company_name
+    tempAddress = Address.objects.get(id=tempComp.site_address_id)
+    if tempAddress.Suite == "":
+        suiteHandler = ""
+    else:
+        suiteHandler = str(tempAddress.Suite) + " - "
+    ws['E10'] = suiteHandler + tempAddress.StreetAddress
+    ws['E11'] = tempComp.type
+    ws['E13'] = tempComp.currentProvider
+
+
+    ws['E16'] = tempComp.listing_name
+    ws['E17'] = tempComp.type
+    ws['E18'] = tempComp.category_listing
+    ws['E19'] = tempComp.listing_phone
+
+    tempAddress = Address.objects.get(id=tempComp.listing_address_id)
+    res = tempAddress.StreetAddress.split(", ");
+    if tempAddress.Suite == "":
+        suiteHandler = ""
+    else:
+        suiteHandler = str(tempAddress.Suite) + " - "
+        
+    ws['E20'] = suiteHandler + res[0]
+    ws['E23'] = res[1]
+    ws['E24'] = res[2]
+    ws['E25'] = tempAddress.Postal
+
+    ws['A29'] = "Phone number(s) to be ported (If more than the below fields, please attach EXCEL SHEET with all the TNs)"
+    counter = 30
+
+    tempPort = Numbers.objects.filter(Type=1, company_id=tempComp)
+    for each in tempPort:
+        ws['A'+ str(counter)] = each.number
+        counter = counter + 1
+    
+    counter = counter + 1
+    ws['A'+ str(counter)] = "Phone number(s) to be disconnect (if applicable) (If more than the below fields, please attach EXCEL SHEET with all the TNs)"
+    tempPort = Numbers.objects.filter(Type=0, company_id=tempComp)
+    for each in tempPort:
+        ws['A'+ str(counter)] = each.number
+        counter = counter + 1
+    
+    
+    counter = counter + 1
+    ws['A'+ str(counter)] = "Authorized Customer Signiture"
+    counter = counter + 1
+
+    tempUpload = Uploads.objects.get(company_id=tempComp, type='signiture')
+    img = openpyxl.drawing.image.Image(tempUpload.document)
+    
+    img.anchor = 'A' + str(counter)
+    ws.add_image(img)
+    
+
+    wb.save(save_path)
     print("Porting")
-
-
+    return HttpResponse("Done")
 
 @login_required
 def CreatePBXForm(request):
 
+    if request.session.get("company"):
+            company = request.session.get("company")
+            print(company)
+    else:
+        raise Http404
+
+    template = os.path.join(settings.MEDIA_ROOT, "Reports", "Template_PBX.xlsx")
+
+    tempComp = Company.objects.get(id=company)
+    save_path = os.path.join(settings.MEDIA_ROOT, "Reports", str(tempComp.order) + "_PBX.xlsx")
+    toForm = os.path.join("Reports", str(tempComp.order) + "_PBX.xlsx")
+
+    copyfile(template, save_path)
+
+    wb = load_workbook(save_path)
+    ws = wb.active
+
+    ws['B3'] = tempComp.company_name
+    tempAddress = Address.objects.get(id=tempComp.site_address_id)
+    res = tempAddress.StreetAddress.split(", ");
+
+    if tempAddress.Suite == "":
+        suiteHandler = ""
+    else:
+        suiteHandler = str(tempAddress.Suite) + " - "
+
+    ws['B4'] = suiteHandler + res[0]
+    ws['B5'] = res[1]
+    ws['B6'] = res[2]
+    ws['B7'] = tempAddress.Postal
+    ws['B8'] = tempComp.listing_phone
+
+    #Contact Name
+    #Contact Email
+
+    tempNumbers = Numbers.objects.filter(Type=1, company_id=tempComp)
+    counter = 15
+    for each in tempNumbers:
+        
+        ws['A' + str(counter + 1)] = "DID #"
+        ws['A' + str(counter + 2)] = "Address"
+        ws['A' + str(counter + 3)] = "City"
+        ws['A' + str(counter + 4)] = "Province"
+        ws['A' + str(counter + 5)] = "Postal Code"
+
+        tempAddress = Address.objects.get(id=each.Address_911_id)
+        res = tempAddress.StreetAddress.split(", ");
+
+        if tempAddress.Suite == "":
+            suiteHandler = ""
+        else:
+            suiteHandler = str(tempAddress.Suite) + " - "
+
+        ws['B' + str(counter + 1)] = each.number
+        ws['B' + str(counter + 2)] = suiteHandler + res[0]
+        ws['B' + str(counter + 3)] = res[1]
+        ws['B' + str(counter + 4)] = res[2]
+        ws['B' + str(counter + 5)] = tempAddress.Postal
+
+        counter = counter + 6
+    
+    wb.save(save_path)
+
     print("PBX")
+    return HttpResponse("Done")
