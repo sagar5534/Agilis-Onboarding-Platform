@@ -23,8 +23,8 @@ class Address(models.Model):
 class Company(models.Model):
 
     class Meta:
-        verbose_name_plural = "Companies"
-        verbose_name = "Company"
+        verbose_name_plural = "Applications"
+        verbose_name = "Application"
 
     def __str__(self):
         return str(self.id)
@@ -56,8 +56,8 @@ class CompanyAddressLink(models.Model):
 class UserCompLink(models.Model):
 
     class Meta:
-        verbose_name_plural = "User & Company Relations"
-        verbose_name = "User & Company Relation"
+        verbose_name_plural = "User & Application Connections"
+        verbose_name = "User & Application Connections"
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=False, null=False)
@@ -66,8 +66,8 @@ class UserCompLink(models.Model):
 class Numbers(models.Model):
 
     class Meta:
-        verbose_name_plural = "Numbers"
-        verbose_name = "Number"
+        verbose_name_plural = "Phone Numbers"
+        verbose_name = "Phone Number"
     
     id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=False, null=False)

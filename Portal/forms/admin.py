@@ -19,9 +19,9 @@ class AddressChoiceField(forms.ModelChoiceField):
 
 class CompanyAdmin(admin.ModelAdmin):
 
-    list_display = ('id', 'company_name', 'site_address', 'completed')
+    list_display = ('order', 'company_name', 'site_address', 'completed', 'get_user')
     list_filter = ('completed',)
-    fieldsets = ( ('Company' , {'fields': ('company_name', 'site_address', 'type', 'currentProvider')}) , ('411', {'fields': ('directory_listing','listing_name', 'category_listing', 'listing_phone', 'listing_address')}),)
+    fieldsets = ( ('Application' , {'fields': ('company_name', 'site_address', 'type', 'currentProvider')}) , ('411', {'fields': ('directory_listing','listing_name', 'category_listing', 'listing_phone', 'listing_address')}),)
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -29,9 +29,22 @@ class CompanyAdmin(admin.ModelAdmin):
         ),
     )
 
-    search_fields = ('company_name', 'listing_name', 'company__id', )
+    search_fields = ('order', 'company_name', 'listing_name',)
     ordering = ('id', 'company_name', )
     filter_horizontal = ()
+
+    def get_user(self, obj):
+        try:
+            x = UserCompLink.objects.filter(company_id=obj.id)
+            tempStr = ""
+            for each in x:
+                temp = MyUser.objects.get(id=each.user_id)
+                tempStr = tempStr + temp.email + "; "
+            return tempStr
+        except UserCompLink.DoesNotExist:
+            return obj.id
+
+    get_user.short_description = 'Users Connected'  #Renames column head
 
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -42,26 +55,46 @@ class CompanyAdmin(admin.ModelAdmin):
 
 class UserCompLinkAdmin(admin.ModelAdmin):
 
-    list_display = ('user', 'company')
-    search_fields = ('user', 'company__id',)
-    ordering = ('user', )
+    list_display = ('get_order', 'user', )
+    search_fields = ('user', 'company__order',)
+    ordering = ('company__order', )
     filter_horizontal = ()
+
+    def get_order(self, obj):
+        try:
+            x = Company.objects.get(id=obj.company_id)
+            return x.order
+        except Company.DoesNotExist:
+            return "Error"
+
+    get_order.admin_order_field  = 'company__order'  #Allows column order sorting
+    get_order.short_description = 'Order ID'  #Renames column head
 
 class NumbersAdmin(admin.ModelAdmin):
 
-    list_display = ('company', 'number', 'Address_911', 'Type')
-    search_fields = ('company__id', 'number',)
-    ordering = ('company', 'Type' )
+    list_display = ('get_order', 'number', 'Address_911', 'Type')
+    search_fields = ('company__order', 'number',)
+    ordering = ('company__order', 'Type' )
     list_filter = ('Type',)
 
     filter_horizontal = ()
 
+    def get_order(self, obj):
+        try:
+            x = Company.objects.get(id=obj.company_id)
+            return x.order
+        except Company.DoesNotExist:
+            return "Error"
+
+    get_order.admin_order_field  = 'company__order'  #Allows column order sorting
+    get_order.short_description = 'Order ID'  #Renames column head
+
 
 class ExtentionsAdmin(admin.ModelAdmin):
 
-    list_display = ('company', 'ext', 'get_name', 'caller_id_name')
-    search_fields = ('company__id', 'ext', 'name', )
-    ordering = ('company', )
+    list_display = ('get_order', 'ext', 'get_name', 'caller_id_name')
+    search_fields = ('company__order', 'ext', 'name', )
+    ordering = ('company__order', )
     filter_horizontal = ()
 
     def get_name(self, obj):
@@ -71,20 +104,38 @@ class ExtentionsAdmin(admin.ModelAdmin):
         except Numbers.DoesNotExist:
             return obj.caller_id_number
 
-    get_name.admin_order_field  = 'author'  #Allows column order sorting
     get_name.short_description = 'Caller ID Number'  #Renames column head
         
+    def get_order(self, obj):
+        try:
+            x = Company.objects.get(id=obj.company_id)
+            return x.order
+        except Company.DoesNotExist:
+            return "Error"
+
+    get_order.admin_order_field  = 'company__order'  #Allows column order sorting
+    get_order.short_description = 'Order ID'  #Renames column head
 
 
 class UploadAdmin(admin.ModelAdmin):
 
-    list_display = ('company', 'document', 'type')
+    list_display = ('get_order', 'type', 'document',)
     list_filter = ('type',)
 
-    search_fields = ('company__id', 'type', 'document', )
-    ordering = ('company', 'type')
+    search_fields = ('company__order', 'type', 'document', )
+    ordering = ('company__order', 'type')
 
     filter_horizontal = ()
+
+    def get_order(self, obj):
+        try:
+            x = Company.objects.get(id=obj.company_id)
+            return x.order
+        except Company.DoesNotExist:
+            return "Error"
+
+    get_order.admin_order_field  = 'company__order'  #Allows column order sorting
+    get_order.short_description = 'Order ID'  #Renames column head
 
 
 admin.site.register(Company, CompanyAdmin)

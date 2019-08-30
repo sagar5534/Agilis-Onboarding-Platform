@@ -644,6 +644,12 @@ def catchConfirm(request):
     tempComp.completed = True
     tempComp.save()
 
+    #Printed NAME
+    printed_name = request.POST['input_name']
+
+    #Applications
+    
+    
     #Sending Confirmation Email on Application Completed
     send_mail('Application Completed - ' + tempComp.order, '', 'support@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'])
 
