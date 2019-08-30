@@ -388,9 +388,12 @@ def catchToll(request):
     else:
         return Http404
     
-    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(request.FILES['file']))
-    path = default_storage.save(save_path, request.FILES['file'])
-    toForm = os.path.join(str(company), str(request.FILES['file']))
+    file = str(request.FILES['file'])
+    file = get_valid_filename(file)
+
+    save_path = os.path.join(settings.MEDIA_ROOT, str(company), file)
+    path = default_storage.save(save_path, file)
+    toForm = os.path.join(str(company), file)
 
     tempComp = Company.objects.get(id=company)
 
