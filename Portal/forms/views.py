@@ -665,7 +665,24 @@ def catchConfirm(request):
     content = content + "<br><b>Extensions: </b><a href='" + protocol + Reports.objects.get(type='Extensions', company_id=tempComp).document.url + "'>Extensions File</a>"
     content = content + "<br><b>PBX Form: </b><a href='" + protocol + Reports.objects.get(type='PBX', company_id=tempComp).document.url + "'>PBX File</a>"
 
-    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'], html_message=content)
+    content = content + "<br><br>-- Resp Org --<br>"
+
+    try: 
+        resp = Uploads.objects.filter(type='toll', company_id=tempComp)
+        for each in resp:
+            content = content + "<br><b>Resp Org Form: </b><a href='" + protocol + each.document.url + "'>Resp Ord File</a>"
+    except Uploads.DoesNotExist:
+        print()
+    
+    content = content + "<br><br>-- Phone Bills --<br>"
+    try: 
+        bill = Uploads.objects.filter(type='bill', company_id=tempComp)
+        for each in bill:
+            content = content + "<br><b>Phone Bill: </b><a href='" + protocol + each.document.url + "'>Bill File</a>"
+    except Uploads.DoesNotExist:
+        print()
+
+    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['tech@agilisnet.com'], html_message=content)
     
     return JsonResponse({
         "valid": 1,
