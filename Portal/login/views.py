@@ -124,12 +124,12 @@ def register_user(request):
                 try:   
                     tempUser = MyUser.objects.get(email=register.email)
                     if (tempUser):
-                        try:   
+                        try:
                             tempComp = Company.objects.get(order=compId)
                             if (tempComp):
                                 x = UserCompLink.objects.create(company_id=tempComp.id, user_id=tempUser.id)
                                 x.save()
-                                return HttpResponse("User has been connected to pre-existing company")
+                                return HttpResponse("User has been connected to pre-existing application")
 
                         except Company.DoesNotExist:
                             user = MyUser.objects.get(email=register.email)
@@ -137,7 +137,7 @@ def register_user(request):
                             UserCompLink.objects.create(company_id=x.id, user_id=user.id)
 
                             #Send Email
-                        return HttpResponse("User could not be ")
+                        return HttpResponse("User has been connected to new Application")
 
                 except MyUser.DoesNotExist:
                     print()
@@ -157,7 +157,8 @@ def register_user(request):
                 user = MyUser.objects.get(email=register.email)
                 x = Company.objects.create(order=compId, completed=0, company_name='New Application')
                 UserCompLink.objects.create(company_id=x.id, user_id=user.id)
-                
+                return HttpResponse("New User has been connected to new application")
+
             else:
                 return HttpResponse("Error - ORD Number Incorrect")
             
