@@ -99,7 +99,12 @@
             </div>
 
             {% endif %}
-            <div class="div-block-8"></div>
+            <div class="div-block-8">
+                {% if user.is_staff %}
+                    <a href="/addUser" class="form-next w-button">Add User</a>
+                    <a href="/admin" class="form-next w-button">Admin Site</a>
+                {% endif %}
+            </div>
         </div>
     </div>
     <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
