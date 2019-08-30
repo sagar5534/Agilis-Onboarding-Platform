@@ -26,6 +26,7 @@ from django.core.files.base import ContentFile
 from django.core.mail import *
 
 from reports.views import * 
+from django.utils.text import *
 
 # Main page user hits once logged in
 @login_required
@@ -596,8 +597,12 @@ def catchUpload(request):
     #os.path.exists(f.path)\
     rand = random.randint(10000000,99999999)
 
-    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(rand) + str(request.FILES['file']))
-    toForm = os.path.join(str(company), str(rand) + str(request.FILES['file']))
+    file = str(request.FILES['file'])
+
+    file = get_valid_filename(file)
+
+    save_path = os.path.join(settings.MEDIA_ROOT, str(company), str(rand) + file)
+    toForm = os.path.join(str(company), str(rand) + file)
 
     tempComp = Company.objects.get(id=company)
 
@@ -614,7 +619,7 @@ def catchUpload(request):
     except Uploads.DoesNotExist:
         print("")
 
-    path = default_storage.save(save_path, request.FILES['file'])
+    path = default_storage.save(save_path, file)
     document = Uploads.objects.create(document=toForm, company=tempComp,  type='bill')
     return JsonResponse({'document': document.id})
 
