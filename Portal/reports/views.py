@@ -31,6 +31,7 @@ import csv
 from .models import *
 
 from shutil import copyfile
+from django.core.mail import *
 
 # Create your views here.
 
@@ -110,9 +111,18 @@ def CreateExtensionsForm(request):
                 'SIP Password': "",
                 'Extension Active': ExtActive
                 })
-
+    
+    try:
+        tempDel = Reports.objects.filter(company=tempComp, type='Extensions')
+        for each in tempDel:
+            each.delete()
+            
+    except Reports.DoesNotExist:
+        print()
+    
     x = Reports.objects.create(company=tempComp, document=toForm, type="Extensions")
     x.save()
+
     return HttpResponse("Done Report" + str(company))
 
 
@@ -175,6 +185,8 @@ def CreatePortingForm(request):
     
     counter = counter + 1
     ws['A'+ str(counter)] = "Phone number(s) to be disconnect (if applicable) (If more than the below fields, please attach EXCEL SHEET with all the TNs)"
+    counter = counter + 1
+
     tempPort = Numbers.objects.filter(Type=0, company_id=tempComp)
     for each in tempPort:
         ws['A'+ str(counter)] = each.number
@@ -191,12 +203,12 @@ def CreatePortingForm(request):
     img.anchor = 'A' + str(counter)
     ws.add_image(img)
     
-    counter = counter + 4 
+    counter = counter + 8
     #Printed Name
     printed_name = request.POST['input_name']
     ws['A'+ str(counter)] = "Authorized Printed Name (as per above signiture)"
     counter = counter + 1
-    ws['A'+ str(counter)] = printed_name
+    ws['A'+ str(counter)] = printed_name.upper()
 
     counter = counter + 2
     ws['A'+ str(counter)] = "Date"
@@ -206,8 +218,16 @@ def CreatePortingForm(request):
     d1 = today.strftime("%d/%m/%Y")
     ws['A'+ str(counter)] = d1
 
+    try:
+        tempDel = Reports.objects.filter(company=tempComp, type='PortingForm')
+        for each in tempDel:
+            each.delete()
+            
+    except Reports.DoesNotExist:
+        print()
     
-
+    x = Reports.objects.create(company=tempComp, document=toForm, type="PortingForm")
+    x.save()
     wb.save(save_path)
     print("Porting")
     return HttpResponse("Done")
@@ -248,7 +268,12 @@ def CreatePBXForm(request):
     ws['B8'] = tempComp.listing_phone
 
     #Contact Name
+    ws['B10'] = str(request.user.first_name) + " " + str(request.user.last_name)
     #Contact Email
+    ws['B11'] = request.user.email
+    #Contact Phone
+    ws['B12'] = request.user.phone_number
+
 
     tempNumbers = Numbers.objects.filter(Type=1, company_id=tempComp)
     counter = 15
@@ -276,6 +301,17 @@ def CreatePBXForm(request):
 
         counter = counter + 6
     
+    try:
+        tempDel = Reports.objects.filter(company=tempComp, type='PBX')
+        for each in tempDel:
+            each.delete()
+           
+    except Reports.DoesNotExist:
+        print()
+    
+
+    x = Reports.objects.create(company=tempComp, document=toForm, type="PBX")
+    x.save()
     wb.save(save_path)
 
     print("PBX")

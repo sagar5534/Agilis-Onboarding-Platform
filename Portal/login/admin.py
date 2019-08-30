@@ -34,7 +34,7 @@ def send_email(user):
 
     if form.is_valid():
         request = HttpRequest()
-        request.META['SERVER_NAME'] = '216.223.104.111'
+        request.META['SERVER_NAME'] = 'portal.agilisnet.com'
         request.META['SERVER_PORT'] = '80'
         form.save(
             request= request,

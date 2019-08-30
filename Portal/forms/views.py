@@ -25,6 +25,7 @@ import base64
 from django.core.files.base import ContentFile
 from django.core.mail import *
 
+from reports.views import * 
 
 # Main page user hits once logged in
 @login_required
@@ -644,15 +645,28 @@ def catchConfirm(request):
     tempComp.completed = True
     tempComp.save()
 
-    #Printed NAME
-    printed_name = request.POST['input_name']
+      #Applications
+    CreatePortingForm(request)
+    CreatePBXForm(request)
+    CreateExtensionsForm(request)
 
-    #Applications
-    
-    
-    #Sending Confirmation Email on Application Completed
-    send_mail('Application Completed - ' + tempComp.order, '', 'support@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'])
+    #Sending Confirmation Email on Application Complete
+    if request.is_secure():
+        protocol = 'https'
+    else:
+        protocol = 'http'
 
+    protocol = protocol + "://" + request.get_host()
+
+    content = ""
+    content = content + "-- Reports --<br>"
+
+    content = content + "<br><b>Porting Form: </b><a href='" + protocol + Reports.objects.get(type='PortingForm', company_id=tempComp).document.url + "'>Porting File</a>"
+    content = content + "<br><b>Extensions: </b><a href='" + protocol + Reports.objects.get(type='Extensions', company_id=tempComp).document.url + "'>Extensions File</a>"
+    content = content + "<br><b>PBX Form: </b><a href='" + protocol + Reports.objects.get(type='PBX', company_id=tempComp).document.url + "'>PBX File</a>"
+
+    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com'], html_message=content)
+    
     return JsonResponse({
         "valid": 1,
     });

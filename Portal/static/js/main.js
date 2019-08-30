@@ -1077,19 +1077,19 @@ $(document).ready(function () {
     $("#FormConfirmNext").submit(function (e) {
         e.preventDefault();
         document.getElementById("loader").style.display = "Block"
+        var input_name = document.getElementById("signiture-input").value
 
         var image_data = ""
         var element = document.getElementById("sig-area");
         html2canvas(element, {
             onrendered: function (canvas) {
                 image_data = canvas.toDataURL()
-                //console.log(image_data)
-
                 $.ajax({
                     url: '/forms/catchConfirm',
                     type: 'POST',
                     data: {
-                        "imgData": image_data
+                        "imgData": image_data,
+                        "input_name": input_name
                     },
                     success: function(data) {
                         document.location.href = '/'
