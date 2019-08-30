@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from openpyxl import Workbook
 from django.http import HttpResponse
+from datetime import date
 
 from forms.models import *
 
@@ -189,6 +190,22 @@ def CreatePortingForm(request):
     
     img.anchor = 'A' + str(counter)
     ws.add_image(img)
+    
+    counter = counter + 4 
+    #Printed Name
+    printed_name = request.POST['input_name']
+    ws['A'+ str(counter)] = "Authorized Printed Name (as per above signiture)"
+    counter = counter + 1
+    ws['A'+ str(counter)] = printed_name
+
+    counter = counter + 2
+    ws['A'+ str(counter)] = "Date"
+    counter = counter + 1
+
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    ws['A'+ str(counter)] = d1
+
     
 
     wb.save(save_path)
