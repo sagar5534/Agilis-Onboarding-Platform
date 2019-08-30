@@ -1,11 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from openpyxl import Workbook
 from django.http import HttpResponse
 from datetime import date
-
 from forms.models import *
-
 from django.shortcuts import (
     get_object_or_404,
     render,
@@ -23,15 +20,11 @@ from django.views.decorators.http import require_POST
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
-
-from openpyxl import *
 import openpyxl
 from openpyxl.drawing.image import Image
 import csv
 from .models import *
-
 from shutil import copyfile
-from django.core.mail import *
 
 # Create your views here.
 

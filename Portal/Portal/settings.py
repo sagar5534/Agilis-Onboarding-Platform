@@ -26,7 +26,7 @@ SECRET_KEY = '2$0ok)3rna3p@ffc#r*%wu_f+ff6_*%yx921)909ob)=aw)flj'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'portal.agilisnet.com'
+    'portal.agilisnet.com',
     '216.223.104.111',
     'localhost',
 ]
