@@ -619,7 +619,7 @@ def catchUpload(request):
     except Uploads.DoesNotExist:
         print("")
 
-    path = default_storage.save(save_path, file)
+    path = default_storage.save(save_path, request.FILES['file'])
     document = Uploads.objects.create(document=toForm, company=tempComp,  type='bill')
     return JsonResponse({'document': document.id})
 
