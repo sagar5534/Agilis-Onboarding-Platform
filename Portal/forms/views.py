@@ -597,7 +597,6 @@ def catchUpload(request):
     else:
         return Http404
 
-    #os.path.exists(f.path)\
     rand = random.randint(10000000,99999999)
 
     file = str(request.FILES['file'])
@@ -637,6 +636,20 @@ def catchConfirm(request):
         return Http404
     data = request.POST['imgData'] # Getting the object from the post request
     
+    tempComp = Company.objects.get(id=company)
+
+    try:
+        document = Uploads.objects.filter(company=tempComp,  type='signiture')
+
+        for i in document:
+            i.delete()
+            if (os.path.exists(i.document.path)):
+                default_storage.delete(i.document.path)
+        
+    except Uploads.DoesNotExist:
+        print("")
+
+    
     format, imgstr = data.split(';base64,') 
     ext = format.split('/')[-1] 
 
@@ -646,8 +659,6 @@ def catchConfirm(request):
     toForm = os.path.join(str(company), data.name)
     path = default_storage.save(save_path, data)
 
-
-    tempComp = Company.objects.get(id=company)
     document = Uploads.objects.create(document=toForm, company=tempComp,  type='signiture')
 
     tempComp.completed = True
@@ -690,7 +701,7 @@ def catchConfirm(request):
     except Uploads.DoesNotExist:
         print()
 
-    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['s.72427patel@gmail.com', 'tech@agilisnet.com', ], html_message=content)
+    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['s.72427patel@gmail.com', ], html_message=content)
     
     return JsonResponse({
         "valid": 1,

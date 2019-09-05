@@ -238,7 +238,8 @@ function fillExt(callback){
             
             var tableFields = document.getElementById("accordian-wrapper")
             var children = tableFields.children;
-            //console.log(children)
+
+            console.log(children)
 
             for (var i = 0; i < children.length; i++) {
                 var content = children[i].childNodes[1];
@@ -268,16 +269,16 @@ function fillExt(callback){
     
                 var changeTo = ""
     
-                if (obj[i].phone_id == "custom"){
+                // if (obj[i].phone_id == "custom"){
     
-                    changeTo = 'custom'
-                    content.childNodes[10].nextElementSibling.style.display = "Block"
-                    content.childNodes[10].nextElementSibling.disabled = false
+                //     changeTo = 'custom'
+                //     content.childNodes[10].nextElementSibling.style.display = "Block"
+                //     content.childNodes[10].nextElementSibling.disabled = false
     
-                    content.childNodes[11].value = obj[i].phoneIdCustom
-                }else{
+                //     content.childNodes[11].value = obj[i].phoneIdCustom
+                // }else{
                     changeTo = obj[i].phone_id
-                }
+                // }
     
                 //cons
                 getPhone(content.childNodes[10].id, function(){
@@ -285,21 +286,21 @@ function fillExt(callback){
                 });
     
                 if (obj[i].voicemail == true){
-                    $(content.childNodes[13].childNodes[0].firstChild).trigger('click');
+                    $(content.childNodes[12].childNodes[0].firstChild).trigger('click');
                 }else{
-                    $(content.childNodes[13].childNodes[1].firstChild).trigger('click');
+                    $(content.childNodes[12].childNodes[1].firstChild).trigger('click');
                 }
     
                 //Phone
                 if (obj[i].voicemail_toEmail == true){
-                    $(content.childNodes[14].childNodes[1].lastChild).trigger('click');
-                    content.childNodes[14].childNodes[2].style.display = "Block"
-                    content.childNodes[14].childNodes[2].disabled = false
-                    content.childNodes[14].childNodes[2].value = obj[i].voicemail_email
+                    $(content.childNodes[13].childNodes[1].lastChild).trigger('click');
+                    content.childNodes[13].childNodes[2].style.display = "Block"
+                    content.childNodes[13].childNodes[2].disabled = false
+                    content.childNodes[13].childNodes[2].value = obj[i].voicemail_email
                 }else{
-                    $(content.childNodes[14].childNodes[1].firstChild).trigger('click');
-                    content.childNodes[14].childNodes[2].style.display = "none"
-                    content.childNodes[14].childNodes[2].disabled = true
+                    $(content.childNodes[13].childNodes[1].firstChild).trigger('click');
+                    content.childNodes[13].childNodes[2].style.display = "none"
+                    content.childNodes[13].childNodes[2].disabled = true
                 }
     
             }

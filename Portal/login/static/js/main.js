@@ -556,16 +556,16 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("change", "select.ExtCallerNumber" , function(e) {
-        //console.log(e)
-        if (e.currentTarget.value == "custom"){
-            e.currentTarget.nextElementSibling.style.display = "Block"
-            e.currentTarget.nextElementSibling.disabled = false
-        }else{
-            e.currentTarget.nextElementSibling.style.display = "none"
-            e.currentTarget.nextElementSibling.disabled = true
-        }
-    });
+    // $(document).on("change", "select.ExtCallerNumber" , function(e) {
+    //     //console.log(e)
+    //     if (e.currentTarget.value == "custom"){
+    //         e.currentTarget.nextElementSibling.style.display = "Block"
+    //         e.currentTarget.nextElementSibling.disabled = false
+    //     }else{
+    //         e.currentTarget.nextElementSibling.style.display = "none"
+    //         e.currentTarget.nextElementSibling.disabled = true
+    //     }
+    // });
 
     $(document).on("keyup", "input.ExtNumber" , function(e) {
         console.log(e)
@@ -704,10 +704,8 @@ $(document).ready(function () {
         +   "<div class='form-heading-8'>Caller ID Phone Number</div>"
         +   "<select id='ExtCallerNumber" + extId + "' name='ExtCallerNumber' data-name='ExtCallerNumber' class='form-select w-select ExtCallerNumber'>"
         +       "<option value=''>Select one...</option>"
-        +       "<option value='First'>First Choice</option>"
-        +       "<option value='Second'>Second Choice</option>"
         +   "</select>"
-        +   "<input type='tel' class='form-field w-input' minlength='10' maxlength='10' pattern='[0-9]{3}[0-9]{3}[0-9]{4}' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number - XXXXXXXXXX' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
+        // +   "<input type='tel' class='form-field w-input' minlength='10' maxlength='10' pattern='[0-9]{3}[0-9]{3}[0-9]{4}' name='CustomCallerNumber' data-name='CustomCallerNumber' placeholder='Caller ID Phone Number - XXXXXXXXXX' id='CustomCallerNumber" + extId + "' required='' style='display:none' disabled=''>"
         +   "<div class='form-heading-8'>Would you like Voicemail for this Extension?</div>"
         +   "<div class='div-block-23'>"
         +       "<label class='w-radio'>"
@@ -994,21 +992,21 @@ $(document).ready(function () {
                 //Phone ID Handler
                 var phoneId = content.childNodes[10].options[content.childNodes[10].selectedIndex].value
                 data[i].phone_id = phoneId
-                if (phoneId == "custom"){
-                    data[i].phoneCustom = content.childNodes[11].value
-                }
+                // if (phoneId == "custom"){
+                //     data[i].phoneCustom = content.childNodes[11].value
+                // }
 
 
-                if (content.childNodes[13].childNodes[0].firstChild.checked == true){
+                if (content.childNodes[12].childNodes[0].firstChild.checked == true){
                     voicemail = true
 
-                    if (content.childNodes[14].childNodes[1].firstChild.firstChild.checked == true){
+                    if (content.childNodes[13].childNodes[1].firstChild.firstChild.checked == true){
                         data[i].voicemail = voicemail
                         data[i].voicemail_type = "phone"
                     }else{
                         data[i].voicemail = voicemail
                         data[i].voicemail_type = "email"
-                        data[i].email = content.childNodes[14].childNodes[2].value
+                        data[i].email = content.childNodes[13].childNodes[2].value
                     }
 
                 }else{

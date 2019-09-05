@@ -1105,6 +1105,9 @@
 }
 
 .accordian-trigger {
+  border-bottom: #d8d8d8;
+  border-bottom-style: solid;
+  border-width: medium;
   display: block;
   width: 65%;
   padding: 5px;

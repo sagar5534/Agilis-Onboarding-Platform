@@ -191,6 +191,7 @@ def CreatePortingForm(request):
     ws['A'+ str(counter)] = "Authorized Customer Signiture"
     counter = counter + 1
 
+    
     tempUpload = Uploads.objects.get(company_id=tempComp, type='signiture')
     img = openpyxl.drawing.image.Image(tempUpload.document)
     

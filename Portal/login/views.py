@@ -108,61 +108,63 @@ import re
 @login_required
 def register_user(request):
 
+    print("Here")
     if not request.user.is_superuser:
        return HttpResponse('This user does not have access!')
 
     if request.method == 'POST':
-            register = MyUser()
-            register.email = request.POST['Email']
-            register.first_name = request.POST['FName']
-            register.last_name = request.POST['LName']
-            compId = request.POST['ID']
-            compId = compId.upper()
+        print("InPost")
+        register = MyUser()
+        register.email = request.POST['Email']
+        register.first_name = request.POST['FName']
+        register.last_name = request.POST['LName']
+        compId = request.POST['ID']
+        compId = compId.upper()
 
-            pattern = re.compile("^ORD-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$")
-            if (pattern.match(compId)):
-                try:   
-                    tempUser = MyUser.objects.get(email=register.email)
-                    if (tempUser):
-                        try:
-                            tempComp = Company.objects.get(order=compId)
-                            if (tempComp):
-                                x = UserCompLink.objects.create(company_id=tempComp.id, user_id=tempUser.id)
-                                x.save()
-                                return HttpResponse("User has been connected to pre-existing application")
+        pattern = re.compile("^ORD-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$")
+        if (pattern.match(compId)):
+            try:   
+                tempUser = MyUser.objects.get(email=register.email)
+                if (tempUser):
+                    try:
+                        tempComp = Company.objects.get(order=compId)
+                        if (tempComp):
+                            x = UserCompLink.objects.create(company_id=tempComp.id, user_id=tempUser.id)
+                            x.save()
+                            return HttpResponse("User has been connected to pre-existing application")
 
-                        except Company.DoesNotExist:
-                            user = MyUser.objects.get(email=register.email)
-                            x = Company.objects.create(order=compId, completed=0, company_name='New Application')
-                            UserCompLink.objects.create(company_id=x.id, user_id=user.id)
-
-                            #Send Email
-                        return HttpResponse("User has been connected to new Application")
-
-                except MyUser.DoesNotExist:
-                    print()
-                
-                try:
-                    tempComp = Company.objects.get(order=compId)
-                    if (tempComp):
-                        user = register.save()
+                    except Company.DoesNotExist:
                         user = MyUser.objects.get(email=register.email)
-                        UserCompLink.objects.create(company_id=tempComp.id, user_id=user.id)
-                    return HttpResponse("New User has been connected to Pre-existing Company")
-                except Company.DoesNotExist:
-                    print()
-                
+                        x = Company.objects.create(order=compId, completed=0, company_name='New Application')
+                        UserCompLink.objects.create(company_id=x.id, user_id=user.id)
 
-                user = register.save()
-                user = MyUser.objects.get(email=register.email)
-                x = Company.objects.create(order=compId, completed=0, company_name='New Application')
-                UserCompLink.objects.create(company_id=x.id, user_id=user.id)
-                return HttpResponse("New User has been connected to new application")
+                        #Send Email
+                    return HttpResponse("User has been connected to new Application")
 
-            else:
-                return HttpResponse("Error - ORD Number Incorrect")
+            except MyUser.DoesNotExist:
+                print()
             
-            return redirect("/")
+            try:
+                tempComp = Company.objects.get(order=compId)
+                if (tempComp):
+                    user = register.save()
+                    user = MyUser.objects.get(email=register.email)
+                    UserCompLink.objects.create(company_id=tempComp.id, user_id=user.id)
+                return HttpResponse("New User has been connected to Pre-existing Company")
+            except Company.DoesNotExist:
+                print()
+            
+
+            user = register.save()
+            user = MyUser.objects.get(email=register.email)
+            x = Company.objects.create(order=compId, completed=0, company_name='New Application')
+            UserCompLink.objects.create(company_id=x.id, user_id=user.id)
+            return HttpResponse("New User has been connected to new application")
+
+        else:
+            return HttpResponse("Error - ORD Number Incorrect")
+        
+        return redirect("/")
            
     else:
         return render(request, "login/add-user.html", {})
