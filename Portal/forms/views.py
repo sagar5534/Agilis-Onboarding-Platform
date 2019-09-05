@@ -701,7 +701,7 @@ def catchConfirm(request):
     except Uploads.DoesNotExist:
         print()
 
-    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['s.72427patel@gmail.com', ], html_message=content)
+    send_mail('Application Completed - ' + tempComp.order, "", 'support@agilismail.com', ['tech@agilisnet.com', ], html_message=content)
     
     return JsonResponse({
         "valid": 1,
