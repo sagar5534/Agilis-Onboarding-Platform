@@ -21,8 +21,4 @@ Sorry access limited to Client only
 
 Screenshots:
 
-<img src="Images/Main.png" alt="Main Image" width="200"/><img src="Images/Location.png" alt="Location Image" width="200"/><img src="Images/Scan.png" alt="Scan Image" width="200"/>
-
- Sample:
- 
- <img src="Images/Appgif.gif" width="200"/>
+<img src="Images/login.png" alt="Main Image" width="500"/><img src="Images/apps.png" alt="Location Image" width="500"/><img src="Images/form1.png" alt="Scan Image" width="500"/><img src="Images/form2.png" alt="Scan Image" width="500"/>
