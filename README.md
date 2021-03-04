@@ -15,9 +15,6 @@ Key Components included in Website:
 - Sending emails to notify staff on application status changes
 
 
-<a href="http://portal.agilisnet.com/login/?next=/">Check out the website</a>
-Sorry access limited to Client only
-
 
 Screenshots:
 
